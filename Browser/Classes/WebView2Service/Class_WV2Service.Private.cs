@@ -67,7 +67,7 @@ namespace WV2Service
             try
             {
                 profile = profile != null ? profile : await GetProfile(webView, environment);
-                foreach (var extensionPath in ExtensionsPath)
+                foreach (string extensionPath in ExtensionsPath)
                 {
                     extension = await profile.AddBrowserExtensionAsync(extensionPath);
                 }
@@ -88,7 +88,7 @@ namespace WV2Service
         private async void InitializeExtensions(WebView2 webView, CoreWebView2Environment environment, CoreWebView2Profile profile)
         {
             await webView.EnsureCoreWebView2Async(environment);
-            var extension = await AddExtensionsAsync(webView, environment, profile);
+            CoreWebView2BrowserExtension extension = await AddExtensionsAsync(webView, environment, profile);
             await extension.EnableAsync(true);
         }
         private async void ClearAllBrowsingData(WebView2 webView, CoreWebView2Environment environment, CoreWebView2Profile profile)

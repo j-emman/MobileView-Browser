@@ -107,7 +107,7 @@ namespace MobileView
         }
         private void URLTextBox_DoubleClick(object sender, EventArgs e)
         {
-            Browser.NavigateTo(URLTextBox.Text);
+            //Browser.NavigateTo(URLTextBox.Text);
         }
         private void IncognitoToolStripMenuItem_Click(object sender, EventArgs e)
         {
