@@ -66,6 +66,8 @@ $ nuget install Microsoft.Web.WebView2
 
 ### 4. Run the Application
 Press `F5` in Visual Studio to debug and run the app.
+Alternatively, run the built `.exe` file in `your project directory\bin\Debug\net8.0-windows`
+At this point in time, I see no reason to create an installer. Possibly, a single-package portable but it works fine as is so...
 
 ---
 ## Extension Support
