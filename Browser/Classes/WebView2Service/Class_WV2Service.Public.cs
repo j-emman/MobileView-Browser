@@ -120,7 +120,6 @@ namespace WV2Service
                     await Task.Delay(delayMilliseconds * attempt);
                 }
             }
-
         }
         public void Reload()
         {
