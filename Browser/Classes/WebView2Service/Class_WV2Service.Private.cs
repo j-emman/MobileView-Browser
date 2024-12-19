@@ -1,0 +1,181 @@
+﻿using Microsoft.Web.WebView2.Core;
+using Microsoft.Web.WebView2.WinForms;
+using System.ComponentModel;
+using System.Data;
+using System.Diagnostics;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+using System.Threading;
+
+namespace WV2Service
+{
+    public partial class WebViewService
+    {
+        private async Task<CoreWebView2Profile> GetProfile(WebView2 webView, CoreWebView2Environment environment)
+        {
+            await webView.EnsureCoreWebView2Async(environment);
+            return  webView.CoreWebView2.Profile;
+        }
+        private async Task<CoreWebView2Environment> InitializeWebEnviromentAsync(WebView2 webView, string profileName)
+        {
+            //string userDataFolder = Path.Combine(
+            //            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            //            "MyWebView2AppData",
+            //            profileName);
+
+            string appBaseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            ProfileFolder = Path.Combine(appBaseDirectory, "WebControl", "profiles", profileName);
+
+
+            var environmentOptions = new CoreWebView2EnvironmentOptions
+            {
+                AreBrowserExtensionsEnabled = true
+            };
+
+            var environment = await CoreWebView2Environment.CreateAsync(null, ProfileFolder, environmentOptions);
+            await webView.EnsureCoreWebView2Async(environment);
+            return environment;
+        }
+        private async Task<CoreWebView2Environment> InitializeSharedWebEnviromentAsync(WebView2 webView, string FolderPath)
+        {
+            var environmentOptions = new CoreWebView2EnvironmentOptions
+            {
+                AreBrowserExtensionsEnabled = true
+            };
+
+            var environment = await CoreWebView2Environment.CreateAsync(null, FolderPath, environmentOptions);
+            await webView.EnsureCoreWebView2Async(environment);
+            return environment;
+        }
+        private async Task<CoreWebView2Environment> Incognito_InitializeWebEnviromentAsync(WebView2 webView, string profileName)
+        {
+            TempFolder = Path.Combine(Path.GetTempPath(), "Incognito_" + Guid.NewGuid().ToString());
+            Directory.CreateDirectory(TempFolder);
+
+            var environmentOptions = new CoreWebView2EnvironmentOptions
+            {
+                AreBrowserExtensionsEnabled = true
+            };
+
+            var environment = await CoreWebView2Environment.CreateAsync(null, TempFolder, environmentOptions);
+            await webView.EnsureCoreWebView2Async(environment);
+            return environment;
+        }
+        private async Task<CoreWebView2BrowserExtension> AddExtensionsAsync(CoreWebView2Profile profile)
+        {
+            CoreWebView2BrowserExtension extension = null;
+            try
+            {
+                foreach (var extensionPath in ExtensionsPath)
+                {
+                    extension = await profile.AddBrowserExtensionAsync(extensionPath);
+                }
+
+                return extension;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Failed to load extensions: {ex.Message}");
+            }
+            return extension;
+        }
+        private async void EnableMobileView(WebView2 webView, CoreWebView2Environment environment)
+        {
+            await webView.EnsureCoreWebView2Async(environment);
+            webView.CoreWebView2.Settings.UserAgent = @"Mozilla/5.0 (Linux; Android 10; Mobile) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Mobile Safari/537.36";
+        }
+        private async void InitializeExtensions(WebView2 webView, CoreWebView2Environment environment)
+        {
+            await webView.EnsureCoreWebView2Async(environment);
+
+            //var profile = webView.CoreWebView2.Profile;
+            var extension = await AddExtensionsAsync(Profile);
+            await extension.EnableAsync(true);
+        }
+        private async void ClearAllBrowsingData(WebView2 webView, CoreWebView2Environment environment)
+        {
+            await webView.EnsureCoreWebView2Async(environment);
+
+            //var profile = webView.CoreWebView2.Profile;
+            await Profile.ClearBrowsingDataAsync(
+                CoreWebView2BrowsingDataKinds.Cookies |
+                CoreWebView2BrowsingDataKinds.BrowsingHistory |
+                CoreWebView2BrowsingDataKinds.GeneralAutofill |
+                CoreWebView2BrowsingDataKinds.PasswordAutosave |
+                CoreWebView2BrowsingDataKinds.ServiceWorkers |
+                CoreWebView2BrowsingDataKinds.CacheStorage |
+                CoreWebView2BrowsingDataKinds.DownloadHistory |
+                CoreWebView2BrowsingDataKinds.DiskCache);
+        }
+        private async void ClearAllBrowserData(WebView2 webView, CoreWebView2Environment environment)
+        {
+            await webView.EnsureCoreWebView2Async(environment);
+            //var profile = webView.CoreWebView2.Profile;
+            await Profile.ClearBrowsingDataAsync();
+        }
+        private async void ClearBrowserData(WebView2 webView, CoreWebView2Environment environment, CoreWebView2BrowsingDataKinds dataKinds)
+        {
+            await webView.EnsureCoreWebView2Async(environment);
+            var profile = webView.CoreWebView2.Profile;
+            await Profile.ClearBrowsingDataAsync(dataKinds);
+        }
+        private async void ClearBrowserDataBetweenDateRange(WebView2 webView, CoreWebView2Environment environment, CoreWebView2BrowsingDataKinds dataKinds, DateTime startDate, DateTime endDate)
+        {
+            await webView.EnsureCoreWebView2Async(environment);
+            //var profile = webView.CoreWebView2.Profile;
+            await Profile.ClearBrowsingDataAsync(dataKinds, startDate, endDate);
+        }
+        private string EnsureHttpsPrefix(string url)
+        {
+            if (!url.StartsWith("http://", StringComparison.OrdinalIgnoreCase) &&
+                !url.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
+            {
+                url = "https://" + url;
+            }
+            return url;
+        }
+        private bool IsURLSuffixValid(string url)
+        {
+            string[] validTLDs = { ".com", ".org", ".net", ".edu", ".gov", ".io", ".co", ".us", ".uk", ".ph" };
+
+            foreach (string tld in validTLDs)
+            {
+                if (url.Contains(tld, StringComparison.OrdinalIgnoreCase))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        private async void NavigateTo(WebView2 webView, CoreWebView2Environment environment, string address)
+        {
+            await webView.EnsureCoreWebView2Async(environment);
+            webView.CoreWebView2.Navigate(address);
+        }
+        private async void EnableNewWindowRequest(WebView2 webView, CoreWebView2Environment environment)
+        {
+            await webView.EnsureCoreWebView2Async(environment);
+            webView.CoreWebView2.NewWindowRequested += CoreWebView2_NewWindowRequested;
+        }
+        private void CoreWebView2_NewWindowRequested(object? sender, CoreWebView2NewWindowRequestedEventArgs e)
+        {
+            DialogResult result = MessageBox.Show(
+                $"A website wants to open a new window:\n{e.Uri}\n\nAllow this popup?",
+                "Confirm Popup",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question
+            );
+
+            if (result == DialogResult.Yes)
+            {
+                e.Handled = false;
+
+                // Optional: Open in the current WebView
+                //NavigateTo(webviewControl, environment, e.Uri);
+                return;
+            }
+            e.Handled = true;
+            Console.WriteLine($"Popup blocked: {e.Uri}");
+        }
+    }
+}
