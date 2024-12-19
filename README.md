@@ -8,6 +8,7 @@ A lightweight Windows Forms application designed to provide a mobile browsing ex
 - **Mobile-first Browsing**: Defaults all websites to mobile view.
 - **Lightweight**: Minimalistic design for fast and efficient browsing.
 - **Customizable**: Extendable for additional features such as incognito mode, [extension support](#extension-support), tab management, and more.
+- **[Simplified WebView2 Integration](#abstraction-layer-for-webview2)**: Provides an abstraction layer to simplify the usage of the WebView2 control.
 
 ---
 
@@ -27,6 +28,18 @@ Currently, this application supports **Windows** only.
 - **Microsoft.Web.WebView2**
   - Used for embedding the Edge WebView2 control into the application.
   - Installable via [NuGet](https://www.nuget.org/packages/Microsoft.Web.WebView2).
+
+---
+
+## Abstraction Layer for WebView2
+
+To make the integration and usage of the WebView2 control more accessible, this application includes an abstraction layer. This layer:
+
+- Encapsulates complex WebView2 functionalities into simple, reusable methods.
+- Simplifies tasks such as managing profiles, handling cache and cookies, and navigating between pages.
+- Provides a cleaner and more intuitive API for developers to extend or customize the application.
+
+This design allows for easier maintenance and scalability, making the application suitable for both beginners and advanced users.
 
 ---
 
