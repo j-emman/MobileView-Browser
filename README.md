@@ -8,7 +8,7 @@ A lightweight Windows Forms application designed to provide a mobile browsing ex
 ## Features
 - **Mobile-first Browsing**: Defaults all websites to mobile view.
 - **Lightweight**: Minimalistic design for fast and efficient browsing.
-- **Customizable**: Extendable for additional features such as incognito mode, [extension support](##extension-support), tab management, and more.
+- **Customizable**: Extendable for additional features such as incognito mode, [extension support](#extension-support), tab management, and more.
 
 ---
 
