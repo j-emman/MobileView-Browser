@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form_Main));
             WebView21 = new Microsoft.Web.WebView2.WinForms.WebView2();
             TopBarPanel = new Panel();
             MenuButton = new Button();
@@ -91,7 +90,7 @@
             // 
             // BackButton
             // 
-            BackButton.BackgroundImage = (Image)resources.GetObject("BackButton.BackgroundImage");
+            BackButton.BackgroundImage = Browser.Properties.Resources.arrow_back_25dp_FFFFFF;
             BackButton.BackgroundImageLayout = ImageLayout.Stretch;
             BackButton.FlatAppearance.BorderColor = Color.FromArgb(33, 33, 33);
             BackButton.FlatStyle = FlatStyle.Flat;
