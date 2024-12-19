@@ -18,6 +18,7 @@ namespace WV2Service
             EnableMobileView();
             InitializeExtensions();
             EnableNewWindowRequest();
+            EnableNavigationMonitoring();
         }
         public void InitializeSharedMobileWebView()
         {
@@ -62,6 +63,10 @@ namespace WV2Service
         public void EnableNewWindowRequest()
         {
             EnableNewWindowRequest(WebViewControl, environment);
+        }
+        public void EnableNavigationMonitoring()
+        {
+            EnableNavigationMonitoring(WebViewControl, environment);
         }
         public void ClearAllBrowsingData()
         {

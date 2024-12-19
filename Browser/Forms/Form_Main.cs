@@ -12,7 +12,7 @@ namespace MobileView
         private WebViewService Browser2;
         private bool incognito;
 
-        public Form_Main(bool _incognito, Form currentForm = null)
+        public Form_Main(bool _incognito = false, Form currentForm = null)
         {
             incognito = _incognito;
             InitializeComponent();
@@ -46,29 +46,14 @@ namespace MobileView
         }
         private void WebView_PropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(Browser.URL))
-            {
-                URLTextBox.Text = Browser.URL;
-            }
-        }
-        private void PreserveCurrentFormLocation(Form currentForm)
-        {
-            var state = currentForm.WindowState;
-            var location = currentForm.Location;
-
-            this.WindowState = state;
-            this.StartPosition = FormStartPosition.Manual;
-
-            var centerX = location.X + (currentForm.Width - this.Width) / 2;
-            var centerY = location.Y + (currentForm.Height - this.Height) / 2;
-            this.Location = new Point(centerX, centerY);
+            if (e.PropertyName == nameof(Browser.URL)) { URLTextBox.Text = Browser.URL; } //add a oneway binding to URL
         }
         private async void Form_Main_Shown(object sender, EventArgs e)
         {
             if (incognito) { await Task.Delay(1000); }
             Browser.NavigateTo("https://www.google.com");
         }
-        private void Form1_Resize(object sender, EventArgs e)
+        private void Form_Main_Resize(object sender, EventArgs e)
         {
             if (this.WindowState != FormWindowState.Normal)
             { return; }
@@ -122,12 +107,7 @@ namespace MobileView
         }
         private void URLTextBox_DoubleClick(object sender, EventArgs e)
         {
-            TextBox textBox = sender as TextBox;
-            if (textBox != null)
-            {
-                textBox.Focus();
-                textBox.SelectAll();
-            }
+            Browser.NavigateTo(URLTextBox.Text);
         }
         private void IncognitoToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -135,6 +115,18 @@ namespace MobileView
             this.Hide();
             incognito.ShowDialog();
             this.Show();
+        }
+        private void PreserveCurrentFormLocation(Form currentForm)
+        {
+            var state = currentForm.WindowState;
+            var location = currentForm.Location;
+
+            this.WindowState = state;
+            this.StartPosition = FormStartPosition.Manual;
+
+            var centerX = location.X + (currentForm.Width - this.Width) / 2;
+            var centerY = location.Y + (currentForm.Height - this.Height) / 2;
+            this.Location = new Point(centerX, centerY);
         }
 
     }

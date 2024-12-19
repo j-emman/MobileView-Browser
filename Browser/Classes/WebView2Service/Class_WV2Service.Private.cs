@@ -159,6 +159,12 @@ namespace WV2Service
             await webView.EnsureCoreWebView2Async(environment);
             webView.CoreWebView2.NewWindowRequested += CoreWebView2_NewWindowRequested;
         }
+        private async void EnableNavigationMonitoring(WebView2 webView, CoreWebView2Environment environment)
+        {
+            await webView.EnsureCoreWebView2Async(environment);
+            webView.NavigationStarting += OnNavigationStarting;
+            webView.NavigationCompleted += OnNavigationCompleted;
+        }
         private void CoreWebView2_NewWindowRequested(object? sender, CoreWebView2NewWindowRequestedEventArgs e)
         {
             DialogResult result = MessageBox.Show(
@@ -172,12 +178,30 @@ namespace WV2Service
             {
                 e.Handled = false;
 
-                // Optional: Open in the current WebView
+                //// Optional: Open in the current WebView
                 //NavigateTo(webviewControl, environment, e.Uri);
                 return;
             }
             e.Handled = true;
             Console.WriteLine($"Popup blocked: {e.Uri}");
+        }
+
+        public event EventHandler<string> NavigationChanged;
+        private void OnNavigationCompleted(object? sender, CoreWebView2NavigationCompletedEventArgs e)
+        {
+            if (e.IsSuccess)
+            {
+                NavigationChanged?.Invoke(this, WebViewControl.Source.ToString());
+            }
+            else
+            {
+                NavigationChanged?.Invoke(this, "Navigation failed.");
+            }
+        } 
+        private void OnNavigationStarting(object? sender, CoreWebView2NavigationStartingEventArgs e)
+        {
+            URL = e.Uri;
+            NavigationChanged?.Invoke(this, $"Navigating to: {e.Uri}");
         }
     }
 }

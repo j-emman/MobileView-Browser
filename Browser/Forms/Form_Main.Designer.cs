@@ -124,6 +124,7 @@
             URLTextBox.Name = "URLTextBox";
             URLTextBox.Size = new Size(214, 23);
             URLTextBox.TabIndex = 0;
+            URLTextBox.DoubleClick += URLTextBox_DoubleClick;
             URLTextBox.KeyDown += URLTextBox_KeyDown;
             URLTextBox.MouseDown += URLTextBox_MouseDown;
             // 
@@ -214,7 +215,7 @@
             StartPosition = FormStartPosition.CenterScreen;
             FormClosing += Form_Main_FormClosing;
             Shown += Form_Main_Shown;
-            Resize += Form1_Resize;
+            Resize += Form_Main_Resize;
             ((System.ComponentModel.ISupportInitialize)WebView21).EndInit();
             TopBarPanel.ResumeLayout(false);
             TopBarPanel.PerformLayout();
