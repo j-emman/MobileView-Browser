@@ -90,7 +90,7 @@ This project is licensed under the MIT License. See the `LICENSE` file for detai
 
 ## Support
 
-If you encounter any issues or have questions, please [open an issue](https://github.com/yourusername/MobileView-Browser/issues).
+If you encounter any issues or have questions, please [open an issue](https://github.com/j-emman/MobileView-Browser/issues).
 
 ---
 
