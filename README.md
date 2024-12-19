@@ -69,3 +69,35 @@ $ nuget install Microsoft.Web.WebView2
 
 At this time, an installer is not provided as the application functions effectively as a standalone portable executable. Future updates may include a packaged version.
 
+---
+## Extension Support
+
+---
+
+## Contributing
+
+Contributions are welcome! Follow these steps to contribute:
+
+1. Fork the repository.
+2. Create a new branch for your feature or bug fix.
+3. Commit your changes and push to your branch.
+4. Submit a pull request.
+
+---
+
+## License
+This project is licensed under the MIT License. See the LICENSE file for details.
+
+---
+
+## Support
+
+If you encounter any issues or have questions, please [open an issue](https://github.com/j-emman/MobileView-Browser/issues).
+
+---
+
+## Acknowledgments
+- **Microsoft Edge WebView2** for providing a modern browser control.
+- **Visual Studio** for its powerful development environment.
+
+Happy Browsing!
