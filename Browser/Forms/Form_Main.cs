@@ -21,37 +21,28 @@ namespace MobileView
                 this.Text = "Private";
                 PreserveCurrentFormLocation(currentForm);
 
-                Browser = new WebViewService();
-                Browser.PropertyChanged += WebView_PropertyChanged;
-                Browser.WebViewControl = WebView21;
-                Browser.ExtensionsPath = new List<string>
+                Browser = new WebViewService
                 {
-                    @"C:\Users\admin\Documents\Training\Misc\Browser_Extensions\uBlock0"
+                    ProfileName = "User1",
+                    WebViewControl = WebView21,
+                    ExtensionsPath = new List<string> { @"C:\Users\admin\Documents\Training\Misc\Browser_Extensions\uBlock0" }
                 };
-                Browser.ProfileName = "User1";
+                Browser.PropertyChanged += WebView_PropertyChanged;
                 Browser.Incognito_InitializeMobileWebView();
                 return;
             }
-            Browser = Globals.Instances.Browser;
-            Browser.PropertyChanged += WebView_PropertyChanged;
-            Browser.WebViewControl = WebView21;
-            Browser.ExtensionsPath = new List<string>
+            Browser = new WebViewService
             {
-                @"C:\Users\admin\Documents\Training\Misc\Browser_Extensions\uBlock0",
-                @"C:\Users\admin\Documents\Training\Misc\Browser_Extensions\privacy_badger"
+                ProfileName = "User1",
+                WebViewControl = WebView21,
+                ExtensionsPath = new List<string>
+                {
+                    @"C:\Users\admin\Documents\Training\Misc\Browser_Extensions\uBlock0",
+                    @"C:\Users\admin\Documents\Training\Misc\Browser_Extensions\privacy_badger"
+                }
             };
-            Browser.ProfileName = "User1";
+            Browser.PropertyChanged += WebView_PropertyChanged;
             Browser.InitializeMobileWebView();
-        }
-
-        private void TestNewControl()
-        {
-            //Browser2 = new WebViewService(Browser.Profile, Browser.ProfileFolder);
-            //Browser2.PropertyChanged += WebView_PropertyChanged;
-            //Browser.WebViewControl = webView22;
-            //Browser2.InitializeSharedEnviroment();
-            //Browser.NavigateTo("https://www.google.com");
-            //return;
         }
         private void WebView_PropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
@@ -76,7 +67,6 @@ namespace MobileView
         {
             if (incognito) { await Task.Delay(1000); }
             Browser.NavigateTo("https://www.google.com");
-            TestNewControl();
         }
         private void Form1_Resize(object sender, EventArgs e)
         {
