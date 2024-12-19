@@ -1,4 +1,4 @@
-﻿namespace Browser
+﻿namespace MobileView
 {
     partial class Form_Main
     {
@@ -77,7 +77,7 @@
             // MenuButton
             // 
             MenuButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            MenuButton.BackgroundImage = Browser.Properties.Resources.menu_25dp_FFFFFF;
+            MenuButton.BackgroundImage = Properties.Resources.menu_25dp_FFFFFF;
             MenuButton.BackgroundImageLayout = ImageLayout.Stretch;
             MenuButton.FlatAppearance.BorderColor = Color.FromArgb(33, 33, 33);
             MenuButton.FlatStyle = FlatStyle.Flat;
@@ -90,7 +90,7 @@
             // 
             // BackButton
             // 
-            BackButton.BackgroundImage = Browser.Properties.Resources.arrow_back_25dp_FFFFFF;
+            BackButton.BackgroundImage = Properties.Resources.arrow_back_25dp_FFFFFF;
             BackButton.BackgroundImageLayout = ImageLayout.Stretch;
             BackButton.FlatAppearance.BorderColor = Color.FromArgb(33, 33, 33);
             BackButton.FlatStyle = FlatStyle.Flat;
@@ -103,7 +103,7 @@
             // 
             // ReloadButton
             // 
-            ReloadButton.BackgroundImage = Browser.Properties.Resources.refresh_35dp;
+            ReloadButton.BackgroundImage = Properties.Resources.refresh_35dp;
             ReloadButton.BackgroundImageLayout = ImageLayout.Stretch;
             ReloadButton.FlatAppearance.BorderColor = Color.FromArgb(33, 33, 33);
             ReloadButton.FlatStyle = FlatStyle.Flat;

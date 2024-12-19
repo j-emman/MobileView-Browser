@@ -1,4 +1,4 @@
-namespace Browser
+namespace MobileView
 {
     internal static class Program
     {

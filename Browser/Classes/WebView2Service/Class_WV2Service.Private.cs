@@ -61,11 +61,12 @@ namespace WV2Service
             await webView.EnsureCoreWebView2Async(environment);
             return environment;
         }
-        private async Task<CoreWebView2BrowserExtension> AddExtensionsAsync(CoreWebView2Profile profile)
+        private async Task<CoreWebView2BrowserExtension> AddExtensionsAsync(WebView2 webView, CoreWebView2Environment environment, CoreWebView2Profile profile)
         {
             CoreWebView2BrowserExtension extension = null;
             try
             {
+                if (profile == null) { profile = await GetProfile(webView, environment); }
                 foreach (var extensionPath in ExtensionsPath)
                 {
                     extension = await profile.AddBrowserExtensionAsync(extensionPath);
@@ -84,20 +85,16 @@ namespace WV2Service
             await webView.EnsureCoreWebView2Async(environment);
             webView.CoreWebView2.Settings.UserAgent = @"Mozilla/5.0 (Linux; Android 10; Mobile) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Mobile Safari/537.36";
         }
-        private async void InitializeExtensions(WebView2 webView, CoreWebView2Environment environment)
+        private async void InitializeExtensions(WebView2 webView, CoreWebView2Environment environment, CoreWebView2Profile profile)
         {
             await webView.EnsureCoreWebView2Async(environment);
-
-            //var profile = webView.CoreWebView2.Profile;
-            var extension = await AddExtensionsAsync(Profile);
+            var extension = await AddExtensionsAsync(webView, environment, profile);
             await extension.EnableAsync(true);
         }
-        private async void ClearAllBrowsingData(WebView2 webView, CoreWebView2Environment environment)
+        private async void ClearAllBrowsingData(WebView2 webView, CoreWebView2Environment environment, CoreWebView2Profile profile)
         {
             await webView.EnsureCoreWebView2Async(environment);
-
-            //var profile = webView.CoreWebView2.Profile;
-            await Profile.ClearBrowsingDataAsync(
+            await profile.ClearBrowsingDataAsync(
                 CoreWebView2BrowsingDataKinds.Cookies |
                 CoreWebView2BrowsingDataKinds.BrowsingHistory |
                 CoreWebView2BrowsingDataKinds.GeneralAutofill |
@@ -107,23 +104,28 @@ namespace WV2Service
                 CoreWebView2BrowsingDataKinds.DownloadHistory |
                 CoreWebView2BrowsingDataKinds.DiskCache);
         }
-        private async void ClearAllBrowserData(WebView2 webView, CoreWebView2Environment environment)
+        private async void ClearAllBrowserData(WebView2 webView, CoreWebView2Environment environment, CoreWebView2Profile profile)
         {
             await webView.EnsureCoreWebView2Async(environment);
-            //var profile = webView.CoreWebView2.Profile;
-            await Profile.ClearBrowsingDataAsync();
+            await profile.ClearBrowsingDataAsync();
         }
-        private async void ClearBrowserData(WebView2 webView, CoreWebView2Environment environment, CoreWebView2BrowsingDataKinds dataKinds)
+        private async void ClearBrowserData(WebView2 webView, CoreWebView2Environment environment, CoreWebView2Profile profile, CoreWebView2BrowsingDataKinds dataKinds)
         {
             await webView.EnsureCoreWebView2Async(environment);
-            var profile = webView.CoreWebView2.Profile;
-            await Profile.ClearBrowsingDataAsync(dataKinds);
+            await profile.ClearBrowsingDataAsync(dataKinds);
         }
-        private async void ClearBrowserDataBetweenDateRange(WebView2 webView, CoreWebView2Environment environment, CoreWebView2BrowsingDataKinds dataKinds, DateTime startDate, DateTime endDate)
+        private async void ClearBrowsingDataBetweenDateRange(WebView2 webView, CoreWebView2Environment environment, CoreWebView2Profile profile, DateTime startDate, DateTime endDate)
         {
             await webView.EnsureCoreWebView2Async(environment);
-            //var profile = webView.CoreWebView2.Profile;
-            await Profile.ClearBrowsingDataAsync(dataKinds, startDate, endDate);
+            await profile.ClearBrowsingDataAsync(
+                CoreWebView2BrowsingDataKinds.Cookies |
+                CoreWebView2BrowsingDataKinds.BrowsingHistory |
+                CoreWebView2BrowsingDataKinds.GeneralAutofill |
+                CoreWebView2BrowsingDataKinds.PasswordAutosave |
+                CoreWebView2BrowsingDataKinds.ServiceWorkers |
+                CoreWebView2BrowsingDataKinds.CacheStorage |
+                CoreWebView2BrowsingDataKinds.DownloadHistory |
+                CoreWebView2BrowsingDataKinds.DiskCache, startDate, endDate);
         }
         private string EnsureHttpsPrefix(string url)
         {

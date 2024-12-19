@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WV2Service;
-namespace Browser
+namespace MobileView
 {
     public partial class Globals
     {

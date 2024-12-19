@@ -57,7 +57,7 @@ namespace WV2Service
         }
         public void InitializeExtensions()
         {
-            InitializeExtensions(WebViewControl, environment);
+            InitializeExtensions(WebViewControl, environment, Profile);
         }
         public void EnableNewWindowRequest()
         {
@@ -65,7 +65,20 @@ namespace WV2Service
         }
         public void ClearAllBrowsingData()
         {
-            ClearAllBrowsingData(WebViewControl, environment);
+            ClearAllBrowsingData(WebViewControl, environment, Profile);
+        }
+        public void ClearAllBrowsingDataBetweenDates(DateTime startDate, DateTime endDate)
+        {
+            ClearBrowsingDataBetweenDateRange(WebViewControl, environment, Profile, startDate, endDate);
+        }
+        public void ClearBrowserData(BrowsingDataKinds dataKind)
+        {
+            CoreWebView2BrowsingDataKinds _dataKind = EnumMapper.BrowsingDataKindMap[dataKind];
+            ClearBrowserData(WebViewControl, environment, Profile, _dataKind);
+        }
+        public void ClearAllBrowserData()
+        {
+            ClearAllBrowserData(WebViewControl, environment, Profile);
         }
         public void NavigateTo(string address)
         {

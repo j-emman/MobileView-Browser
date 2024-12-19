@@ -3,7 +3,7 @@ using Microsoft.Web.WebView2.WinForms;
 using System.ComponentModel;
 using WV2Service;
 
-namespace Browser
+namespace MobileView
 {
     public partial class Form_Main : Form
     {
