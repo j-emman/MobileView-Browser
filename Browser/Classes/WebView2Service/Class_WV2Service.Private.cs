@@ -66,7 +66,7 @@ namespace WV2Service
             CoreWebView2BrowserExtension extension = null;
             try
             {
-                if (profile == null) { profile = await GetProfile(webView, environment); }
+                profile = profile != null ? profile : await GetProfile(webView, environment);
                 foreach (var extensionPath in ExtensionsPath)
                 {
                     extension = await profile.AddBrowserExtensionAsync(extensionPath);
@@ -93,7 +93,8 @@ namespace WV2Service
         }
         private async void ClearAllBrowsingData(WebView2 webView, CoreWebView2Environment environment, CoreWebView2Profile profile)
         {
-            await webView.EnsureCoreWebView2Async(environment);
+            profile = profile != null? profile : await GetProfile(webView, environment);
+            //await webView.EnsureCoreWebView2Async(environment);
             await profile.ClearBrowsingDataAsync(
                 CoreWebView2BrowsingDataKinds.Cookies |
                 CoreWebView2BrowsingDataKinds.BrowsingHistory |
@@ -106,17 +107,20 @@ namespace WV2Service
         }
         private async void ClearAllBrowserData(WebView2 webView, CoreWebView2Environment environment, CoreWebView2Profile profile)
         {
-            await webView.EnsureCoreWebView2Async(environment);
+            profile = profile != null ? profile : await GetProfile(webView, environment);
+            //await webView.EnsureCoreWebView2Async(environment);
             await profile.ClearBrowsingDataAsync();
         }
         private async void ClearBrowserData(WebView2 webView, CoreWebView2Environment environment, CoreWebView2Profile profile, CoreWebView2BrowsingDataKinds dataKinds)
         {
-            await webView.EnsureCoreWebView2Async(environment);
+            profile = profile != null ? profile : await GetProfile(webView, environment);
+            //await webView.EnsureCoreWebView2Async(environment);
             await profile.ClearBrowsingDataAsync(dataKinds);
         }
         private async void ClearBrowsingDataBetweenDateRange(WebView2 webView, CoreWebView2Environment environment, CoreWebView2Profile profile, DateTime startDate, DateTime endDate)
         {
-            await webView.EnsureCoreWebView2Async(environment);
+            profile = profile != null ? profile : await GetProfile(webView, environment);
+            //await webView.EnsureCoreWebView2Async(environment);
             await profile.ClearBrowsingDataAsync(
                 CoreWebView2BrowsingDataKinds.Cookies |
                 CoreWebView2BrowsingDataKinds.BrowsingHistory |
@@ -177,7 +181,6 @@ namespace WV2Service
             if (result == DialogResult.Yes)
             {
                 e.Handled = false;
-
                 //// Optional: Open in the current WebView
                 //NavigateTo(webviewControl, environment, e.Uri);
                 return;
