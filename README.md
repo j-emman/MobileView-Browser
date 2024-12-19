@@ -1,4 +1,3 @@
-
 # MobileView-Browser
 
 A lightweight Windows Forms application designed to provide a mobile browsing experience by default, utilizing the WebView2 control.
@@ -65,39 +64,8 @@ $ nuget install Microsoft.Web.WebView2
 3. Build the solution (`Ctrl+Shift+B`).
 
 ### 4. Run the Application
-Press `F5` in Visual Studio to debug and run the app.
-Alternatively, run the built `.exe` file in `your project directory\bin\Debug\net8.0-windows`
-At this point in time, I see no reason to create an installer. Possibly, a single-package portable but it works fine as is so...
+- Press `F5` in Visual Studio to debug and run the app.
+- Alternatively, navigate to `your project directory\bin\Debug\net8.0-windows` and execute the compiled `.exe` file.
 
----
-## Extension Support
+At this time, an installer is not provided as the application functions effectively as a standalone portable executable. Future updates may include a packaged version.
 
----
-
-## Contributing
-
-Contributions are welcome! Follow these steps to contribute:
-
-1. Fork the repository.
-2. Create a new branch for your feature or bug fix.
-3. Commit your changes and push to your branch.
-4. Submit a pull request.
-
----
-
-## License
-This project is licensed under the MIT License. See the `LICENSE` file for details.
-
----
-
-## Support
-
-If you encounter any issues or have questions, please [open an issue](https://github.com/j-emman/MobileView-Browser/issues).
-
----
-
-## Acknowledgments
-- **Microsoft Edge WebView2** for providing a modern browser control.
-- **Visual Studio** for its powerful development environment.
-
-Happy Browsing!
