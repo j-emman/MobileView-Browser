@@ -90,4 +90,10 @@ namespace WV2Service
         //     termination and deregistration of them.
         ServiceWorkers
     }
+    public enum ColorScheme
+    {
+        Auto,
+        Light,
+        Dark
+    }
 }

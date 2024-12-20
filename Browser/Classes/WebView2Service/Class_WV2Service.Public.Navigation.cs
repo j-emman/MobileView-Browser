@@ -33,6 +33,7 @@ namespace WV2Service
                     //address = EnsureHttpsPrefix(address);
                     //WebViewControl.EnsureCoreWebView2Async();
                     //WebViewControl.Source = new Uri(address);
+
                     wv2service.URL = wv2service.EnsureHttpsPrefix(address);
                     wv2service.NavigateTo(wv2service.WebViewControl, wv2service.environment, wv2service.URL);
                     return;

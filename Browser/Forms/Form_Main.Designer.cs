@@ -41,6 +41,9 @@
             exitToolStripMenuItem = new ToolStripMenuItem();
             settingsToolStripMenuItem = new ToolStripMenuItem();
             extensionsToolStripMenuItem1 = new ToolStripMenuItem();
+            viewExtensionsToolStripMenuItem = new ToolStripMenuItem();
+            addToolStripMenuItem = new ToolStripMenuItem();
+            removeToolStripMenuItem = new ToolStripMenuItem();
             clearAllBrowserDataToolStripMenuItem = new ToolStripMenuItem();
             clearBrowingDataToolStripMenuItem = new ToolStripMenuItem();
             profileToolStripMenuItem = new ToolStripMenuItem();
@@ -184,10 +187,30 @@
             // 
             // extensionsToolStripMenuItem1
             // 
+            extensionsToolStripMenuItem1.DropDownItems.AddRange(new ToolStripItem[] { viewExtensionsToolStripMenuItem, addToolStripMenuItem, removeToolStripMenuItem });
             extensionsToolStripMenuItem1.Name = "extensionsToolStripMenuItem1";
             extensionsToolStripMenuItem1.Size = new Size(197, 22);
             extensionsToolStripMenuItem1.Text = "&Extensions";
-            extensionsToolStripMenuItem1.Click += extensionsToolStripMenuItem1_Click;
+            // 
+            // viewExtensionsToolStripMenuItem
+            // 
+            viewExtensionsToolStripMenuItem.Name = "viewExtensionsToolStripMenuItem";
+            viewExtensionsToolStripMenuItem.Size = new Size(180, 22);
+            viewExtensionsToolStripMenuItem.Text = "&View";
+            viewExtensionsToolStripMenuItem.Click += ViewExtensionsToolStripMenuItem_Click;
+            // 
+            // addToolStripMenuItem
+            // 
+            addToolStripMenuItem.Name = "addToolStripMenuItem";
+            addToolStripMenuItem.Size = new Size(180, 22);
+            addToolStripMenuItem.Text = "&Add ";
+            addToolStripMenuItem.Click += addToolStripMenuItem_Click;
+            // 
+            // removeToolStripMenuItem
+            // 
+            removeToolStripMenuItem.Name = "removeToolStripMenuItem";
+            removeToolStripMenuItem.Size = new Size(180, 22);
+            removeToolStripMenuItem.Text = "&Remove";
             // 
             // clearAllBrowserDataToolStripMenuItem
             // 
@@ -214,7 +237,7 @@
             // bookmarksToolStripMenuItem
             // 
             bookmarksToolStripMenuItem.Name = "bookmarksToolStripMenuItem";
-            bookmarksToolStripMenuItem.Size = new Size(133, 22);
+            bookmarksToolStripMenuItem.Size = new Size(180, 22);
             bookmarksToolStripMenuItem.Text = "Bookmarks";
             // 
             // IncognitoToolStripMenuItem1
@@ -272,5 +295,8 @@
         private ToolStripMenuItem clearAllBrowserDataToolStripMenuItem;
         private ToolStripMenuItem clearBrowingDataToolStripMenuItem;
         private ToolStripMenuItem exitToolStripMenuItem;
+        private ToolStripMenuItem viewExtensionsToolStripMenuItem;
+        private ToolStripMenuItem addToolStripMenuItem;
+        private ToolStripMenuItem removeToolStripMenuItem;
     }
 }

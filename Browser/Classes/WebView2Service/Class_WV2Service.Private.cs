@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace WV2Service
 {
@@ -18,32 +19,19 @@ namespace WV2Service
         }
         private async Task<CoreWebView2Environment> InitializeWebEnviromentAsync(WebView2 webView, string profileName)
         {
-            //string userDataFolder = Path.Combine(
-            //            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-            //            "MyWebView2AppData",
-            //            profileName);
-
+            //string userDataFolder = Path.Combine( Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "MyWebView2AppData", profileName);
             string appBaseDirectory = AppDomain.CurrentDomain.BaseDirectory;
             ProfileFolder = Path.Combine(appBaseDirectory, "WebControl", "profiles", profileName);
 
-
-            var environmentOptions = new CoreWebView2EnvironmentOptions
-            {
-                AreBrowserExtensionsEnabled = true
-            };
-
-            var environment = await CoreWebView2Environment.CreateAsync(null, ProfileFolder, environmentOptions);
+            CoreWebView2EnvironmentOptions environmentOptions = new CoreWebView2EnvironmentOptions { AreBrowserExtensionsEnabled = true };
+            CoreWebView2Environment environment = await CoreWebView2Environment.CreateAsync(null, ProfileFolder, environmentOptions);
             await webView.EnsureCoreWebView2Async(environment);
             return environment;
         }
         private async Task<CoreWebView2Environment> InitializeSharedWebEnviromentAsync(WebView2 webView, string FolderPath)
         {
-            var environmentOptions = new CoreWebView2EnvironmentOptions
-            {
-                AreBrowserExtensionsEnabled = true
-            };
-
-            var environment = await CoreWebView2Environment.CreateAsync(null, FolderPath, environmentOptions);
+            CoreWebView2EnvironmentOptions environmentOptions = new CoreWebView2EnvironmentOptions { AreBrowserExtensionsEnabled = true };
+            CoreWebView2Environment environment = await CoreWebView2Environment.CreateAsync(null, FolderPath, environmentOptions);
             await webView.EnsureCoreWebView2Async(environment);
             return environment;
         }
@@ -52,13 +40,13 @@ namespace WV2Service
             _TempFolder = Path.Combine(Path.GetTempPath(), "Incognito_" + Guid.NewGuid().ToString());
             Directory.CreateDirectory(_TempFolder);
 
-            var environmentOptions = new CoreWebView2EnvironmentOptions
-            {
-                AreBrowserExtensionsEnabled = true
-            };
-
-            var environment = await CoreWebView2Environment.CreateAsync(null, _TempFolder, environmentOptions);
-            await webView.EnsureCoreWebView2Async(environment);
+            CoreWebView2EnvironmentOptions environmentOptions = new CoreWebView2EnvironmentOptions { AreBrowserExtensionsEnabled = true };
+            CoreWebView2Environment environment = await CoreWebView2Environment.CreateAsync(null, _TempFolder, environmentOptions);
+            CoreWebView2ControllerOptions options = environment.CreateCoreWebView2ControllerOptions();
+            options.IsInPrivateModeEnabled = true;
+            options.ProfileName = profileName;
+            await webView.EnsureCoreWebView2Async(environment, options);
+            //CoreWebView2Controller controller = await environment.CreateCoreWebView2ControllerAsync(webView.Handle, options);
             return environment;
         }
         private async Task<CoreWebView2BrowserExtension> AddExtensionsAsync(WebView2 webView, CoreWebView2Environment environment, CoreWebView2Profile profile)
@@ -71,12 +59,11 @@ namespace WV2Service
                 {
                     extension = await profile.AddBrowserExtensionAsync(extensionPath);
                 }
-
                 return extension;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Failed to load extensions: {ex.Message}");
+                Debug.WriteLine($"Failed to load extensions: {ex.Message}");
             }
             return extension;
         }
@@ -87,17 +74,17 @@ namespace WV2Service
 
                 profile = profile != null ? profile : await GetProfile(webView, environment);
                 IReadOnlyList<CoreWebView2BrowserExtension> extensions = await profile.GetBrowserExtensionsAsync();
-                // Display extensions or handle them as needed
-                Console.WriteLine("Installed Extensions:");
+
+                Debug.WriteLine("Installed Extensions:");
                 foreach (var extension in extensions)
                 {
-                    Console.WriteLine($"- {extension.Name}, ID: {extension.Id}");
+                    Debug.WriteLine($"- {extension.Name}, ID: {extension.Id}");
                 }
                 return extensions;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error retrieving extensions: {ex.Message}");
+                Debug.WriteLine($"Error retrieving extensions: {ex.Message}");
             }
             return null;
         }
@@ -111,7 +98,6 @@ namespace WV2Service
             await webView.EnsureCoreWebView2Async(environment);
             CoreWebView2BrowserExtension extension = await AddExtensionsAsync(webView, environment, profile);
             await extension.EnableAsync(true);
-            extension.RemoveAsync();
         }
         private async void ClearAllBrowsingData(WebView2 webView, CoreWebView2Environment environment, CoreWebView2Profile profile)
         {
@@ -130,7 +116,7 @@ namespace WV2Service
         private async void ClearAllBrowserData(WebView2 webView, CoreWebView2Environment environment, CoreWebView2Profile profile)
         {
             profile = profile != null ? profile : await GetProfile(webView, environment);
-            await webView.EnsureCoreWebView2Async(environment);
+            //await webView.EnsureCoreWebView2Async(environment);
             await profile.ClearBrowsingDataAsync();
             webView.Reload();
         }
@@ -213,7 +199,7 @@ namespace WV2Service
                     return;
                 }
                 e.Handled = true;
-                Console.WriteLine($"Popup blocked: {e.Uri}");
+                Debug.WriteLine($"Popup blocked: {e.Uri}");
             }
         }
         public event EventHandler<string> NavigationChanged;

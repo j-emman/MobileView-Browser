@@ -30,5 +30,11 @@ namespace WV2Service
             { BrowsingDataKinds.AllProfile, CoreWebView2BrowsingDataKinds.AllProfile },
             { BrowsingDataKinds.ServiceWorkers, CoreWebView2BrowsingDataKinds.ServiceWorkers }
         };
+        public static Dictionary<ColorScheme, CoreWebView2PreferredColorScheme> PreferredColorMap = new Dictionary<ColorScheme, CoreWebView2PreferredColorScheme>
+        {
+            {ColorScheme.Auto, CoreWebView2PreferredColorScheme.Auto },
+            {ColorScheme.Light, CoreWebView2PreferredColorScheme.Light },
+            {ColorScheme.Dark, CoreWebView2PreferredColorScheme.Dark },
+        };
     }
 }

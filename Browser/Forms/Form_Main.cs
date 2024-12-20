@@ -165,6 +165,12 @@ namespace MobileView
         {
             this.Close();
         }
+        private async void ViewExtensionsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            List<string> extensions = await Browser.GetExtensions();
+            string extensionstring = string.Join(",\n", extensions);
+            MessageBox.Show(extensionstring);
+        }
         private void PreserveCurrentFormLocation(Form currentForm)
         {
             var state = currentForm.WindowState;
@@ -178,11 +184,9 @@ namespace MobileView
             this.Location = new Point(centerX, centerY);
         }
 
-        private async void extensionsToolStripMenuItem1_Click(object sender, EventArgs e)
+        private void addToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            List<string> extensions = await Browser.GetExtensions();
-            string extensionstring = string.Join(",\n", extensions);
-            MessageBox.Show(extensionstring);
+            MessageBox.Show(Browser.WebViewControl.CoreWebView2.Profile.IsInPrivateModeEnabled.ToString());
         }
     }
 }
