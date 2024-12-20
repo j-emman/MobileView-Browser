@@ -84,6 +84,9 @@ At this time, an installer is not provided as the application functions effectiv
 
 ---
 ## Extension Support
+Extensions currently only support unpacked extensions from the local device. 
+Download your desired extensions and add the path to the Extensions path list.
+WebView2 is based on Microsoft Edge (Chromium) and does only support extensions available on said platforms.
 
 ---
 
@@ -108,9 +111,4 @@ This project is licensed under the MIT License. See the LICENSE file for details
 If you encounter any issues or have questions, please [open an issue](https://github.com/j-emman/MobileView-Browser/issues).
 
 ---
-
-## Acknowledgments
-- **Microsoft Edge WebView2** for providing a modern browser control.
-- **Visual Studio** for its powerful development environment.
-
 Happy Browsing!
