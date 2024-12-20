@@ -49,15 +49,15 @@ namespace WV2Service
         }
         private async Task<CoreWebView2Environment> Incognito_InitializeWebEnviromentAsync(WebView2 webView, string profileName)
         {
-            TempFolder = Path.Combine(Path.GetTempPath(), "Incognito_" + Guid.NewGuid().ToString());
-            Directory.CreateDirectory(TempFolder);
+            _TempFolder = Path.Combine(Path.GetTempPath(), "Incognito_" + Guid.NewGuid().ToString());
+            Directory.CreateDirectory(_TempFolder);
 
             var environmentOptions = new CoreWebView2EnvironmentOptions
             {
                 AreBrowserExtensionsEnabled = true
             };
 
-            var environment = await CoreWebView2Environment.CreateAsync(null, TempFolder, environmentOptions);
+            var environment = await CoreWebView2Environment.CreateAsync(null, _TempFolder, environmentOptions);
             await webView.EnsureCoreWebView2Async(environment);
             return environment;
         }

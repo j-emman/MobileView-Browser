@@ -14,7 +14,7 @@ namespace WV2Service
         public void InitializeMobileWebView()
         {
             InitializeEnviroment();
-            GetProfile();
+            InitializeProfile();
             EnableMobileView();
             InitializeExtensions();
             EnableNewWindowRequest();
@@ -23,7 +23,7 @@ namespace WV2Service
         public void InitializeWebViewNewTab()
         {
             InitializeSharedEnviroment();
-            GetProfile();
+            InitializeProfile();
             EnableMobileView();
             InitializeExtensions();
             EnableNewWindowRequest();
@@ -31,7 +31,7 @@ namespace WV2Service
         public void InitializeSharedMobileWebView()
         {
             InitializeSharedEnviroment();
-            GetProfile();
+            InitializeProfile();
             EnableMobileView();
             InitializeExtensions();
             EnableNewWindowRequest();
@@ -39,7 +39,7 @@ namespace WV2Service
         public void Incognito_InitializeMobileWebView()
         {
             Incognito_InitializeEnviroment();
-            GetProfile();
+            InitializeProfile();
             EnableMobileView();
             InitializeExtensions();
             EnableNewWindowRequest();
@@ -52,7 +52,7 @@ namespace WV2Service
         {
             environment = await CoreWebView2Environment.CreateAsync();
         }
-        public async void GetProfile()
+        public async void InitializeProfile()
         {
             Profile = await GetProfile(WebViewControl, environment);
         }

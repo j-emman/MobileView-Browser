@@ -67,8 +67,8 @@ namespace WV2Service
                         //ensure all processes are closed first
                         await Task.Run(() =>
                         {
-                            if (!Directory.Exists(wv2service.TempFolder)) { return; }
-                            Directory.Delete(wv2service.TempFolder, true);
+                            if (!Directory.Exists(wv2service._TempFolder)) { return; }
+                            Directory.Delete(wv2service._TempFolder, true);
                         });
                     }
                     catch

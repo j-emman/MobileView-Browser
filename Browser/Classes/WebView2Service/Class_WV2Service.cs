@@ -7,19 +7,105 @@ namespace WV2Service
 {
     public partial class WebViewService : INotifyPropertyChanged
     {
-        private WV2ServiceModel WebViewModel;
+        private WV2ServiceModel _WebViewModel;
+        private string _TempFolder { get; set; }
         public ClearManager Clear { get; }
         public NavigationManager Navigation { get; }
+        public event PropertyChangedEventHandler? PropertyChanged;
 
+        public WebView2 WebViewControl
+        {
+            get { return _WebViewModel.WebviewControl; }
+            set
+            {
+                if (_WebViewModel.WebviewControl != value)
+                {
+                    _WebViewModel.WebviewControl = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public CoreWebView2Environment environment
+        {
+            get { return _WebViewModel.Environment; }
+            set
+            {
+                if (_WebViewModel.Environment != value)
+                {
+                    _WebViewModel.Environment = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public CoreWebView2Profile Profile
+        {
+            get { return _WebViewModel.Profile; }
+            set
+            {
+                if (_WebViewModel.Profile != value)
+                {
+                    _WebViewModel.Profile = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public List<string> ExtensionsPath
+        {
+            get => _WebViewModel.ExtensionsPath;
+            set
+            {
+                if (_WebViewModel.ExtensionsPath != value)
+                {
+                    _WebViewModel.ExtensionsPath = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public string ProfileName
+        {
+            get => _WebViewModel.ProfileName;
+            set
+            {
+                if (_WebViewModel.ProfileName != value)
+                {
+                    _WebViewModel.ProfileName = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public string URL
+        {
+            get => _WebViewModel.URL;
+            set
+            {
+                if (_WebViewModel.URL != value)
+                {
+                    _WebViewModel.URL = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public string ProfileFolder
+        {
+            get { return _WebViewModel.ProfileFolder; }
+            set
+            {
+                if (_WebViewModel.ProfileFolder != value)
+                {
+                    _WebViewModel.ProfileFolder = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
         public WebViewService() 
         {
-            WebViewModel = new WV2ServiceModel();
+            _WebViewModel = new WV2ServiceModel();
             Clear = new ClearManager(this);
             Navigation = new NavigationManager(this);
         }
         public WebViewService(WebView2 _WebViewControl, string _ProfileName, List<string> _ExtensionsPath)
         {
-            WebViewModel = new WV2ServiceModel();
+            _WebViewModel = new WV2ServiceModel();
             WebViewControl = _WebViewControl;
             ProfileName = _ProfileName;
             ExtensionsPath = _ExtensionsPath;
@@ -28,7 +114,7 @@ namespace WV2Service
         }
         public WebViewService(CoreWebView2Profile _profile, string ProfileFolderPath) //SharedProfile e.g. 2 webcontrol 1 user profile
         {
-            WebViewModel = new WV2ServiceModel();
+            _WebViewModel = new WV2ServiceModel();
             Profile = _profile;
             ProfileFolder = ProfileFolderPath;
             Clear = new ClearManager(this);
@@ -36,100 +122,13 @@ namespace WV2Service
         }
         public WebViewService(CoreWebView2Profile _profile, CoreWebView2Environment _environment) //SharedProfile e.g. 2 webcontrol 1 user profile
         {
-            WebViewModel = new WV2ServiceModel();
+            _WebViewModel = new WV2ServiceModel();
             Profile = _profile;
             environment = _environment;
             Clear = new ClearManager(this);
             Navigation = new NavigationManager(this);
         }
 
-        private string TempFolder { get; set; }
-        public WebView2 WebViewControl
-        {
-            get { return WebViewModel.WebviewControl; }
-            set
-            {
-                if (WebViewModel.WebviewControl != value)
-                {
-                    WebViewModel.WebviewControl = value;
-                    NotifyPropertyChanged();
-                }
-            }
-        }
-        public CoreWebView2Environment environment
-        {
-            get { return WebViewModel.Environment; }
-            set
-            {
-                if (WebViewModel.Environment != value)
-                {
-                    WebViewModel.Environment = value;
-                    NotifyPropertyChanged();
-                }
-            }
-        }
-        public CoreWebView2Profile Profile
-        {
-            get { return WebViewModel.Profile; }
-            set
-            {
-                if (WebViewModel.Profile != value)
-                {
-                    WebViewModel.Profile = value;
-                    NotifyPropertyChanged();
-                }
-            }
-        }
-        public List<string> ExtensionsPath
-        {
-            get => WebViewModel.ExtensionsPath;
-            set
-            {
-                if (WebViewModel.ExtensionsPath != value)
-                {
-                    WebViewModel.ExtensionsPath = value;
-                    NotifyPropertyChanged();
-                }
-            }
-        }
-        public string ProfileName
-        {
-            get => WebViewModel.ProfileName;
-            set
-            {
-                if (WebViewModel.ProfileName != value)
-                {
-                    WebViewModel.ProfileName = value;
-                    NotifyPropertyChanged();
-                }
-            }
-        }
-        public string URL
-        {
-            get => WebViewModel.URL;
-            set
-            {
-                if (WebViewModel.URL != value)
-                {
-                    WebViewModel.URL = value;
-                    NotifyPropertyChanged();
-                }
-            }
-        }
-        public string ProfileFolder
-        {
-            get { return WebViewModel.ProfileFolder; }
-            set
-            {
-                if (WebViewModel.ProfileFolder != value)
-                {
-                    WebViewModel.ProfileFolder = value;
-                    NotifyPropertyChanged();
-                }
-            }
-        }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
         public void NotifyPropertyChanged([CallerMemberName] string propertyname = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyname));
