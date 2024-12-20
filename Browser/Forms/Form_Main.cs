@@ -1,6 +1,7 @@
 using Microsoft.Web.WebView2.Core;
 using Microsoft.Web.WebView2.WinForms;
 using System.ComponentModel;
+using System.Xml.Serialization;
 using WV2Service;
 
 namespace MobileView
@@ -11,26 +12,44 @@ namespace MobileView
         private WebViewService Browser;
         private WebViewService Browser2;
         private bool incognito;
+        private string url;
 
-        public Form_Main(bool _incognito = false, Form currentForm = null)
+        public Form_Main(bool _incognito = false, Form currentForm = null, string _url = null)
         {
             incognito = _incognito;
+            url = _url;
             InitializeComponent();
             if (_incognito)
             {
-                this.Text = "Private";
-                PreserveCurrentFormLocation(currentForm);
-
-                Browser = new WebViewService
-                {
-                    ProfileName = "User1",
-                    WebViewControl = WebView21,
-                    ExtensionsPath = new List<string> { @"C:\Users\admin\Documents\Training\Misc\Browser_Extensions\uBlock0" }
-                };
-                Browser.PropertyChanged += WebView_PropertyChanged;
-                Browser.Incognito_InitializeMobileWebView();
+                InitializeIncognito(currentForm);
                 return;
             }
+            if (!string.IsNullOrWhiteSpace(url))
+            {
+                Browser = new WebViewService();
+                Browser.WebViewControl = WebView21;
+                Browser.InitializeWebViewNewTab();
+                return;
+            }
+            InitializeBrowser();
+        }
+        private void InitializeIncognito(Form currentForm)
+        {
+            this.Text = "Private";
+            PreserveCurrentFormLocation(currentForm);
+
+            Browser = new WebViewService
+            {
+                ProfileName = "User1",
+                WebViewControl = WebView21,
+                ExtensionsPath = new List<string> { @"C:\Users\admin\Documents\Training\Misc\Browser_Extensions\uBlock0" }
+            };
+            Browser.PropertyChanged += WebView_PropertyChanged;
+            Browser.Incognito_InitializeMobileWebView();
+
+        }
+        private void InitializeBrowser()
+        {
             Browser = new WebViewService
             {
                 ProfileName = "User1",
@@ -42,7 +61,26 @@ namespace MobileView
                 }
             };
             Browser.PropertyChanged += WebView_PropertyChanged;
+            Browser.NewWindowRequested += OnNewWindowRequested;
             Browser.InitializeMobileWebView();
+        }
+        private void OnNewWindowRequested(object? sender, CoreWebView2NewWindowRequestedEventArgs e)
+        {
+            var newWebView = e.NewWindow;
+            DialogResult result = MessageBox.Show($"A website wants to open a new window:\n{e.Uri}\n\nAllow this popup?", "Confirm Popup", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                NewWindow(e.Uri);
+                e.Handled = false;
+                return;
+            }
+            e.Handled = true;
+        }
+        private void NewWindow(string link)
+        {
+            Form newWindow = new Form_Main(_url: link);
+            newWindow.Show();
         }
         private void WebView_PropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
@@ -51,7 +89,8 @@ namespace MobileView
         private async void Form_Main_Shown(object sender, EventArgs e)
         {
             if (incognito) { await Task.Delay(1000); }
-            Browser.NavigateTo("https://www.google.com");
+            if (!string.IsNullOrWhiteSpace(url)) { Browser.Navigation.NewTabGoTo(url); return; }
+            Browser.Navigation.GoTo("https://www.google.com");
         }
         private void Form_Main_Resize(object sender, EventArgs e)
         {
@@ -69,7 +108,7 @@ namespace MobileView
         }
         private void Form_Main_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Browser.Incognito_DisposeSession();
+            Browser.Navigation.Incognito_DisposeSession();
             this.Hide();
             this.Dispose();
             if (incognito) { return; }
@@ -77,11 +116,11 @@ namespace MobileView
         }
         private void ReloadButton_Click(object sender, EventArgs e)
         {
-            Browser.Reload();
+            Browser.Navigation.Reload();
         }
         private void BackButton_Click(object sender, EventArgs e)
         {
-            Browser.GoBack();
+            Browser.Navigation.GoBack();
         }
         private void URLTextBox_KeyDown(object sender, KeyEventArgs e)
         {
@@ -89,7 +128,7 @@ namespace MobileView
             {
                 e.SuppressKeyPress = true;
                 WebView21.Focus();
-                Browser.NavigateTo(URLTextBox.Text);
+                Browser.Navigation.GoTo(URLTextBox.Text);
             }
         }
         private void MenuButton_Click(object sender, EventArgs e)
@@ -111,7 +150,7 @@ namespace MobileView
         }
         private void IncognitoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Form incognito = new Form_Main(true, this);
+            Form incognito = new Form_Main(_incognito: true, currentForm: this);
             this.Hide();
             incognito.ShowDialog();
             this.Show();
@@ -129,5 +168,14 @@ namespace MobileView
             this.Location = new Point(centerX, centerY);
         }
 
+        private void clearAllBrowserDataToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Browser.Clear.AllBrowsingData();
+        }
+
+        private void clearBrowingDataToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Browser.Clear.AllBrowsingData();
+        }
     }
 }

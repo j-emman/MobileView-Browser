@@ -172,26 +172,27 @@ namespace WV2Service
             webView.NavigationStarting += OnNavigationStarting;
             webView.NavigationCompleted += OnNavigationCompleted;
         }
+
+        public event EventHandler<CoreWebView2NewWindowRequestedEventArgs> NewWindowRequested;
         private void CoreWebView2_NewWindowRequested(object? sender, CoreWebView2NewWindowRequestedEventArgs e)
         {
-            DialogResult result = MessageBox.Show(
-                $"A website wants to open a new window:\n{e.Uri}\n\nAllow this popup?",
-                "Confirm Popup",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question
-            );
+            NewWindowRequested?.Invoke(sender, e);
 
-            if (result == DialogResult.Yes)
+            if (NewWindowRequested == null)
             {
-                e.Handled = false;
-                //// Optional: Open in the current WebView
-                //NavigateTo(webviewControl, environment, e.Uri);
-                return;
-            }
-            e.Handled = true;
-            Console.WriteLine($"Popup blocked: {e.Uri}");
-        }
+                DialogResult result = MessageBox.Show( $"A website wants to open a new window:\n{e.Uri}\n\nAllow this popup?", "Confirm Popup",  MessageBoxButtons.YesNo, MessageBoxIcon.Question );
 
+                if (result == DialogResult.Yes)
+                {
+                    e.Handled = false;
+                    //// Optional: Open in the current WebView
+                    //NavigateTo(webviewControl, environment, e.Uri);
+                    return;
+                }
+                e.Handled = true;
+                Console.WriteLine($"Popup blocked: {e.Uri}");
+            }
+        }
         public event EventHandler<string> NavigationChanged;
         private void OnNavigationCompleted(object? sender, CoreWebView2NavigationCompletedEventArgs e)
         {

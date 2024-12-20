@@ -43,6 +43,8 @@
             profileToolStripMenuItem = new ToolStripMenuItem();
             bookmarksToolStripMenuItem = new ToolStripMenuItem();
             IncognitoToolStripMenuItem1 = new ToolStripMenuItem();
+            clearAllBrowserDataToolStripMenuItem = new ToolStripMenuItem();
+            clearBrowingDataToolStripMenuItem = new ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)WebView21).BeginInit();
             TopBarPanel.SuspendLayout();
             MenuPanel.SuspendLayout();
@@ -166,7 +168,7 @@
             // 
             // settingsToolStripMenuItem
             // 
-            settingsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { extensionsToolStripMenuItem1 });
+            settingsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { extensionsToolStripMenuItem1, clearAllBrowserDataToolStripMenuItem, clearBrowingDataToolStripMenuItem });
             settingsToolStripMenuItem.ForeColor = SystemColors.HighlightText;
             settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
             settingsToolStripMenuItem.Size = new Size(61, 20);
@@ -175,7 +177,7 @@
             // extensionsToolStripMenuItem1
             // 
             extensionsToolStripMenuItem1.Name = "extensionsToolStripMenuItem1";
-            extensionsToolStripMenuItem1.Size = new Size(130, 22);
+            extensionsToolStripMenuItem1.Size = new Size(190, 22);
             extensionsToolStripMenuItem1.Text = "&Extensions";
             // 
             // profileToolStripMenuItem
@@ -199,6 +201,20 @@
             IncognitoToolStripMenuItem1.Size = new Size(70, 20);
             IncognitoToolStripMenuItem1.Text = "&Incognito";
             IncognitoToolStripMenuItem1.Click += IncognitoToolStripMenuItem_Click;
+            // 
+            // clearAllBrowserDataToolStripMenuItem
+            // 
+            clearAllBrowserDataToolStripMenuItem.Name = "clearAllBrowserDataToolStripMenuItem";
+            clearAllBrowserDataToolStripMenuItem.Size = new Size(197, 22);
+            clearAllBrowserDataToolStripMenuItem.Text = "&Clear All Browser Data";
+            clearAllBrowserDataToolStripMenuItem.Click += clearAllBrowserDataToolStripMenuItem_Click;
+            // 
+            // clearBrowingDataToolStripMenuItem
+            // 
+            clearBrowingDataToolStripMenuItem.Name = "clearBrowingDataToolStripMenuItem";
+            clearBrowingDataToolStripMenuItem.Size = new Size(197, 22);
+            clearBrowingDataToolStripMenuItem.Text = "Clear All &Browsing Data";
+            clearBrowingDataToolStripMenuItem.Click += clearBrowingDataToolStripMenuItem_Click;
             // 
             // Form_Main
             // 
@@ -244,5 +260,7 @@
         private ToolStripMenuItem extensionsToolStripMenuItem1;
         private ToolStripMenuItem IncognitoToolStripMenuItem1;
         private ToolStripMenuItem bookmarksToolStripMenuItem;
+        private ToolStripMenuItem clearAllBrowserDataToolStripMenuItem;
+        private ToolStripMenuItem clearBrowingDataToolStripMenuItem;
     }
 }

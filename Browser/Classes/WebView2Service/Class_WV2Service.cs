@@ -8,10 +8,14 @@ namespace WV2Service
     public partial class WebViewService : INotifyPropertyChanged
     {
         private WV2ServiceModel WebViewModel;
+        public ClearManager Clear { get; }
+        public NavigationManager Navigation { get; }
 
         public WebViewService() 
         {
             WebViewModel = new WV2ServiceModel();
+            Clear = new ClearManager(this);
+            Navigation = new NavigationManager(this);
         }
         public WebViewService(WebView2 _WebViewControl, string _ProfileName, List<string> _ExtensionsPath)
         {
@@ -19,18 +23,24 @@ namespace WV2Service
             WebViewControl = _WebViewControl;
             ProfileName = _ProfileName;
             ExtensionsPath = _ExtensionsPath;
+            Clear = new ClearManager(this);
+            Navigation = new NavigationManager(this);
         }
         public WebViewService(CoreWebView2Profile _profile, string ProfileFolderPath) //SharedProfile e.g. 2 webcontrol 1 user profile
         {
             WebViewModel = new WV2ServiceModel();
             Profile = _profile;
             ProfileFolder = ProfileFolderPath;
+            Clear = new ClearManager(this);
+            Navigation = new NavigationManager(this);
         }
         public WebViewService(CoreWebView2Profile _profile, CoreWebView2Environment _environment) //SharedProfile e.g. 2 webcontrol 1 user profile
         {
             WebViewModel = new WV2ServiceModel();
             Profile = _profile;
             environment = _environment;
+            Clear = new ClearManager(this);
+            Navigation = new NavigationManager(this);
         }
 
         private string TempFolder { get; set; }
