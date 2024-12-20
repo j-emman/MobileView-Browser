@@ -8,13 +8,11 @@ namespace MobileView
 {
     public partial class Form_Main : Form
     {
-        private readonly CoreWebView2Environment environment;
         private WebViewService Browser;
-        private WebViewService Browser2;
         private bool incognito;
         private string url;
 
-        public Form_Main(bool _incognito = false, Form currentForm = null, string _url = null)
+        public Form_Main(bool _incognito = false, Form? currentForm = null, string? _url = null)
         {
             incognito = _incognito;
             url = _url;
@@ -90,7 +88,7 @@ namespace MobileView
         {
             if (incognito) { await Task.Delay(1000); }
             if (!string.IsNullOrWhiteSpace(url)) { Browser.Navigation.NewTabGoTo(url); return; }
-            Browser.Navigation.GoTo("https://www.google.com");
+            Browser.Navigation.GoTo("google.com");
         }
         private void Form_Main_Resize(object sender, EventArgs e)
         {
@@ -121,6 +119,14 @@ namespace MobileView
         private void BackButton_Click(object sender, EventArgs e)
         {
             Browser.Navigation.GoBack();
+        }
+        private void ClearAllBrowserDataToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Browser.Clear.AllBrowserData();
+        }
+        private void ClearAllBrowsingDataToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Browser.Clear.AllBrowsingData();
         }
         private void URLTextBox_KeyDown(object sender, KeyEventArgs e)
         {
@@ -155,6 +161,10 @@ namespace MobileView
             incognito.ShowDialog();
             this.Show();
         }
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
         private void PreserveCurrentFormLocation(Form currentForm)
         {
             var state = currentForm.WindowState;
@@ -168,14 +178,11 @@ namespace MobileView
             this.Location = new Point(centerX, centerY);
         }
 
-        private void clearAllBrowserDataToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void extensionsToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            Browser.Clear.AllBrowsingData();
-        }
-
-        private void clearBrowingDataToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Browser.Clear.AllBrowsingData();
+            List<string> extensions = await Browser.GetExtensions();
+            string extensionstring = string.Join(",\n", extensions);
+            MessageBox.Show(extensionstring);
         }
     }
 }

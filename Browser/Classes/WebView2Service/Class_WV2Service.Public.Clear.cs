@@ -17,7 +17,7 @@ namespace WV2Service
             {
                 webViewService.ClearAllBrowsingData(webViewService.WebViewControl, webViewService.environment, webViewService.Profile);
             }
-            public void AllBrowsingDataBetweenDates(DateTime startDate, DateTime endDate)
+            public void BrowsingDataBetweenDates(DateTime startDate, DateTime endDate)
             {
                 webViewService.ClearBrowsingDataBetweenDateRange(webViewService.WebViewControl, webViewService.environment, webViewService.Profile, startDate, endDate);
             }

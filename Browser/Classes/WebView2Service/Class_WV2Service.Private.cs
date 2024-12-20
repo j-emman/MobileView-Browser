@@ -80,6 +80,27 @@ namespace WV2Service
             }
             return extension;
         }
+        private async Task<IReadOnlyList<CoreWebView2BrowserExtension>> GetBrowserExtensionsAsync(WebView2 webView, CoreWebView2Environment environment, CoreWebView2Profile profile)
+        {
+            try
+            {
+
+                profile = profile != null ? profile : await GetProfile(webView, environment);
+                IReadOnlyList<CoreWebView2BrowserExtension> extensions = await profile.GetBrowserExtensionsAsync();
+                // Display extensions or handle them as needed
+                Console.WriteLine("Installed Extensions:");
+                foreach (var extension in extensions)
+                {
+                    Console.WriteLine($"- {extension.Name}, ID: {extension.Id}");
+                }
+                return extensions;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error retrieving extensions: {ex.Message}");
+            }
+            return null;
+        }
         private async void EnableMobileView(WebView2 webView, CoreWebView2Environment environment)
         {
             await webView.EnsureCoreWebView2Async(environment);
@@ -90,6 +111,7 @@ namespace WV2Service
             await webView.EnsureCoreWebView2Async(environment);
             CoreWebView2BrowserExtension extension = await AddExtensionsAsync(webView, environment, profile);
             await extension.EnableAsync(true);
+            extension.RemoveAsync();
         }
         private async void ClearAllBrowsingData(WebView2 webView, CoreWebView2Environment environment, CoreWebView2Profile profile)
         {
@@ -108,7 +130,7 @@ namespace WV2Service
         private async void ClearAllBrowserData(WebView2 webView, CoreWebView2Environment environment, CoreWebView2Profile profile)
         {
             profile = profile != null ? profile : await GetProfile(webView, environment);
-            //await webView.EnsureCoreWebView2Async(environment);
+            await webView.EnsureCoreWebView2Async(environment);
             await profile.ClearBrowsingDataAsync();
             webView.Reload();
         }
@@ -137,7 +159,8 @@ namespace WV2Service
         private string EnsureHttpsPrefix(string url)
         {
             if (!url.StartsWith("http://", StringComparison.OrdinalIgnoreCase) &&
-                !url.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
+                !url.StartsWith("https://", StringComparison.OrdinalIgnoreCase) &&
+                !url.StartsWith("edge://", StringComparison.OrdinalIgnoreCase))
             {
                 url = "https://" + url;
             }
@@ -146,7 +169,7 @@ namespace WV2Service
         private bool IsURLSuffixValid(string url)
         {
             string[] validTLDs = { ".com", ".org", ".net", ".edu", ".gov", ".io", ".co", ".us", ".uk", ".ph" };
-
+            if (url.StartsWith("edge://", StringComparison.OrdinalIgnoreCase))  { return true; }
             foreach (string tld in validTLDs)
             {
                 if (url.Contains(tld, StringComparison.OrdinalIgnoreCase))

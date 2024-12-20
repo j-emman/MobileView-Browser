@@ -106,27 +106,27 @@ namespace WV2Service
         public WebViewService(WebView2 _WebViewControl, string _ProfileName, List<string> _ExtensionsPath)
         {
             _WebViewModel = new WV2ServiceModel();
+            Clear = new ClearManager(this);
+            Navigation = new NavigationManager(this);
             WebViewControl = _WebViewControl;
             ProfileName = _ProfileName;
             ExtensionsPath = _ExtensionsPath;
-            Clear = new ClearManager(this);
-            Navigation = new NavigationManager(this);
         }
         public WebViewService(CoreWebView2Profile _profile, string ProfileFolderPath) //SharedProfile e.g. 2 webcontrol 1 user profile
         {
             _WebViewModel = new WV2ServiceModel();
-            Profile = _profile;
-            ProfileFolder = ProfileFolderPath;
             Clear = new ClearManager(this);
             Navigation = new NavigationManager(this);
+            Profile = _profile;
+            ProfileFolder = ProfileFolderPath;
         }
         public WebViewService(CoreWebView2Profile _profile, CoreWebView2Environment _environment) //SharedProfile e.g. 2 webcontrol 1 user profile
         {
             _WebViewModel = new WV2ServiceModel();
-            Profile = _profile;
-            environment = _environment;
             Clear = new ClearManager(this);
             Navigation = new NavigationManager(this);
+            Profile = _profile;
+            environment = _environment;
         }
 
         public void NotifyPropertyChanged([CallerMemberName] string propertyname = "")

@@ -38,13 +38,14 @@
             MenuStrip = new MenuStrip();
             fileToolStripMenuItem = new ToolStripMenuItem();
             incognitoToolStripMenuItem = new ToolStripMenuItem();
+            exitToolStripMenuItem = new ToolStripMenuItem();
             settingsToolStripMenuItem = new ToolStripMenuItem();
             extensionsToolStripMenuItem1 = new ToolStripMenuItem();
+            clearAllBrowserDataToolStripMenuItem = new ToolStripMenuItem();
+            clearBrowingDataToolStripMenuItem = new ToolStripMenuItem();
             profileToolStripMenuItem = new ToolStripMenuItem();
             bookmarksToolStripMenuItem = new ToolStripMenuItem();
             IncognitoToolStripMenuItem1 = new ToolStripMenuItem();
-            clearAllBrowserDataToolStripMenuItem = new ToolStripMenuItem();
-            clearBrowingDataToolStripMenuItem = new ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)WebView21).BeginInit();
             TopBarPanel.SuspendLayout();
             MenuPanel.SuspendLayout();
@@ -153,7 +154,7 @@
             // 
             // fileToolStripMenuItem
             // 
-            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { incognitoToolStripMenuItem });
+            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { incognitoToolStripMenuItem, exitToolStripMenuItem });
             fileToolStripMenuItem.ForeColor = SystemColors.HighlightText;
             fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             fileToolStripMenuItem.Size = new Size(37, 20);
@@ -162,9 +163,16 @@
             // incognitoToolStripMenuItem
             // 
             incognitoToolStripMenuItem.Name = "incognitoToolStripMenuItem";
-            incognitoToolStripMenuItem.Size = new Size(125, 22);
+            incognitoToolStripMenuItem.Size = new Size(180, 22);
             incognitoToolStripMenuItem.Text = "&Incognito";
             incognitoToolStripMenuItem.Click += IncognitoToolStripMenuItem_Click;
+            // 
+            // exitToolStripMenuItem
+            // 
+            exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            exitToolStripMenuItem.Size = new Size(180, 22);
+            exitToolStripMenuItem.Text = "&Exit";
+            exitToolStripMenuItem.Click += exitToolStripMenuItem_Click;
             // 
             // settingsToolStripMenuItem
             // 
@@ -177,8 +185,23 @@
             // extensionsToolStripMenuItem1
             // 
             extensionsToolStripMenuItem1.Name = "extensionsToolStripMenuItem1";
-            extensionsToolStripMenuItem1.Size = new Size(190, 22);
+            extensionsToolStripMenuItem1.Size = new Size(197, 22);
             extensionsToolStripMenuItem1.Text = "&Extensions";
+            extensionsToolStripMenuItem1.Click += extensionsToolStripMenuItem1_Click;
+            // 
+            // clearAllBrowserDataToolStripMenuItem
+            // 
+            clearAllBrowserDataToolStripMenuItem.Name = "clearAllBrowserDataToolStripMenuItem";
+            clearAllBrowserDataToolStripMenuItem.Size = new Size(197, 22);
+            clearAllBrowserDataToolStripMenuItem.Text = "&Clear All Browser Data";
+            clearAllBrowserDataToolStripMenuItem.Click += ClearAllBrowserDataToolStripMenuItem_Click;
+            // 
+            // clearBrowingDataToolStripMenuItem
+            // 
+            clearBrowingDataToolStripMenuItem.Name = "clearBrowingDataToolStripMenuItem";
+            clearBrowingDataToolStripMenuItem.Size = new Size(197, 22);
+            clearBrowingDataToolStripMenuItem.Text = "Clear All &Browsing Data";
+            clearBrowingDataToolStripMenuItem.Click += ClearAllBrowsingDataToolStripMenuItem_Click;
             // 
             // profileToolStripMenuItem
             // 
@@ -201,20 +224,6 @@
             IncognitoToolStripMenuItem1.Size = new Size(70, 20);
             IncognitoToolStripMenuItem1.Text = "&Incognito";
             IncognitoToolStripMenuItem1.Click += IncognitoToolStripMenuItem_Click;
-            // 
-            // clearAllBrowserDataToolStripMenuItem
-            // 
-            clearAllBrowserDataToolStripMenuItem.Name = "clearAllBrowserDataToolStripMenuItem";
-            clearAllBrowserDataToolStripMenuItem.Size = new Size(197, 22);
-            clearAllBrowserDataToolStripMenuItem.Text = "&Clear All Browser Data";
-            clearAllBrowserDataToolStripMenuItem.Click += clearAllBrowserDataToolStripMenuItem_Click;
-            // 
-            // clearBrowingDataToolStripMenuItem
-            // 
-            clearBrowingDataToolStripMenuItem.Name = "clearBrowingDataToolStripMenuItem";
-            clearBrowingDataToolStripMenuItem.Size = new Size(197, 22);
-            clearBrowingDataToolStripMenuItem.Text = "Clear All &Browsing Data";
-            clearBrowingDataToolStripMenuItem.Click += clearBrowingDataToolStripMenuItem_Click;
             // 
             // Form_Main
             // 
@@ -262,5 +271,6 @@
         private ToolStripMenuItem bookmarksToolStripMenuItem;
         private ToolStripMenuItem clearAllBrowserDataToolStripMenuItem;
         private ToolStripMenuItem clearBrowingDataToolStripMenuItem;
+        private ToolStripMenuItem exitToolStripMenuItem;
     }
 }
