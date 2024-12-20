@@ -8,13 +8,9 @@ namespace WV2Service
 {
     public partial class WebViewService
     {
-        public class NavigationManager
+        public class NavigationManager(WebViewService webviewService)
         {
-            private readonly WebViewService wv2service;
-            public NavigationManager(WebViewService webviewService)
-            {
-                wv2service = webviewService;
-            }
+            private readonly WebViewService wv2service = webviewService;
             public void GoTo(string address)
             {
                 if (wv2service.IsURLSuffixValid(address))

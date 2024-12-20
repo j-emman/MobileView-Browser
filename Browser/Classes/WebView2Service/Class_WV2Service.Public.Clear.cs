@@ -9,13 +9,10 @@ namespace WV2Service
 {
     public partial class WebViewService
     {
-        public class ClearManager
+        public class ClearManager(WebViewService webservice)
         {
-            private readonly WebViewService webViewService;
-            public ClearManager(WebViewService webservice) 
-            {
-                webViewService = webservice;
-            }
+            private readonly WebViewService webViewService = webservice;
+
             public void AllBrowsingData()
             {
                 webViewService.ClearAllBrowsingData(webViewService.WebViewControl, webViewService.environment, webViewService.Profile);
