@@ -113,20 +113,6 @@ namespace WV2Service
                 CoreWebView2BrowsingDataKinds.DownloadHistory |
                 CoreWebView2BrowsingDataKinds.DiskCache);
         }
-        private async void ClearAllBrowserData(WebView2 webView, CoreWebView2Environment environment, CoreWebView2Profile profile)
-        {
-            profile = profile != null ? profile : await GetProfile(webView, environment);
-            //await webView.EnsureCoreWebView2Async(environment);
-            await profile.ClearBrowsingDataAsync();
-            webView.Reload();
-        }
-        private async void ClearBrowserData(WebView2 webView, CoreWebView2Environment environment, CoreWebView2Profile profile, CoreWebView2BrowsingDataKinds dataKinds)
-        {
-            profile = profile != null ? profile : await GetProfile(webView, environment);
-            //await webView.EnsureCoreWebView2Async(environment);
-            await profile.ClearBrowsingDataAsync(dataKinds);
-            webView.Reload();
-        }
         private async void ClearBrowsingDataBetweenDateRange(WebView2 webView, CoreWebView2Environment environment, CoreWebView2Profile profile, DateTime startDate, DateTime endDate)
         {
             profile = profile != null ? profile : await GetProfile(webView, environment);
@@ -140,6 +126,20 @@ namespace WV2Service
                 CoreWebView2BrowsingDataKinds.CacheStorage |
                 CoreWebView2BrowsingDataKinds.DownloadHistory |
                 CoreWebView2BrowsingDataKinds.DiskCache, startDate, endDate);
+            webView.Reload();
+        }
+        private async void ClearBrowserData(WebView2 webView, CoreWebView2Environment environment, CoreWebView2Profile profile, CoreWebView2BrowsingDataKinds dataKinds)
+        {
+            profile = profile != null ? profile : await GetProfile(webView, environment);
+            //await webView.EnsureCoreWebView2Async(environment);
+            await profile.ClearBrowsingDataAsync(dataKinds);
+            webView.Reload();
+        }
+        private async void ClearAllBrowserData(WebView2 webView, CoreWebView2Environment environment, CoreWebView2Profile profile)
+        {
+            profile = profile != null ? profile : await GetProfile(webView, environment);
+            await webView.EnsureCoreWebView2Async(environment);
+            await profile.ClearBrowsingDataAsync();
             webView.Reload();
         }
         private string EnsureHttpsPrefix(string url)

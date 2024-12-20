@@ -39,9 +39,9 @@ namespace WV2Service
         public void Incognito_InitializeMobileWebView()
         {
             Incognito_InitializeEnviroment();
+            InitializeExtensions();
             InitializeProfile();
             EnableMobileView();
-            InitializeExtensions();
             EnableNewWindowRequest();
         }
         public async void InitializeEnviroment()
