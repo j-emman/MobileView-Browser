@@ -84,6 +84,9 @@ At this time, an installer is not provided as the application functions effectiv
 
 ---
 ## Extension Support
+Extensions currently only support unpacked extensions from the local device. 
+Download your desired extensions and add the path to the Extensions path list.
+WebView2 is based on Microsoft Edge (Chromium) and does only support extensions available on said platforms.
 
 ---
 
