@@ -48,6 +48,7 @@
             clearAllBrowserDataToolStripMenuItem = new ToolStripMenuItem();
             clearBrowingDataToolStripMenuItem = new ToolStripMenuItem();
             profileToolStripMenuItem = new ToolStripMenuItem();
+            historyToolStripMenuItem = new ToolStripMenuItem();
             bookmarksToolStripMenuItem = new ToolStripMenuItem();
             IncognitoToolStripMenuItem1 = new ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)WebView21).BeginInit();
@@ -150,7 +151,7 @@
             // MenuStrip
             // 
             MenuStrip.BackColor = Color.FromArgb(33, 33, 33);
-            MenuStrip.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, settingsToolStripMenuItem, profileToolStripMenuItem, IncognitoToolStripMenuItem1 });
+            MenuStrip.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, profileToolStripMenuItem, settingsToolStripMenuItem, IncognitoToolStripMenuItem1 });
             MenuStrip.Location = new Point(0, 0);
             MenuStrip.Name = "MenuStrip";
             MenuStrip.Size = new Size(312, 24);
@@ -230,16 +231,23 @@
             // 
             // profileToolStripMenuItem
             // 
-            profileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { bookmarksToolStripMenuItem });
+            profileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { historyToolStripMenuItem, bookmarksToolStripMenuItem });
             profileToolStripMenuItem.ForeColor = SystemColors.HighlightText;
             profileToolStripMenuItem.Name = "profileToolStripMenuItem";
             profileToolStripMenuItem.Size = new Size(53, 20);
             profileToolStripMenuItem.Text = "&Profile";
             // 
+            // historyToolStripMenuItem
+            // 
+            historyToolStripMenuItem.Name = "historyToolStripMenuItem";
+            historyToolStripMenuItem.Size = new Size(180, 22);
+            historyToolStripMenuItem.Text = "&History";
+            historyToolStripMenuItem.Click += historyToolStripMenuItem_Click;
+            // 
             // bookmarksToolStripMenuItem
             // 
             bookmarksToolStripMenuItem.Name = "bookmarksToolStripMenuItem";
-            bookmarksToolStripMenuItem.Size = new Size(133, 22);
+            bookmarksToolStripMenuItem.Size = new Size(180, 22);
             bookmarksToolStripMenuItem.Text = "Bookmarks";
             // 
             // IncognitoToolStripMenuItem1
@@ -301,5 +309,6 @@
         private ToolStripMenuItem viewExtensionsToolStripMenuItem;
         private ToolStripMenuItem addToolStripMenuItem;
         private ToolStripMenuItem removeToolStripMenuItem;
+        private ToolStripMenuItem historyToolStripMenuItem;
     }
 }

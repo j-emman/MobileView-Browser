@@ -98,11 +98,36 @@ namespace WV2Service
         {
             try
             {
+                string localExtensionsPath;
                 CoreWebView2BrowserExtension extension = null;
-                profile = profile != null ? profile : await GetProfile(webView, environment);
-                foreach (string extensionPath in ExtensionsPath)
+
+                if (!string.IsNullOrWhiteSpace(_TempFolder))
                 {
-                    extension = await profile.AddBrowserExtensionAsync(extensionPath);
+                    localExtensionsPath = Path.Combine(_TempFolder, "EBWebView", "Default", "Extensions_Local");
+                }
+                else
+                { 
+                    localExtensionsPath = Path.Combine(ProfileFolder, "EBWebView", "Default", "Extensions_Local");
+                }
+
+                if (!Directory.Exists(localExtensionsPath))
+                {
+                    Directory.CreateDirectory(localExtensionsPath);
+                }
+
+                foreach (string originalExtensionPath in ExtensionsPath)
+                {
+                    string extensionName = Path.GetFileName(originalExtensionPath);
+
+                    string localExtensionPath = Path.Combine(localExtensionsPath, extensionName);
+
+                    if (!Directory.Exists(localExtensionPath))
+                    {
+                        CopyDirectory(originalExtensionPath, localExtensionPath);
+                    }
+
+                    profile = profile ?? await GetProfile(webView, environment);
+                    extension = await profile.AddBrowserExtensionAsync(localExtensionPath);
                 }
                 return extension;
             }
@@ -111,6 +136,23 @@ namespace WV2Service
                 throw new Exception($"Failed to load extensions:\n{ex.Message}");
             }
         }
+        private void CopyDirectory(string sourceDir, string destinationDir)
+        {
+            Directory.CreateDirectory(destinationDir);
+
+            foreach (var file in Directory.GetFiles(sourceDir))
+            {
+                string destFile = Path.Combine(destinationDir, Path.GetFileName(file));
+                File.Copy(file, destFile, overwrite: true);
+            }
+
+            foreach (var directory in Directory.GetDirectories(sourceDir))
+            {
+                string destDir = Path.Combine(destinationDir, Path.GetFileName(directory));
+                CopyDirectory(directory, destDir);
+            }
+        }
+
         private async Task<IReadOnlyList<CoreWebView2BrowserExtension>> GetBrowserExtensionsAsync(WebView2 webView, CoreWebView2Environment environment, CoreWebView2Profile profile)
         {
             try

@@ -33,6 +33,7 @@ namespace WV2Service
             }
             public async void Incognito_DisposeSession()
             {
+                string tempfolderpath = wv2service._TempFolder;
                 int maxRetries = 5;
                 int delayMilliseconds = 2000;
                 for (int attempt = 1; attempt <= maxRetries; attempt++)
@@ -42,9 +43,10 @@ namespace WV2Service
                         //ensure all processes are closed first
                         await Task.Run(() =>
                         {
-                            if (!Directory.Exists(wv2service._TempFolder)) { return; }
-                            Directory.Delete(wv2service._TempFolder, true);
+                            if (!Directory.Exists(tempfolderpath)) { return; }
+                            Directory.Delete(tempfolderpath, true);
                         });
+                        wv2service._TempFolder = string.Empty;
                     }
                     catch
                     {

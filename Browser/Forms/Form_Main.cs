@@ -29,7 +29,7 @@ namespace MobileView
                 Browser.InitializeWebViewNewTab();
                 return;
             }
-            InitializeBrowser();
+            InitializeBrowser(currentForm);
         }
         private void InitializeIncognito(Form currentForm)
         {
@@ -46,8 +46,9 @@ namespace MobileView
             Browser.Incognito_InitializeWebView();
 
         }
-        private void InitializeBrowser()
+        private void InitializeBrowser(Form? currentForm = null)
         {
+            if (currentForm != null) { PreserveCurrentFormLocation(currentForm); }
             Browser = new WebViewService
             {
                 ProfileName = "User1",
@@ -107,10 +108,13 @@ namespace MobileView
         }
         private void Form_Main_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Browser.Navigation.Incognito_DisposeSession();
-            this.Hide();
-            this.Dispose();
-            if (incognito) { return; }
+            if (incognito) 
+            { 
+                Browser.Navigation.Incognito_DisposeSession();
+                this.Hide();
+                this.Dispose();
+                return; 
+            }
             Application.Exit();
         }
         private void ReloadButton_Click(object sender, EventArgs e)
@@ -176,6 +180,23 @@ namespace MobileView
         {
 
         }
+        private void addToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+        private void historyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //Form_HistoryManager historyManager = new Form_HistoryManager(Browser, this);
+            //historyManager.Show();
+            //this.Close();
+
+            WebView21.Enabled = Browser.WebViewControl.Enabled = false;
+            using (Form_HistoryManager historyManager = new Form_HistoryManager(Browser, this))
+            {
+                historyManager.ShowDialog();
+            }
+            WebView21.Enabled = Browser.WebViewControl.Enabled = true;
+        }
         private void PreserveCurrentFormLocation(Form currentForm)
         {
             var state = currentForm.WindowState;
@@ -188,11 +209,5 @@ namespace MobileView
             var centerY = location.Y + (currentForm.Height - this.Height) / 2;
             this.Location = new Point(centerX, centerY);
         }
-
-        private void addToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show(Browser.WebViewControl.CoreWebView2.Profile.IsInPrivateModeEnabled.ToString());
-        }
-
     }
 }
