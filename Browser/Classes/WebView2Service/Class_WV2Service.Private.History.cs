@@ -50,6 +50,7 @@ namespace WV2Service
                 dataTable.Columns.Add("Title", typeof(string));
                 dataTable.Columns.Add("Visit Count", typeof(int));
                 dataTable.Columns.Add("Last Visited", typeof(DateTime));
+
                 using (SqliteDataReader reader = await command.ExecuteReaderAsync())
                 {
                     while (await reader.ReadAsync())
@@ -95,7 +96,7 @@ namespace WV2Service
         public async Task<DataTable> GetHistory()
         {
             string historyFilePath = (!string.IsNullOrWhiteSpace(_TempFolder)) ?
-                Path.Combine(_TempFolder, "EBWebView", "Default", "History") :
+                Path.Combine(  _TempFolder, "EBWebView", "Default", "History") :
                 Path.Combine(ProfileFolder, "EBWebView", "Default", "History");
             
             return await GetHistory(historyFilePath);
@@ -109,10 +110,9 @@ namespace WV2Service
                 Console.WriteLine("History file does not exist.");
                 return null;
             }
-            string tempFilePath = Path.Combine(Path.GetTempPath(), "EBWebView", "database_temp.db");
+            string tempFilePath = Path.Combine(Path.GetTempPath(), "EBWebView", "database_temp.db");   // dir to move the locked database to, as a temporary file
             try
             {
-                // Move the locked database to a temporary file
                 File.Copy(profileDirectory, tempFilePath, overwrite: true); // this will be readonly. No modifications will be done directly on the db file
 
                 SqliteConnection conn;
@@ -125,10 +125,9 @@ namespace WV2Service
                 }
                 return dataTable;
             }
-            catch (Exception ex)
+            catch (SqliteException ex)
             {
-                Debug.WriteLine($"Error: {ex.Message}");
-                return null;
+                throw new SqliteException(ex.Message, ex.SqliteErrorCode);
             }
         }
     }
