@@ -59,15 +59,10 @@ namespace WV2Service
                         string title = reader.IsDBNull(2) ? string.Empty : reader.GetString(2);
                         int visitCount = reader.GetInt32(3);
                         long lastVisitTime = reader.GetInt64(4);
-
-                        // Convert Chromium timestamp to DateTime
-                        DateTime lastVisitDate = DateTimeOffset.FromUnixTimeMilliseconds(lastVisitTime / 1000).DateTime;
-
-                        // Convert to local time (based on system's time zone)
-                        DateTime lastVisitLocal = lastVisitDate.ToLocalTime();
+                        DateTime lastVisitDate = DateTimeOffset.FromUnixTimeMilliseconds(lastVisitTime / 1000).DateTime; // Convert Chromium timestamp to DateTime
+                        DateTime lastVisitLocal = lastVisitDate.ToLocalTime();                                           // Convert to local time (based on system's time zone)
 
                         dataTable.Rows.Add(id, url, title, visitCount, lastVisitLocal);
-                        //dataTable.Rows.Add(id, url, title, visitCount, lastVisitDate);
                     }
                 }
                 command.Dispose();
@@ -97,10 +92,18 @@ namespace WV2Service
                 throw new SqliteException(ex.Message, ex.SqliteErrorCode);
             }
         }
-
-        public async Task<DataTable> ReadHistory(string profileDirectory)
+        public async Task<DataTable> GetHistory()
+        {
+            string historyFilePath = (!string.IsNullOrWhiteSpace(_TempFolder)) ?
+                Path.Combine(_TempFolder, "EBWebView", "Default", "History") :
+                Path.Combine(ProfileFolder, "EBWebView", "Default", "History");
+            
+            return await GetHistory(historyFilePath);
+        }
+        private async Task<DataTable> GetHistory(string profileDirectory)
         {
             string historyFilePath = Path.Combine(profileDirectory, "EBWebView", "Default", "History");
+            string tempFilePath = Path.Combine(Path.GetTempPath(), "EBWebView", "database_temp.db");
 
             if (!File.Exists(historyFilePath))
             {
@@ -108,12 +111,10 @@ namespace WV2Service
                 return null;
             }
 
-            string tempFilePath = Path.Combine(Path.GetTempPath(), "database_temp.db");
-
             try
             {
                 // Move the locked database to a temporary file
-                File.Copy(historyFilePath, tempFilePath, overwrite: true);
+                File.Copy(historyFilePath, tempFilePath, overwrite: true); // this will be readonly. No modifications will be done directly on the db file
 
                 SqliteConnection conn;
                 DataTable dataTable;
@@ -130,17 +131,6 @@ namespace WV2Service
                 Debug.WriteLine($"Error: {ex.Message}");
                 return null;
             }
-
-            //SqliteConnection conn;
-            //DataTable dataTable;
-            //using (conn = new SqliteConnection($"Data Source={historyFilePath};Mode=ReadOnly;Cache=Shared;"))
-            //{
-            //    conn.Open();
-            //    SqliteCommand command = SqliteCmd_GetHistory(conn);
-            //    dataTable = await GetHistoryDataTableAsync(command);
-            //}
-            //conn.Close();
-            //return dataTable;
         }
     }
 }

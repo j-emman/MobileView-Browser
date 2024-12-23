@@ -42,7 +42,7 @@ namespace MobileView
             datagridview.DataSource = null;
             datagridview.Rows.Clear();
             datagridview.Columns.Clear();
-            HistoryTable = await Browser.ReadHistory(Browser.ProfileFolder);
+            HistoryTable = await Browser.GetHistory();
             datagridview.DataSource = HistoryTable;
             datagridview.Columns["Visit Count"].Visible = false;
             datagridview.Columns["URL"].Visible = false;
@@ -66,6 +66,5 @@ namespace MobileView
             Browser.Navigation.GoTo(URL);
             this.Close();
         }
-
     }
 }

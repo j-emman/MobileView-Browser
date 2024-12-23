@@ -186,16 +186,10 @@ namespace MobileView
         }
         private void historyToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //Form_HistoryManager historyManager = new Form_HistoryManager(Browser, this);
-            //historyManager.Show();
-            //this.Close();
-
-            WebView21.Enabled = Browser.WebViewControl.Enabled = false;
             using (Form_HistoryManager historyManager = new Form_HistoryManager(Browser, this))
             {
                 historyManager.ShowDialog();
             }
-            WebView21.Enabled = Browser.WebViewControl.Enabled = true;
         }
         private void PreserveCurrentFormLocation(Form currentForm)
         {

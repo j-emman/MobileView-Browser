@@ -45,25 +45,11 @@ namespace WV2Service
                 throw new Exception($"Failed to initialize environment:\n{ex.Message}");
             }
         }
-        private async Task<CoreWebView2Environment> InitializeSharedWebEnviromentAsync(WebView2 webView, string FolderPath)
-        {
-            try
-            {
-                CoreWebView2EnvironmentOptions environmentOptions = new CoreWebView2EnvironmentOptions { AreBrowserExtensionsEnabled = true };
-                CoreWebView2Environment environment = await CoreWebView2Environment.CreateAsync(null, FolderPath, environmentOptions);
-                await webView.EnsureCoreWebView2Async(environment);
-                return environment;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Failed to initialize environment:\n{ex.Message}");
-            }
-        }
         private async Task<CoreWebView2Environment> Incognito_InitializeWebEnviromentAsync(WebView2 webView, string profileName)
         {
             try
             {
-                _TempFolder = Path.Combine(Path.GetTempPath(), "Incognito_" + Guid.NewGuid().ToString());
+                _TempFolder = Path.Combine(Path.GetTempPath(), "EBWebView", "Incognito_" + Guid.NewGuid().ToString());
                 Directory.CreateDirectory(_TempFolder);
 
                 CoreWebView2EnvironmentOptions environmentOptions = new CoreWebView2EnvironmentOptions { AreBrowserExtensionsEnabled = true };
@@ -76,6 +62,21 @@ namespace WV2Service
 
                 await webView.EnsureCoreWebView2Async(environment, options);
                 //CoreWebView2Controller controller = await environment.CreateCoreWebView2ControllerAsync(webView.Handle, options);
+
+                return environment;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Failed to initialize environment:\n{ex.Message}");
+            }
+        }
+        private async Task<CoreWebView2Environment> InitializeSharedWebEnviromentAsync(WebView2 webView, string FolderPath)
+        {
+            try
+            {
+                CoreWebView2EnvironmentOptions environmentOptions = new CoreWebView2EnvironmentOptions { AreBrowserExtensionsEnabled = true };
+                CoreWebView2Environment environment = await CoreWebView2Environment.CreateAsync(null, FolderPath, environmentOptions);
+                await webView.EnsureCoreWebView2Async(environment);
                 return environment;
             }
             catch (Exception ex)
@@ -98,17 +99,11 @@ namespace WV2Service
         {
             try
             {
-                string localExtensionsPath;
                 CoreWebView2BrowserExtension extension = null;
 
-                if (!string.IsNullOrWhiteSpace(_TempFolder))
-                {
-                    localExtensionsPath = Path.Combine(_TempFolder, "EBWebView", "Default", "Extensions_Local");
-                }
-                else
-                { 
-                    localExtensionsPath = Path.Combine(ProfileFolder, "EBWebView", "Default", "Extensions_Local");
-                }
+                string localExtensionsPath = (!string.IsNullOrWhiteSpace(_TempFolder)) ?
+                    Path.Combine(  _TempFolder, "EBWebView", "Default", "Extensions_Local") :
+                    Path.Combine(ProfileFolder, "EBWebView", "Default", "Extensions_Local");
 
                 if (!Directory.Exists(localExtensionsPath))
                 {
