@@ -102,23 +102,22 @@ namespace WV2Service
         }
         private async Task<DataTable> GetHistory(string profileDirectory)
         {
-            string historyFilePath = Path.Combine(profileDirectory, "EBWebView", "Default", "History");
-            string tempFilePath = Path.Combine(Path.GetTempPath(), "EBWebView", "database_temp.db");
+            //string historyFilePath = Path.Combine(profileDirectory, "EBWebView", "Default", "History");
 
-            if (!File.Exists(historyFilePath))
+            if (!File.Exists(profileDirectory))
             {
                 Console.WriteLine("History file does not exist.");
                 return null;
             }
-
+            string tempFilePath = Path.Combine(Path.GetTempPath(), "EBWebView", "database_temp.db");
             try
             {
                 // Move the locked database to a temporary file
-                File.Copy(historyFilePath, tempFilePath, overwrite: true); // this will be readonly. No modifications will be done directly on the db file
+                File.Copy(profileDirectory, tempFilePath, overwrite: true); // this will be readonly. No modifications will be done directly on the db file
 
                 SqliteConnection conn;
                 DataTable dataTable;
-                using (conn = new SqliteConnection($"Data Source={tempFilePath};Mode=ReadOnly;Cache=Shared;"))
+                using (conn = new SqliteConnection($"Data Source={tempFilePath};"))
                 {
                     conn.Open();
                     SqliteCommand command = SqliteCmd_GetHistory(conn);

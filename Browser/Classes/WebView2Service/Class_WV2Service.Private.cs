@@ -131,23 +131,6 @@ namespace WV2Service
                 throw new Exception($"Failed to load extensions:\n{ex.Message}");
             }
         }
-        private void CopyDirectory(string sourceDir, string destinationDir)
-        {
-            Directory.CreateDirectory(destinationDir);
-
-            foreach (var file in Directory.GetFiles(sourceDir))
-            {
-                string destFile = Path.Combine(destinationDir, Path.GetFileName(file));
-                File.Copy(file, destFile, overwrite: true);
-            }
-
-            foreach (var directory in Directory.GetDirectories(sourceDir))
-            {
-                string destDir = Path.Combine(destinationDir, Path.GetFileName(directory));
-                CopyDirectory(directory, destDir);
-            }
-        }
-
         private async Task<IReadOnlyList<CoreWebView2BrowserExtension>> GetBrowserExtensionsAsync(WebView2 webView, CoreWebView2Environment environment, CoreWebView2Profile profile)
         {
             try
@@ -165,6 +148,22 @@ namespace WV2Service
             catch (Exception ex)
             {
                 throw new Exception($"Error retrieving extensions:\n{ex.Message}");
+            }
+        }
+        private void CopyDirectory(string sourceDir, string destinationDir)
+        {
+            Directory.CreateDirectory(destinationDir);
+
+            foreach (var file in Directory.GetFiles(sourceDir))
+            {
+                string destFile = Path.Combine(destinationDir, Path.GetFileName(file));
+                File.Copy(file, destFile, overwrite: true);
+            }
+
+            foreach (var directory in Directory.GetDirectories(sourceDir))
+            {
+                string destDir = Path.Combine(destinationDir, Path.GetFileName(directory));
+                CopyDirectory(directory, destDir);
             }
         }
     }

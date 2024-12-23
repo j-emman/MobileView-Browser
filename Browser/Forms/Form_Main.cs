@@ -188,8 +188,10 @@ namespace MobileView
         {
             using (Form_HistoryManager historyManager = new Form_HistoryManager(Browser, this))
             {
+                this.Hide();
                 historyManager.ShowDialog();
             }
+            this.Show();
         }
         private void PreserveCurrentFormLocation(Form currentForm)
         {
