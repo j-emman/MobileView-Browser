@@ -24,7 +24,6 @@ namespace MobileView
                 PreserveCurrentFormLocation(currentform);
             }
         }
-
         private void PreserveCurrentFormLocation(Form currentForm)
         {
             var state = currentForm.WindowState;

@@ -36,8 +36,8 @@ namespace MobileView
             MenuButton = new Button();
             BackButton = new Button();
             ReloadButton = new Button();
-            URLTextBox = new TextBox();
             dataGridView1 = new DataGridView();
+            URLTextBox = new TextBox();
             TopBarPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
@@ -93,17 +93,6 @@ namespace MobileView
             ReloadButton.UseVisualStyleBackColor = true;
             ReloadButton.Click += ReloadButton_Click;
             // 
-            // URLTextBox
-            // 
-            URLTextBox.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            URLTextBox.BackColor = Color.FromArgb(23, 23, 23);
-            URLTextBox.BorderStyle = BorderStyle.FixedSingle;
-            URLTextBox.ForeColor = Color.White;
-            URLTextBox.Location = new Point(65, 4);
-            URLTextBox.Name = "URLTextBox";
-            URLTextBox.Size = new Size(211, 23);
-            URLTextBox.TabIndex = 0;
-            // 
             // dataGridView1
             // 
             dataGridViewCellStyle1.ForeColor = Color.Black;
@@ -122,6 +111,17 @@ namespace MobileView
             dataGridView1.Size = new Size(312, 533);
             dataGridView1.TabIndex = 3;
             dataGridView1.CellDoubleClick += dataGridView1_CellDoubleClick;
+            // 
+            // URLTextBox
+            // 
+            URLTextBox.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            URLTextBox.BackColor = Color.FromArgb(23, 23, 23);
+            URLTextBox.BorderStyle = BorderStyle.FixedSingle;
+            URLTextBox.ForeColor = Color.White;
+            URLTextBox.Location = new Point(65, 4);
+            URLTextBox.Name = "URLTextBox";
+            URLTextBox.Size = new Size(211, 23);
+            URLTextBox.TabIndex = 0;
             // 
             // Form_HistoryManager
             // 
@@ -148,7 +148,7 @@ namespace MobileView
         private Button MenuButton;
         private Button BackButton;
         private Button ReloadButton;
-        private TextBox URLTextBox;
         private DataGridView dataGridView1;
+        private TextBox URLTextBox;
     }
 }
