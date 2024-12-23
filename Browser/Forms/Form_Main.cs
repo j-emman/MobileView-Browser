@@ -172,6 +172,10 @@ namespace MobileView
             string extensionstring = string.Join(",\n", extensions);
             MessageBox.Show(extensionstring);
         }
+        private void removeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
         private void PreserveCurrentFormLocation(Form currentForm)
         {
             var state = currentForm.WindowState;
@@ -190,12 +194,5 @@ namespace MobileView
             MessageBox.Show(Browser.WebViewControl.CoreWebView2.Profile.IsInPrivateModeEnabled.ToString());
         }
 
-        private async void removeToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            string siteTitle = await Browser.WebViewControl.CoreWebView2.ExecuteScriptAsync("document.title");
-            siteTitle = siteTitle.Trim('"');
-            Console.WriteLine($"Site Name: {siteTitle}");
-            MessageBox.Show(siteTitle);
-        }
     }
 }

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form_Main));
             WebView21 = new Microsoft.Web.WebView2.WinForms.WebView2();
             TopBarPanel = new Panel();
             MenuButton = new Button();
@@ -195,21 +196,21 @@
             // viewExtensionsToolStripMenuItem
             // 
             viewExtensionsToolStripMenuItem.Name = "viewExtensionsToolStripMenuItem";
-            viewExtensionsToolStripMenuItem.Size = new Size(180, 22);
+            viewExtensionsToolStripMenuItem.Size = new Size(117, 22);
             viewExtensionsToolStripMenuItem.Text = "&View";
             viewExtensionsToolStripMenuItem.Click += ViewExtensionsToolStripMenuItem_Click;
             // 
             // addToolStripMenuItem
             // 
             addToolStripMenuItem.Name = "addToolStripMenuItem";
-            addToolStripMenuItem.Size = new Size(180, 22);
+            addToolStripMenuItem.Size = new Size(117, 22);
             addToolStripMenuItem.Text = "&Add ";
             addToolStripMenuItem.Click += addToolStripMenuItem_Click;
             // 
             // removeToolStripMenuItem
             // 
             removeToolStripMenuItem.Name = "removeToolStripMenuItem";
-            removeToolStripMenuItem.Size = new Size(180, 22);
+            removeToolStripMenuItem.Size = new Size(117, 22);
             removeToolStripMenuItem.Text = "&Remove";
             removeToolStripMenuItem.Click += removeToolStripMenuItem_Click;
             // 
@@ -259,6 +260,7 @@
             Controls.Add(TopBarPanel);
             Controls.Add(MenuPanel);
             ForeColor = SystemColors.HighlightText;
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MainMenuStrip = MenuStrip;
             Name = "Form_Main";
             StartPosition = FormStartPosition.CenterScreen;
