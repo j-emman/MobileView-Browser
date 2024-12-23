@@ -91,6 +91,7 @@ namespace MobileView
             ReloadButton.Size = new Size(25, 26);
             ReloadButton.TabIndex = 1;
             ReloadButton.UseVisualStyleBackColor = true;
+            ReloadButton.Click += ReloadButton_Click;
             // 
             // URLTextBox
             // 
@@ -120,6 +121,7 @@ namespace MobileView
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridView1.Size = new Size(312, 533);
             dataGridView1.TabIndex = 3;
+            dataGridView1.CellDoubleClick += dataGridView1_CellDoubleClick;
             // 
             // Form_HistoryManager
             // 

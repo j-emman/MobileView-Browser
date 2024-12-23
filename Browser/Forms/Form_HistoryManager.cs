@@ -37,21 +37,35 @@ namespace MobileView
             var centerY = location.Y + (currentForm.Height - this.Height) / 2;
             this.Location = new Point(centerX, centerY);
         }
-
-        private async void Form_HistoryManager_Shown(object sender, EventArgs e)
+        private async void BindDataGridView(DataGridView datagridview)
         {
-            try
-            {
-                HistoryTable = await Browser.ReadHistory(Browser.ProfileFolder);
-                dataGridView1.DataSource = HistoryTable;
-                dataGridView1.Columns["Visit Count"].Visible = false;
-                dataGridView1.Columns["URL"].Visible = false;
-                dataGridView1.Columns["ID"].Visible = false;
-            }
-            catch
-            {
-
-            }
+            datagridview.DataSource = null;
+            datagridview.Rows.Clear();
+            datagridview.Columns.Clear();
+            HistoryTable = await Browser.ReadHistory(Browser.ProfileFolder);
+            datagridview.DataSource = HistoryTable;
+            datagridview.Columns["Visit Count"].Visible = false;
+            datagridview.Columns["URL"].Visible = false;
+            datagridview.Columns["ID"].Visible = false;
         }
+        private void Form_HistoryManager_Shown(object sender, EventArgs e)
+        {
+            BindDataGridView(dataGridView1);
+        }
+        private void ReloadButton_Click(object sender, EventArgs e)
+        {
+            BindDataGridView(dataGridView1);
+        }
+        private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            DataGridView datagridview = (DataGridView)sender;
+            DataGridViewRow row = datagridview.Rows[e.RowIndex];
+
+            string? URL = row.Cells["URL"].Value.ToString();
+            if (string.IsNullOrWhiteSpace(URL)) { return; }
+            Browser.Navigation.GoTo(URL);
+            this.Close();
+        }
+
     }
 }
