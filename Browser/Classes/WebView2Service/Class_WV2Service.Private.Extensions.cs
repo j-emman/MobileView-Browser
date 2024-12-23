@@ -40,6 +40,7 @@ namespace WV2Service
 
                     profile = profile ?? await GetProfile(webView, environment);
                     extension = await profile.AddBrowserExtensionAsync(localExtensionPath);
+                    //extension.RemoveAsync();
                 }
                 return extension;
             }
