@@ -61,6 +61,7 @@ namespace MobileView
             Browser.PropertyChanged += WebView_PropertyChanged;
             Browser.NewWindowRequested += OnNewWindowRequested;
             Browser.InitializeMobileWebView();
+            this.DataBindings.Add("Text", Browser, nameof(Browser.SiteTitle));
         }
         private void OnNewWindowRequested(object? sender, CoreWebView2NewWindowRequestedEventArgs e)
         {
@@ -187,6 +188,14 @@ namespace MobileView
         private void addToolStripMenuItem_Click(object sender, EventArgs e)
         {
             MessageBox.Show(Browser.WebViewControl.CoreWebView2.Profile.IsInPrivateModeEnabled.ToString());
+        }
+
+        private async void removeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string siteTitle = await Browser.WebViewControl.CoreWebView2.ExecuteScriptAsync("document.title");
+            siteTitle = siteTitle.Trim('"');
+            Console.WriteLine($"Site Name: {siteTitle}");
+            MessageBox.Show(siteTitle);
         }
     }
 }

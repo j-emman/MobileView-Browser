@@ -166,14 +166,14 @@
             // incognitoToolStripMenuItem
             // 
             incognitoToolStripMenuItem.Name = "incognitoToolStripMenuItem";
-            incognitoToolStripMenuItem.Size = new Size(180, 22);
+            incognitoToolStripMenuItem.Size = new Size(125, 22);
             incognitoToolStripMenuItem.Text = "&Incognito";
             incognitoToolStripMenuItem.Click += IncognitoToolStripMenuItem_Click;
             // 
             // exitToolStripMenuItem
             // 
             exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            exitToolStripMenuItem.Size = new Size(180, 22);
+            exitToolStripMenuItem.Size = new Size(125, 22);
             exitToolStripMenuItem.Text = "&Exit";
             exitToolStripMenuItem.Click += exitToolStripMenuItem_Click;
             // 
@@ -211,6 +211,7 @@
             removeToolStripMenuItem.Name = "removeToolStripMenuItem";
             removeToolStripMenuItem.Size = new Size(180, 22);
             removeToolStripMenuItem.Text = "&Remove";
+            removeToolStripMenuItem.Click += removeToolStripMenuItem_Click;
             // 
             // clearAllBrowserDataToolStripMenuItem
             // 
@@ -237,7 +238,7 @@
             // bookmarksToolStripMenuItem
             // 
             bookmarksToolStripMenuItem.Name = "bookmarksToolStripMenuItem";
-            bookmarksToolStripMenuItem.Size = new Size(180, 22);
+            bookmarksToolStripMenuItem.Size = new Size(133, 22);
             bookmarksToolStripMenuItem.Text = "Bookmarks";
             // 
             // IncognitoToolStripMenuItem1

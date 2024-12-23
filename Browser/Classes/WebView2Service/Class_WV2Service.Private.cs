@@ -203,10 +203,12 @@ namespace WV2Service
             }
         }
         public event EventHandler<string> NavigationChanged;
-        private void OnNavigationCompleted(object? sender, CoreWebView2NavigationCompletedEventArgs e)
+        private async void OnNavigationCompleted(object? sender, CoreWebView2NavigationCompletedEventArgs e)
         {
             if (e.IsSuccess)
             {
+                string siteTitle = await WebViewControl.CoreWebView2.ExecuteScriptAsync("document.title");
+                SiteTitle = siteTitle.Trim('"');
                 NavigationChanged?.Invoke(this, WebViewControl.Source.ToString());
             }
             else

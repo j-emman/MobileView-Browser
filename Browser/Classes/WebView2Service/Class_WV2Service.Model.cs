@@ -8,6 +8,7 @@ namespace WV2Service
     {
         private interface IWV2ServiceModel
         {
+            string SiteTitle { get; set; }
             string ProfileName { get; set; }
             string URL { get; set; }
             string ProfileFolder { get; set; }
@@ -18,6 +19,7 @@ namespace WV2Service
         }
         private class WV2ServiceModel : IWV2ServiceModel
         {
+            public string SiteTitle { get; set; }
             public string ProfileName { get; set; }
             public string URL { get; set; }
             public string ProfileFolder { get; set; }
