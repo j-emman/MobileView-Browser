@@ -12,48 +12,88 @@ namespace WV2Service
 {
     public partial class WebViewService
     {
+        private void InitializeBrowser()
+        {
+            InitializeProfile();
+            EnableMobileView();
+            InitializeExtensions();
+            EnableNewWindowRequest();
+            EnableNavigationMonitoring();
+        }
         private async Task<CoreWebView2Profile> GetProfile(WebView2 webView, CoreWebView2Environment environment)
         {
-            await webView.EnsureCoreWebView2Async(environment);
-            return  webView.CoreWebView2.Profile;
+            try
+            {
+                await webView.EnsureCoreWebView2Async(environment);
+                return  webView.CoreWebView2.Profile;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Failed to get profile:\n{ex.Message}");
+            }
         }
         private async Task<CoreWebView2Environment> InitializeWebEnviromentAsync(WebView2 webView, string profileName)
         {
-            //string userDataFolder = Path.Combine( Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "MyWebView2AppData", profileName);
-            string appBaseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            ProfileFolder = Path.Combine(appBaseDirectory, "WebControl", "profiles", profileName);
+            try
+            {
+                // Path if the desired directory is in the locap appdata dir. I prefer it be in the base dir of the app itself
+                //string userDataFolder = Path.Combine( Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "MyWebView2AppData", profileName);
+                string appBaseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+                ProfileFolder = Path.Combine(appBaseDirectory, "WebControl", "profiles", profileName);
 
-            CoreWebView2EnvironmentOptions environmentOptions = new CoreWebView2EnvironmentOptions { AreBrowserExtensionsEnabled = true };
-            CoreWebView2Environment environment = await CoreWebView2Environment.CreateAsync(null, ProfileFolder, environmentOptions);
-            await webView.EnsureCoreWebView2Async(environment);
-            return environment;
+                CoreWebView2EnvironmentOptions environmentOptions = new CoreWebView2EnvironmentOptions { AreBrowserExtensionsEnabled = true };
+                CoreWebView2Environment environment = await CoreWebView2Environment.CreateAsync(null, ProfileFolder, environmentOptions);
+                await webView.EnsureCoreWebView2Async(environment);
+                return environment;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Failed to initialize environment:\n{ex.Message}");
+            }
         }
         private async Task<CoreWebView2Environment> InitializeSharedWebEnviromentAsync(WebView2 webView, string FolderPath)
         {
-            CoreWebView2EnvironmentOptions environmentOptions = new CoreWebView2EnvironmentOptions { AreBrowserExtensionsEnabled = true };
-            CoreWebView2Environment environment = await CoreWebView2Environment.CreateAsync(null, FolderPath, environmentOptions);
-            await webView.EnsureCoreWebView2Async(environment);
-            return environment;
+            try
+            {
+                CoreWebView2EnvironmentOptions environmentOptions = new CoreWebView2EnvironmentOptions { AreBrowserExtensionsEnabled = true };
+                CoreWebView2Environment environment = await CoreWebView2Environment.CreateAsync(null, FolderPath, environmentOptions);
+                await webView.EnsureCoreWebView2Async(environment);
+                return environment;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Failed to initialize environment:\n{ex.Message}");
+            }
         }
         private async Task<CoreWebView2Environment> Incognito_InitializeWebEnviromentAsync(WebView2 webView, string profileName)
         {
-            _TempFolder = Path.Combine(Path.GetTempPath(), "Incognito_" + Guid.NewGuid().ToString());
-            Directory.CreateDirectory(_TempFolder);
+            try
+            {
+                _TempFolder = Path.Combine(Path.GetTempPath(), "Incognito_" + Guid.NewGuid().ToString());
+                Directory.CreateDirectory(_TempFolder);
 
-            CoreWebView2EnvironmentOptions environmentOptions = new CoreWebView2EnvironmentOptions { AreBrowserExtensionsEnabled = true };
-            CoreWebView2Environment environment = await CoreWebView2Environment.CreateAsync(null, _TempFolder, environmentOptions);
-            CoreWebView2ControllerOptions options = environment.CreateCoreWebView2ControllerOptions();
-            options.IsInPrivateModeEnabled = true;
-            options.ProfileName = profileName;
-            await webView.EnsureCoreWebView2Async(environment, options);
-            //CoreWebView2Controller controller = await environment.CreateCoreWebView2ControllerAsync(webView.Handle, options);
-            return environment;
+                CoreWebView2EnvironmentOptions environmentOptions = new CoreWebView2EnvironmentOptions { AreBrowserExtensionsEnabled = true };
+
+                CoreWebView2Environment environment = await CoreWebView2Environment.CreateAsync(null, _TempFolder, environmentOptions);
+
+                CoreWebView2ControllerOptions options = environment.CreateCoreWebView2ControllerOptions();
+                options.IsInPrivateModeEnabled = true;
+                options.ProfileName = profileName;
+
+                await webView.EnsureCoreWebView2Async(environment, options);
+                //CoreWebView2Controller controller = await environment.CreateCoreWebView2ControllerAsync(webView.Handle, options);
+                return environment;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Failed to initialize environment:\n{ex.Message}");
+            }
         }
         private async Task<CoreWebView2BrowserExtension> AddExtensionsAsync(WebView2 webView, CoreWebView2Environment environment, CoreWebView2Profile profile)
         {
-            CoreWebView2BrowserExtension extension = null;
             try
             {
+                CoreWebView2BrowserExtension extension = null;
                 profile = profile != null ? profile : await GetProfile(webView, environment);
                 foreach (string extensionPath in ExtensionsPath)
                 {
@@ -63,15 +103,13 @@ namespace WV2Service
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Failed to load extensions: {ex.Message}");
+                throw new Exception($"Failed to load extensions:\n{ex.Message}");
             }
-            return extension;
         }
         private async Task<IReadOnlyList<CoreWebView2BrowserExtension>> GetBrowserExtensionsAsync(WebView2 webView, CoreWebView2Environment environment, CoreWebView2Profile profile)
         {
             try
             {
-
                 profile = profile != null ? profile : await GetProfile(webView, environment);
                 IReadOnlyList<CoreWebView2BrowserExtension> extensions = await profile.GetBrowserExtensionsAsync();
 
@@ -84,9 +122,8 @@ namespace WV2Service
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error retrieving extensions: {ex.Message}");
+                throw new Exception($"Error retrieving extensions:\n{ex.Message}");
             }
-            return null;
         }
         private async void EnableMobileView(WebView2 webView, CoreWebView2Environment environment)
         {
@@ -101,39 +138,58 @@ namespace WV2Service
         }
         private async void ClearAllBrowsingData(WebView2 webView, CoreWebView2Environment environment, CoreWebView2Profile profile)
         {
-            profile = profile != null? profile : await GetProfile(webView, environment);
-            //await webView.EnsureCoreWebView2Async(environment);
-            await profile.ClearBrowsingDataAsync(
-                CoreWebView2BrowsingDataKinds.Cookies |
-                CoreWebView2BrowsingDataKinds.BrowsingHistory |
-                CoreWebView2BrowsingDataKinds.GeneralAutofill |
-                CoreWebView2BrowsingDataKinds.PasswordAutosave |
-                CoreWebView2BrowsingDataKinds.ServiceWorkers |
-                CoreWebView2BrowsingDataKinds.CacheStorage |
-                CoreWebView2BrowsingDataKinds.DownloadHistory |
-                CoreWebView2BrowsingDataKinds.DiskCache);
+            try
+            {
+                profile = profile != null? profile : await GetProfile(webView, environment);
+                await profile.ClearBrowsingDataAsync(
+                    CoreWebView2BrowsingDataKinds.Cookies |
+                    CoreWebView2BrowsingDataKinds.BrowsingHistory |
+                    CoreWebView2BrowsingDataKinds.GeneralAutofill |
+                    CoreWebView2BrowsingDataKinds.PasswordAutosave |
+                    CoreWebView2BrowsingDataKinds.ServiceWorkers |
+                    CoreWebView2BrowsingDataKinds.CacheStorage |
+                    CoreWebView2BrowsingDataKinds.DownloadHistory |
+                    CoreWebView2BrowsingDataKinds.DiskCache);
+                webView.Reload();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Failed to clear data:\n{ex.Message}");
+            }
         }
         private async void ClearBrowsingDataBetweenDateRange(WebView2 webView, CoreWebView2Environment environment, CoreWebView2Profile profile, DateTime startDate, DateTime endDate)
         {
-            profile = profile != null ? profile : await GetProfile(webView, environment);
-            //await webView.EnsureCoreWebView2Async(environment);
-            await profile.ClearBrowsingDataAsync(
-                CoreWebView2BrowsingDataKinds.Cookies |
-                CoreWebView2BrowsingDataKinds.BrowsingHistory |
-                CoreWebView2BrowsingDataKinds.GeneralAutofill |
-                CoreWebView2BrowsingDataKinds.PasswordAutosave |
-                CoreWebView2BrowsingDataKinds.ServiceWorkers |
-                CoreWebView2BrowsingDataKinds.CacheStorage |
-                CoreWebView2BrowsingDataKinds.DownloadHistory |
-                CoreWebView2BrowsingDataKinds.DiskCache, startDate, endDate);
-            webView.Reload();
+            try
+            {
+                profile = profile != null ? profile : await GetProfile(webView, environment);
+                await profile.ClearBrowsingDataAsync(
+                    CoreWebView2BrowsingDataKinds.Cookies |
+                    CoreWebView2BrowsingDataKinds.BrowsingHistory |
+                    CoreWebView2BrowsingDataKinds.GeneralAutofill |
+                    CoreWebView2BrowsingDataKinds.PasswordAutosave |
+                    CoreWebView2BrowsingDataKinds.ServiceWorkers |
+                    CoreWebView2BrowsingDataKinds.CacheStorage |
+                    CoreWebView2BrowsingDataKinds.DownloadHistory |
+                    CoreWebView2BrowsingDataKinds.DiskCache, startDate, endDate);
+                webView.Reload();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Failed to clear data:\n{ex.Message}");
+            }
         }
         private async void ClearBrowserData(WebView2 webView, CoreWebView2Environment environment, CoreWebView2Profile profile, CoreWebView2BrowsingDataKinds dataKinds)
         {
-            profile = profile != null ? profile : await GetProfile(webView, environment);
-            //await webView.EnsureCoreWebView2Async(environment);
-            await profile.ClearBrowsingDataAsync(dataKinds);
-            webView.Reload();
+            try
+            {
+                profile = profile != null ? profile : await GetProfile(webView, environment);
+                await profile.ClearBrowsingDataAsync(dataKinds);
+                webView.Reload();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Failed to clear data:\n{ex.Message}");
+            }
         }
         private async void ClearAllBrowserData(WebView2 webView, CoreWebView2Environment environment, CoreWebView2Profile profile)
         {
@@ -181,8 +237,6 @@ namespace WV2Service
             webView.NavigationStarting += OnNavigationStarting;
             webView.NavigationCompleted += OnNavigationCompleted;
         }
-
-        public event EventHandler<CoreWebView2NewWindowRequestedEventArgs> NewWindowRequested;
         private void CoreWebView2_NewWindowRequested(object? sender, CoreWebView2NewWindowRequestedEventArgs e)
         {
             NewWindowRequested?.Invoke(sender, e);
@@ -202,7 +256,6 @@ namespace WV2Service
                 Debug.WriteLine($"Popup blocked: {e.Uri}");
             }
         }
-        public event EventHandler<string> NavigationChanged;
         private async void OnNavigationCompleted(object? sender, CoreWebView2NavigationCompletedEventArgs e)
         {
             if (e.IsSuccess)

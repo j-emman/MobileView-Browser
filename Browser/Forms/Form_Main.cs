@@ -60,7 +60,7 @@ namespace MobileView
             };
             Browser.PropertyChanged += WebView_PropertyChanged;
             Browser.NewWindowRequested += OnNewWindowRequested;
-            Browser.InitializeMobileWebView();
+            Browser.InitializeWebView();
             this.DataBindings.Add("Text", Browser, nameof(Browser.SiteTitle));
         }
         private void OnNewWindowRequested(object? sender, CoreWebView2NewWindowRequestedEventArgs e)

@@ -12,6 +12,8 @@ namespace WV2Service
         public ClearManager Clear { get; }
         public NavigationManager Navigation { get; }
         public event PropertyChangedEventHandler? PropertyChanged;
+        public event EventHandler<CoreWebView2NewWindowRequestedEventArgs> NewWindowRequested;
+        public event EventHandler<string> NavigationChanged;
 
         public WebView2 WebViewControl
         {
