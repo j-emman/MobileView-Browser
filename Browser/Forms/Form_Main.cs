@@ -43,7 +43,7 @@ namespace MobileView
                 ExtensionsPath = new List<string> { @"C:\Users\admin\Documents\Training\Misc\Browser_Extensions\uBlock0" }
             };
             Browser.PropertyChanged += WebView_PropertyChanged;
-            Browser.Incognito_InitializeMobileWebView();
+            Browser.Incognito_InitializeWebView();
 
         }
         private void InitializeBrowser()

@@ -21,12 +21,12 @@ namespace WV2Service
             InitializeSharedEnviroment();
             InitializeBrowser();
         }
-        public void InitializeSharedMobileWebView()
+        public void InitializeSharedWebView()
         {
             InitializeSharedEnviroment();
             InitializeBrowser();
         }
-        public void Incognito_InitializeMobileWebView()
+        public void Incognito_InitializeWebView()
         {
             Incognito_InitializeEnviroment();
             InitializeBrowser();
