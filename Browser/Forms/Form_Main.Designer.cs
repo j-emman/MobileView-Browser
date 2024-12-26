@@ -52,6 +52,8 @@
             clearAllBrowserDataToolStripMenuItem = new ToolStripMenuItem();
             IncognitoToolStripMenuItem1 = new ToolStripMenuItem();
             TitleBarPanel = new Panel();
+            FormTextLabel = new Label();
+            pictureBox1 = new PictureBox();
             MinimizeButton = new Button();
             CloseButton = new Button();
             ((System.ComponentModel.ISupportInitialize)WebView21).BeginInit();
@@ -59,6 +61,7 @@
             MenuPanel.SuspendLayout();
             MenuStrip.SuspendLayout();
             TitleBarPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
             // WebView21
@@ -67,9 +70,9 @@
             WebView21.CreationProperties = null;
             WebView21.DefaultBackgroundColor = Color.White;
             WebView21.Dock = DockStyle.Fill;
-            WebView21.Location = new Point(0, 86);
+            WebView21.Location = new Point(0, 83);
             WebView21.Name = "WebView21";
-            WebView21.Size = new Size(321, 507);
+            WebView21.Size = new Size(321, 510);
             WebView21.TabIndex = 0;
             WebView21.ZoomFactor = 1D;
             // 
@@ -81,7 +84,7 @@
             TopBarPanel.Controls.Add(ReloadButton);
             TopBarPanel.Controls.Add(URLTextBox);
             TopBarPanel.Dock = DockStyle.Top;
-            TopBarPanel.Location = new Point(0, 55);
+            TopBarPanel.Location = new Point(0, 52);
             TopBarPanel.Name = "TopBarPanel";
             TopBarPanel.Size = new Size(321, 31);
             TopBarPanel.TabIndex = 1;
@@ -145,7 +148,7 @@
             MenuPanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             MenuPanel.Controls.Add(MenuStrip);
             MenuPanel.Dock = DockStyle.Top;
-            MenuPanel.Location = new Point(0, 31);
+            MenuPanel.Location = new Point(0, 28);
             MenuPanel.Name = "MenuPanel";
             MenuPanel.Size = new Size(321, 24);
             MenuPanel.TabIndex = 2;
@@ -265,13 +268,34 @@
             // TitleBarPanel
             // 
             TitleBarPanel.BackColor = Color.FromArgb(23, 23, 23);
+            TitleBarPanel.Controls.Add(FormTextLabel);
+            TitleBarPanel.Controls.Add(pictureBox1);
             TitleBarPanel.Controls.Add(MinimizeButton);
             TitleBarPanel.Controls.Add(CloseButton);
             TitleBarPanel.Dock = DockStyle.Top;
             TitleBarPanel.Location = new Point(0, 0);
             TitleBarPanel.Name = "TitleBarPanel";
-            TitleBarPanel.Size = new Size(321, 31);
+            TitleBarPanel.Size = new Size(321, 28);
             TitleBarPanel.TabIndex = 3;
+            // 
+            // FormTextLabel
+            // 
+            FormTextLabel.AutoSize = true;
+            FormTextLabel.Location = new Point(26, 7);
+            FormTextLabel.Name = "FormTextLabel";
+            FormTextLabel.Size = new Size(38, 15);
+            FormTextLabel.TabIndex = 7;
+            FormTextLabel.Text = "label1";
+            // 
+            // pictureBox1
+            // 
+            pictureBox1.BackgroundImage = Properties.Resources.public_30dp_FFFFFF;
+            pictureBox1.BackgroundImageLayout = ImageLayout.Stretch;
+            pictureBox1.Location = new Point(0, 1);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(25, 25);
+            pictureBox1.TabIndex = 6;
+            pictureBox1.TabStop = false;
             // 
             // MinimizeButton
             // 
@@ -280,7 +304,7 @@
             MinimizeButton.BackgroundImageLayout = ImageLayout.Zoom;
             MinimizeButton.FlatAppearance.BorderColor = Color.FromArgb(23, 23, 23);
             MinimizeButton.FlatStyle = FlatStyle.Flat;
-            MinimizeButton.Location = new Point(263, 2);
+            MinimizeButton.Location = new Point(263, 1);
             MinimizeButton.Name = "MinimizeButton";
             MinimizeButton.Size = new Size(25, 26);
             MinimizeButton.TabIndex = 5;
@@ -293,7 +317,7 @@
             CloseButton.BackgroundImageLayout = ImageLayout.Zoom;
             CloseButton.FlatAppearance.BorderColor = Color.FromArgb(23, 23, 23);
             CloseButton.FlatStyle = FlatStyle.Flat;
-            CloseButton.Location = new Point(292, 2);
+            CloseButton.Location = new Point(292, 1);
             CloseButton.Name = "CloseButton";
             CloseButton.Size = new Size(25, 26);
             CloseButton.TabIndex = 4;
@@ -325,6 +349,8 @@
             MenuStrip.ResumeLayout(false);
             MenuStrip.PerformLayout();
             TitleBarPanel.ResumeLayout(false);
+            TitleBarPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -356,5 +382,7 @@
         private Panel TitleBarPanel;
         private Button CloseButton;
         private Button MinimizeButton;
+        private Label FormTextLabel;
+        private PictureBox pictureBox1;
     }
 }

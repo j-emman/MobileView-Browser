@@ -11,6 +11,7 @@ namespace MobileView.Classes
     {
         private Form _ParentForm;
         private Panel _Panel;
+        private Label _Label;
         private Button _CloseButton;
         private Button _MinimizeButton;
         private Button _MaximizeButton;
@@ -83,9 +84,10 @@ namespace MobileView.Classes
                 _Panel.MouseDown += Panel_MouseDown;
             }
         }
-        public TitleBar(Form parentForm, Panel panel, Button closeButton, Button minimizeButton)
+        public TitleBar(Form parentForm, Panel panel, Label formLabel,Button closeButton, Button minimizeButton)
         {
             _Panel = panel;
+            _Label = formLabel;
             _ParentForm = parentForm;
             _CloseButton = closeButton;
             _MinimizeButton = minimizeButton;
@@ -93,6 +95,7 @@ namespace MobileView.Classes
             if (_Panel != null)
             {
                 _Panel.MouseDown += Panel_MouseDown;
+                _Label.MouseDown += Panel_MouseDown;
                 _CloseButton.Click += CloseButton_Click;
                 _MinimizeButton.Click += MinimizeButton_Click;
             }

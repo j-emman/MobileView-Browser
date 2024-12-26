@@ -24,6 +24,7 @@ namespace MobileView
             (
                 parentForm: this,
                 panel: TitleBarPanel,
+                formLabel: FormTextLabel,
                 closeButton: CloseButton,
                 minimizeButton: MinimizeButton
             );
@@ -77,7 +78,7 @@ namespace MobileView
             Browser.PropertyChanged += WebView_PropertyChanged;
             Browser.NewWindowRequested += OnNewWindowRequested;
             Browser.InitializeWebView();
-            //this.DataBindings.Add("Text", Browser, nameof(Browser.SiteTitle));
+            FormTextLabel.DataBindings.Add("Text", Browser, nameof(Browser.SiteTitle));
         }
         private void PreserveCurrentFormLocation(Form currentForm)
         {
