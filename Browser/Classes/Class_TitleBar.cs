@@ -14,47 +14,29 @@ namespace MobileView.Classes
         private Button _CloseButton;
         private Button _MinimizeButton;
         private Button _MaximizeButton;
-
         private bool isMaximized = false;
+
         [DllImport("user32.DLL", EntryPoint = "ReleaseCapture")] public extern static void ReleaseCapture();
         [DllImport("user32.DLL", EntryPoint = "SendMessage")] public extern static void SendMessage(IntPtr hWnd, int wMsg, int wParam, int lParam);
-
-        public TitleBar() 
+        private void Panel_MouseDown(object? sender, MouseEventArgs e)
         {
-            if (_Panel != null)
+            if (this._ParentForm != null)
             {
-                _Panel.MouseDown += Panel_MouseDown;
+                ReleaseCapture();
+                SendMessage(this._ParentForm.Handle, 0x112, 0xf012, 0);
             }
         }
-        public TitleBar(Form parentForm, Panel panel, Button closeButton, Button minimizeButton)
+        private void CloseButton_Click(object? sender, EventArgs e)
         {
-            _Panel = panel;
-            _ParentForm = parentForm;
-            _CloseButton = closeButton;
-            _MinimizeButton = minimizeButton;
-
-            if (_Panel != null)
-            {
-                _Panel.MouseDown += Panel_MouseDown;
-                _CloseButton.Click += CloseButton_Click;
-                _MinimizeButton.Click += MinimizeButton_Click;
-            }
+            Application.Exit();
         }
-        public TitleBar( Form parentForm, Panel panel, Button closeButton, Button maximizeButton, Button minimizeButton) 
-        { 
-            _Panel = panel;
-            _ParentForm = parentForm;  
-            _CloseButton = closeButton;
-            _MinimizeButton = minimizeButton;
-            _MaximizeButton = maximizeButton;
-
-            if (_Panel != null)
-            {
-                _Panel.MouseDown += Panel_MouseDown;
-                _CloseButton.Click += CloseButton_Click;
-                _MinimizeButton.Click += MinimizeButton_Click;
-                _MaximizeButton.Click += MaximizeButton_Click;
-            }
+        private void MinimizeButton_Click(object? sender, EventArgs e)
+        {
+            MinimizeWindow();
+        }
+        private void MaximizeButton_Click(object? sender, EventArgs e)
+        {
+            MaximizeWindow();
         }
         public void AttachPanelMouseDownEvent(Panel externalPanel)
         {
@@ -94,25 +76,42 @@ namespace MobileView.Classes
                 this._ParentForm.WindowState = FormWindowState.Minimized;
             }
         }
-        private void Panel_MouseDown(object? sender, MouseEventArgs e)
+        public TitleBar(Form parentForm, Panel panel) 
         {
-            if (this._ParentForm != null)
+            if (_Panel != null)
             {
-                ReleaseCapture();
-                SendMessage(this._ParentForm.Handle, 0x112, 0xf012, 0);
+                _Panel.MouseDown += Panel_MouseDown;
             }
         }
-        private void CloseButton_Click(object? sender, EventArgs e)
+        public TitleBar(Form parentForm, Panel panel, Button closeButton, Button minimizeButton)
         {
-            Application.Exit();
+            _Panel = panel;
+            _ParentForm = parentForm;
+            _CloseButton = closeButton;
+            _MinimizeButton = minimizeButton;
+
+            if (_Panel != null)
+            {
+                _Panel.MouseDown += Panel_MouseDown;
+                _CloseButton.Click += CloseButton_Click;
+                _MinimizeButton.Click += MinimizeButton_Click;
+            }
         }
-        private void MinimizeButton_Click(object? sender, EventArgs e)
-        {
-            MinimizeWindow();
-        }
-        private void MaximizeButton_Click(object? sender, EventArgs e)
-        {
-            MaximizeWindow();
+        public TitleBar( Form parentForm, Panel panel, Button closeButton, Button maximizeButton, Button minimizeButton) 
+        { 
+            _Panel = panel;
+            _ParentForm = parentForm;  
+            _CloseButton = closeButton;
+            _MinimizeButton = minimizeButton;
+            _MaximizeButton = maximizeButton;
+
+            if (_Panel != null)
+            {
+                _Panel.MouseDown += Panel_MouseDown;
+                _CloseButton.Click += CloseButton_Click;
+                _MinimizeButton.Click += MinimizeButton_Click;
+                _MaximizeButton.Click += MaximizeButton_Click;
+            }
         }
     }
 }

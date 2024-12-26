@@ -264,6 +264,7 @@
             // 
             // TitleBarPanel
             // 
+            TitleBarPanel.BackColor = Color.FromArgb(23, 23, 23);
             TitleBarPanel.Controls.Add(MinimizeButton);
             TitleBarPanel.Controls.Add(CloseButton);
             TitleBarPanel.Dock = DockStyle.Top;
@@ -277,7 +278,7 @@
             MinimizeButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             MinimizeButton.BackgroundImage = Properties.Resources.minimize_30dp_FFFFFF;
             MinimizeButton.BackgroundImageLayout = ImageLayout.Zoom;
-            MinimizeButton.FlatAppearance.BorderColor = Color.FromArgb(33, 33, 33);
+            MinimizeButton.FlatAppearance.BorderColor = Color.FromArgb(23, 23, 23);
             MinimizeButton.FlatStyle = FlatStyle.Flat;
             MinimizeButton.Location = new Point(263, 2);
             MinimizeButton.Name = "MinimizeButton";
@@ -290,7 +291,7 @@
             CloseButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             CloseButton.BackgroundImage = Properties.Resources.close_30dp_FFFFFF;
             CloseButton.BackgroundImageLayout = ImageLayout.Zoom;
-            CloseButton.FlatAppearance.BorderColor = Color.FromArgb(33, 33, 33);
+            CloseButton.FlatAppearance.BorderColor = Color.FromArgb(23, 23, 23);
             CloseButton.FlatStyle = FlatStyle.Flat;
             CloseButton.Location = new Point(292, 2);
             CloseButton.Name = "CloseButton";
