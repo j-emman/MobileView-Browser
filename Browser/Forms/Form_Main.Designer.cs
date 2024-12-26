@@ -283,9 +283,9 @@
             FormTextLabel.AutoSize = true;
             FormTextLabel.Location = new Point(26, 7);
             FormTextLabel.Name = "FormTextLabel";
-            FormTextLabel.Size = new Size(38, 15);
+            FormTextLabel.Size = new Size(58, 15);
             FormTextLabel.TabIndex = 7;
-            FormTextLabel.Text = "label1";
+            FormTextLabel.Text = "Page Title";
             // 
             // pictureBox1
             // 
