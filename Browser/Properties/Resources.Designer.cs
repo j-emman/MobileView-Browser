@@ -73,9 +73,29 @@ namespace MobileView.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap close_30dp_FFFFFF {
+            get {
+                object obj = ResourceManager.GetObject("close_30dp_FFFFFF", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap menu_25dp_FFFFFF {
             get {
                 object obj = ResourceManager.GetObject("menu_25dp_FFFFFF", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap minimize_30dp_FFFFFF {
+            get {
+                object obj = ResourceManager.GetObject("minimize_30dp_FFFFFF", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

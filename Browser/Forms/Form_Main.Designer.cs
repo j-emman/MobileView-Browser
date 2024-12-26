@@ -51,10 +51,14 @@
             removeToolStripMenuItem = new ToolStripMenuItem();
             clearAllBrowserDataToolStripMenuItem = new ToolStripMenuItem();
             IncognitoToolStripMenuItem1 = new ToolStripMenuItem();
+            TitleBarPanel = new Panel();
+            MinimizeButton = new Button();
+            CloseButton = new Button();
             ((System.ComponentModel.ISupportInitialize)WebView21).BeginInit();
             TopBarPanel.SuspendLayout();
             MenuPanel.SuspendLayout();
             MenuStrip.SuspendLayout();
+            TitleBarPanel.SuspendLayout();
             SuspendLayout();
             // 
             // WebView21
@@ -63,9 +67,9 @@
             WebView21.CreationProperties = null;
             WebView21.DefaultBackgroundColor = Color.White;
             WebView21.Dock = DockStyle.Fill;
-            WebView21.Location = new Point(0, 55);
+            WebView21.Location = new Point(0, 86);
             WebView21.Name = "WebView21";
-            WebView21.Size = new Size(312, 509);
+            WebView21.Size = new Size(321, 507);
             WebView21.TabIndex = 0;
             WebView21.ZoomFactor = 1D;
             // 
@@ -77,9 +81,9 @@
             TopBarPanel.Controls.Add(ReloadButton);
             TopBarPanel.Controls.Add(URLTextBox);
             TopBarPanel.Dock = DockStyle.Top;
-            TopBarPanel.Location = new Point(0, 24);
+            TopBarPanel.Location = new Point(0, 55);
             TopBarPanel.Name = "TopBarPanel";
-            TopBarPanel.Size = new Size(312, 31);
+            TopBarPanel.Size = new Size(321, 31);
             TopBarPanel.TabIndex = 1;
             // 
             // MenuButton
@@ -89,7 +93,7 @@
             MenuButton.BackgroundImageLayout = ImageLayout.Stretch;
             MenuButton.FlatAppearance.BorderColor = Color.FromArgb(33, 33, 33);
             MenuButton.FlatStyle = FlatStyle.Flat;
-            MenuButton.Location = new Point(283, 3);
+            MenuButton.Location = new Point(292, 3);
             MenuButton.Name = "MenuButton";
             MenuButton.Size = new Size(25, 26);
             MenuButton.TabIndex = 3;
@@ -130,7 +134,7 @@
             URLTextBox.ForeColor = Color.White;
             URLTextBox.Location = new Point(65, 4);
             URLTextBox.Name = "URLTextBox";
-            URLTextBox.Size = new Size(214, 23);
+            URLTextBox.Size = new Size(223, 23);
             URLTextBox.TabIndex = 0;
             URLTextBox.KeyDown += URLTextBox_KeyDown;
             URLTextBox.MouseDown += URLTextBox_MouseDown;
@@ -141,9 +145,9 @@
             MenuPanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             MenuPanel.Controls.Add(MenuStrip);
             MenuPanel.Dock = DockStyle.Top;
-            MenuPanel.Location = new Point(0, 0);
+            MenuPanel.Location = new Point(0, 31);
             MenuPanel.Name = "MenuPanel";
-            MenuPanel.Size = new Size(312, 24);
+            MenuPanel.Size = new Size(321, 24);
             MenuPanel.TabIndex = 2;
             MenuPanel.Visible = false;
             // 
@@ -153,7 +157,7 @@
             MenuStrip.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, profileToolStripMenuItem, settingsToolStripMenuItem, IncognitoToolStripMenuItem1 });
             MenuStrip.Location = new Point(0, 0);
             MenuStrip.Name = "MenuStrip";
-            MenuStrip.Size = new Size(312, 24);
+            MenuStrip.Size = new Size(321, 24);
             MenuStrip.TabIndex = 0;
             // 
             // fileToolStripMenuItem
@@ -190,7 +194,7 @@
             // 
             historyToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { clearAllBrowsingDataToolStripMenuItem });
             historyToolStripMenuItem.Name = "historyToolStripMenuItem";
-            historyToolStripMenuItem.Size = new Size(180, 22);
+            historyToolStripMenuItem.Size = new Size(133, 22);
             historyToolStripMenuItem.Text = "&History";
             historyToolStripMenuItem.Click += ViewHistoryToolStripMenuItem_Click;
             // 
@@ -204,7 +208,7 @@
             // bookmarksToolStripMenuItem
             // 
             bookmarksToolStripMenuItem.Name = "bookmarksToolStripMenuItem";
-            bookmarksToolStripMenuItem.Size = new Size(180, 22);
+            bookmarksToolStripMenuItem.Size = new Size(133, 22);
             bookmarksToolStripMenuItem.Text = "Bookmarks";
             // 
             // settingsToolStripMenuItem
@@ -258,15 +262,52 @@
             IncognitoToolStripMenuItem1.Text = "&Incognito";
             IncognitoToolStripMenuItem1.Click += IncognitoToolStripMenuItem_Click;
             // 
+            // TitleBarPanel
+            // 
+            TitleBarPanel.Controls.Add(MinimizeButton);
+            TitleBarPanel.Controls.Add(CloseButton);
+            TitleBarPanel.Dock = DockStyle.Top;
+            TitleBarPanel.Location = new Point(0, 0);
+            TitleBarPanel.Name = "TitleBarPanel";
+            TitleBarPanel.Size = new Size(321, 31);
+            TitleBarPanel.TabIndex = 3;
+            // 
+            // MinimizeButton
+            // 
+            MinimizeButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            MinimizeButton.BackgroundImage = Properties.Resources.minimize_30dp_FFFFFF;
+            MinimizeButton.BackgroundImageLayout = ImageLayout.Zoom;
+            MinimizeButton.FlatAppearance.BorderColor = Color.FromArgb(33, 33, 33);
+            MinimizeButton.FlatStyle = FlatStyle.Flat;
+            MinimizeButton.Location = new Point(263, 2);
+            MinimizeButton.Name = "MinimizeButton";
+            MinimizeButton.Size = new Size(25, 26);
+            MinimizeButton.TabIndex = 5;
+            MinimizeButton.UseVisualStyleBackColor = true;
+            // 
+            // CloseButton
+            // 
+            CloseButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            CloseButton.BackgroundImage = Properties.Resources.close_30dp_FFFFFF;
+            CloseButton.BackgroundImageLayout = ImageLayout.Zoom;
+            CloseButton.FlatAppearance.BorderColor = Color.FromArgb(33, 33, 33);
+            CloseButton.FlatStyle = FlatStyle.Flat;
+            CloseButton.Location = new Point(292, 2);
+            CloseButton.Name = "CloseButton";
+            CloseButton.Size = new Size(25, 26);
+            CloseButton.TabIndex = 4;
+            CloseButton.UseVisualStyleBackColor = true;
+            // 
             // Form_Main
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(33, 33, 33);
-            ClientSize = new Size(312, 564);
+            ClientSize = new Size(321, 593);
             Controls.Add(WebView21);
             Controls.Add(TopBarPanel);
             Controls.Add(MenuPanel);
+            Controls.Add(TitleBarPanel);
             ForeColor = SystemColors.HighlightText;
             Icon = (Icon)resources.GetObject("$this.Icon");
             MainMenuStrip = MenuStrip;
@@ -282,6 +323,7 @@
             MenuPanel.PerformLayout();
             MenuStrip.ResumeLayout(false);
             MenuStrip.PerformLayout();
+            TitleBarPanel.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -310,5 +352,8 @@
         private ToolStripMenuItem removeToolStripMenuItem;
         private ToolStripMenuItem historyToolStripMenuItem;
         private ToolStripMenuItem clearAllBrowsingDataToolStripMenuItem;
+        private Panel TitleBarPanel;
+        private Button CloseButton;
+        private Button MinimizeButton;
     }
 }
