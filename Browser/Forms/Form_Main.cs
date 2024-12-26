@@ -3,20 +3,32 @@ using Microsoft.Web.WebView2.WinForms;
 using System.ComponentModel;
 using System.Xml.Serialization;
 using WV2Service;
+using MobileView.Classes;
 
 namespace MobileView
 {
     public partial class Form_Main : Form
     {
         private WebViewService Browser;
+        private TitleBar titleBar;
         private bool incognito;
         private string url;
 
         public Form_Main(bool _incognito = false, Form? currentForm = null, string? _url = null)
         {
+            InitializeComponent();
+
             incognito = _incognito;
             url = _url;
-            InitializeComponent();
+            titleBar = new TitleBar
+            (
+                parentForm: this,
+                panel: TitleBarPanel,
+                formLabel: FormTextLabel,
+                closeButton: CloseButton,
+                minimizeButton: MinimizeButton
+            );
+
             if (_incognito)
             {
                 InitializeIncognito(currentForm);
@@ -30,6 +42,10 @@ namespace MobileView
                 return;
             }
             InitializeBrowser(currentForm);
+
+            this.MaximizedBounds = Screen.FromHandle(this.Handle).WorkingArea;
+            this.SetStyle(ControlStyles.ResizeRedraw, true);
+            this.ControlBox = false;
         }
         private void InitializeIncognito(Form currentForm)
         {
@@ -62,7 +78,7 @@ namespace MobileView
             Browser.PropertyChanged += WebView_PropertyChanged;
             Browser.NewWindowRequested += OnNewWindowRequested;
             Browser.InitializeWebView();
-            this.DataBindings.Add("Text", Browser, nameof(Browser.SiteTitle));
+            FormTextLabel.DataBindings.Add("Text", Browser, nameof(Browser.SiteTitle));
         }
         private void PreserveCurrentFormLocation(Form currentForm)
         {
@@ -120,12 +136,12 @@ namespace MobileView
         }
         private void Form_Main_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (incognito) 
-            { 
+            if (incognito)
+            {
                 Browser.Navigation.Incognito_DisposeSession();
                 this.Hide();
                 this.Dispose();
-                return; 
+                return;
             }
             Application.Exit();
         }

@@ -65,5 +65,17 @@ namespace MobileView
             Browser.Navigation.GoTo(URL);
             this.Close();
         }
+        private void MenuButton_Click(object sender, EventArgs e)
+        {
+            MenuPanel.Visible = !MenuPanel.Visible;
+        }
+        private void clearAllBrowsingHistoryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Browser.Clear.AllBrowsingData();
+        }
+        private void BackButton_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }

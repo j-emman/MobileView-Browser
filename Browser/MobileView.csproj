@@ -7,7 +7,12 @@
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
     <PackageIcon>public_30dp_FFFFFF.png</PackageIcon>
+    <ApplicationIcon>public_30dp_000000.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="public_30dp_000000.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <None Include="..\..\..\..\Documents\Training\Pictures\Downloads\GoogleFonts\public_30dp_FFFFFF.png" Link="Resources\public_30dp_FFFFFF.png">

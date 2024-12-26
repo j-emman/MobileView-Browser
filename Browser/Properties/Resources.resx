@@ -121,10 +121,19 @@
   <data name="menu_25dp_FFFFFF" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\menu_25dp_FFFFFF.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="refresh_35dp" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\refresh_35dp.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="minimize_30dp_FFFFFF" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\minimize_30dp_FFFFFF.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="arrow_back_25dp_FFFFFF" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\arrow_back_25dp_FFFFFF.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="refresh_35dp" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\refresh_35dp.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="close_30dp_FFFFFF" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\close_30dp_FFFFFF.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="public_30dp_FFFFFF" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\..\..\..\Documents\Training\Pictures\Downloads\GoogleFonts\public_30dp_FFFFFF.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
