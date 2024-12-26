@@ -8,6 +8,16 @@ namespace WV2Service
     {
         private async void InitializeExtensions(WebView2 webView, CoreWebView2Environment environment, CoreWebView2Profile profile)
         {
+            if (ExtensionsPath == null || !ExtensionsPath.Any()) { return; }
+
+            int count = 0;
+            foreach (string originalExtensionPath in ExtensionsPath)
+            {
+                if (!Directory.Exists(originalExtensionPath))
+                { count++; continue; }
+            }
+            if (count == ExtensionsPath.Count()) { return; }
+
             await webView.EnsureCoreWebView2Async(environment);
             CoreWebView2BrowserExtension extension = await AddExtensionsAsync(webView, environment, profile);
             await extension.EnableAsync(true);
@@ -29,6 +39,7 @@ namespace WV2Service
 
                 foreach (string originalExtensionPath in ExtensionsPath)
                 {
+
                     string extensionName = Path.GetFileName(originalExtensionPath);
 
                     string localExtensionPath = Path.Combine(localExtensionsPath, extensionName);

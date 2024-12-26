@@ -16,6 +16,7 @@ namespace MobileView
         private bool newWindow;
         private string url;
         private string borderUsed;
+        private string extensionsDirectory;
 
         public Form_Main(bool _incognito = false, Form? currentForm = null, string? _url = null, string? profileFolder = null)
         {
@@ -35,7 +36,7 @@ namespace MobileView
 
             formManager.PreserveCurrentFormLocationAndSize(currentForm);
             EnableBorderlessWindows();
-
+            EnsureExtensionsDirectory();
             if (_incognito)
             {
                 InitializeIncognito();
@@ -47,6 +48,16 @@ namespace MobileView
                 return;
             }
             InitializeBrowser();
+        }
+        private void EnsureExtensionsDirectory() // added to allow easy installation of extensions for now
+        {
+            string appBaseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            extensionsDirectory = Path.Combine(appBaseDirectory, "Extensions_Local");
+            
+            if (!Directory.Exists(extensionsDirectory))
+            {
+                Directory.CreateDirectory(extensionsDirectory);
+            }
         }
         private void EnableBorderlessWindows()
         {
@@ -62,7 +73,7 @@ namespace MobileView
             {
                 ProfileName = "User1",
                 WebViewControl = WebView21,
-                ExtensionsPath = new List<string> { @"C:\Users\admin\Documents\Training\Misc\Browser_Extensions\uBlock0" }
+                ExtensionsPath = new List<string> { Path.Combine(extensionsDirectory, "uBlock0") }
             };
             Browser.PropertyChanged += WebView_PropertyChanged;
             Browser.Incognito_InitializeWebView();
@@ -75,8 +86,8 @@ namespace MobileView
                 WebViewControl = WebView21,
                 ExtensionsPath = new List<string>
                 {
-                    @"C:\Users\admin\Documents\Training\Misc\Browser_Extensions\uBlock0",
-                    @"C:\Users\admin\Documents\Training\Misc\Browser_Extensions\privacy_badger"
+                    Path.Combine(extensionsDirectory, "uBlock0"),
+                    Path.Combine(extensionsDirectory, "privacy_badger"),
                 }
             };
             Browser.PropertyChanged += WebView_PropertyChanged;
