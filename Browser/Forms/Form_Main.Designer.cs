@@ -40,10 +40,6 @@
             fileToolStripMenuItem = new ToolStripMenuItem();
             incognitoToolStripMenuItem = new ToolStripMenuItem();
             exitToolStripMenuItem = new ToolStripMenuItem();
-            profileToolStripMenuItem = new ToolStripMenuItem();
-            historyToolStripMenuItem = new ToolStripMenuItem();
-            clearAllBrowsingDataToolStripMenuItem = new ToolStripMenuItem();
-            bookmarksToolStripMenuItem = new ToolStripMenuItem();
             BrowserToolStripMenuItem = new ToolStripMenuItem();
             historyToolStripMenuItem1 = new ToolStripMenuItem();
             clearAllBrowsingDataToolStripMenuItem1 = new ToolStripMenuItem();
@@ -159,7 +155,7 @@
             // MenuStrip
             // 
             MenuStrip.BackColor = Color.FromArgb(33, 33, 33);
-            MenuStrip.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, profileToolStripMenuItem, BrowserToolStripMenuItem, IncognitoToolStripMenuItem1 });
+            MenuStrip.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, BrowserToolStripMenuItem, IncognitoToolStripMenuItem1 });
             MenuStrip.Location = new Point(0, 0);
             MenuStrip.Name = "MenuStrip";
             MenuStrip.Size = new Size(321, 24);
@@ -186,33 +182,6 @@
             exitToolStripMenuItem.Size = new Size(125, 22);
             exitToolStripMenuItem.Text = "&Exit";
             exitToolStripMenuItem.Click += ExitToolStripMenuItem_Click;
-            // 
-            // profileToolStripMenuItem
-            // 
-            profileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { historyToolStripMenuItem, bookmarksToolStripMenuItem });
-            profileToolStripMenuItem.ForeColor = SystemColors.HighlightText;
-            profileToolStripMenuItem.Name = "profileToolStripMenuItem";
-            profileToolStripMenuItem.Size = new Size(53, 20);
-            profileToolStripMenuItem.Text = "&Profile";
-            // 
-            // historyToolStripMenuItem
-            // 
-            historyToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { clearAllBrowsingDataToolStripMenuItem });
-            historyToolStripMenuItem.Name = "historyToolStripMenuItem";
-            historyToolStripMenuItem.Size = new Size(133, 22);
-            historyToolStripMenuItem.Text = "&History";
-            // 
-            // clearAllBrowsingDataToolStripMenuItem
-            // 
-            clearAllBrowsingDataToolStripMenuItem.Name = "clearAllBrowsingDataToolStripMenuItem";
-            clearAllBrowsingDataToolStripMenuItem.Size = new Size(197, 22);
-            clearAllBrowsingDataToolStripMenuItem.Text = "Clear All &Browsing Data";
-            // 
-            // bookmarksToolStripMenuItem
-            // 
-            bookmarksToolStripMenuItem.Name = "bookmarksToolStripMenuItem";
-            bookmarksToolStripMenuItem.Size = new Size(133, 22);
-            bookmarksToolStripMenuItem.Text = "Bookmarks";
             // 
             // BrowserToolStripMenuItem
             // 
@@ -381,18 +350,14 @@
         private Button MenuButton;
         private ToolStripMenuItem fileToolStripMenuItem;
         private ToolStripMenuItem BrowserToolStripMenuItem;
-        private ToolStripMenuItem profileToolStripMenuItem;
         private ToolStripMenuItem incognitoToolStripMenuItem;
         private ToolStripMenuItem extensionsToolStripMenuItem1;
         private ToolStripMenuItem IncognitoToolStripMenuItem1;
-        private ToolStripMenuItem bookmarksToolStripMenuItem;
         private ToolStripMenuItem clearAllBrowserDataToolStripMenuItem;
         private ToolStripMenuItem exitToolStripMenuItem;
         private ToolStripMenuItem viewExtensionsToolStripMenuItem;
         private ToolStripMenuItem addToolStripMenuItem;
         private ToolStripMenuItem removeToolStripMenuItem;
-        private ToolStripMenuItem historyToolStripMenuItem;
-        private ToolStripMenuItem clearAllBrowsingDataToolStripMenuItem;
         private Panel TitleBarPanel;
         private Button CloseButton;
         private Button MinimizeButton;

@@ -220,6 +220,5 @@ namespace MobileView
             MenuButton.PerformClick();
             Browser.WebViewControl.Focus();
         }
-
     }
 }
