@@ -11,8 +11,11 @@ namespace MobileView
     {
         private WebViewService Browser;
         private TitleBar titleBar;
+        private FormResizer resizer;
         private bool incognito;
+        private bool newWindow;
         private string url;
+        private string borderUsed;
 
         public Form_Main(bool _incognito = false, Form? currentForm = null, string? _url = null)
         {
@@ -20,6 +23,7 @@ namespace MobileView
 
             incognito = _incognito;
             url = _url;
+            resizer = new FormResizer(this);
             titleBar = new TitleBar
             (
                 parentForm: this,
@@ -29,29 +33,31 @@ namespace MobileView
                 minimizeButton: MinimizeButton
             );
 
+            PreserveCurrentFormLocation(currentForm);
+            EnableBorderlessWindows();
+
             if (_incognito)
             {
-                InitializeIncognito(currentForm);
+                InitializeIncognito();
                 return;
             }
             if (!string.IsNullOrWhiteSpace(url))
             {
-                Browser = new WebViewService();
-                Browser.WebViewControl = WebView21;
-                Browser.InitializeWebViewNewTab();
+                InitializeNewWindow();
                 return;
             }
-            InitializeBrowser(currentForm);
-
+            InitializeBrowser();
+        }
+        private void EnableBorderlessWindows()
+        {
             this.MaximizedBounds = Screen.FromHandle(this.Handle).WorkingArea;
             this.SetStyle(ControlStyles.ResizeRedraw, true);
+            this.DoubleBuffered = true;
             this.ControlBox = false;
         }
-        private void InitializeIncognito(Form currentForm)
+        private void InitializeIncognito()
         {
-            this.Text = "Private";
-            PreserveCurrentFormLocation(currentForm);
-
+            FormTextLabel.Text = "Private";
             Browser = new WebViewService
             {
                 ProfileName = "User1",
@@ -60,11 +66,9 @@ namespace MobileView
             };
             Browser.PropertyChanged += WebView_PropertyChanged;
             Browser.Incognito_InitializeWebView();
-
         }
-        private void InitializeBrowser(Form? currentForm = null)
+        private void InitializeBrowser()
         {
-            if (currentForm != null) { PreserveCurrentFormLocation(currentForm); }
             Browser = new WebViewService
             {
                 ProfileName = "User1",
@@ -80,8 +84,18 @@ namespace MobileView
             Browser.InitializeWebView();
             FormTextLabel.DataBindings.Add("Text", Browser, nameof(Browser.SiteTitle));
         }
-        private void PreserveCurrentFormLocation(Form currentForm)
+        private void InitializeNewWindow()
         {
+            newWindow = true;
+            MenuButton.Enabled = false;
+            Browser = new WebViewService();
+            Browser.WebViewControl = WebView21;
+            Browser.InitializeWebViewNewTab();
+            FormTextLabel.DataBindings.Add("Text", Browser, nameof(Browser.SiteTitle));
+        }
+        private void PreserveCurrentFormLocation(Form? currentForm)
+        {
+            if (currentForm == null) { return; } 
             var state = currentForm.WindowState;
             var location = currentForm.Location;
 
@@ -92,10 +106,21 @@ namespace MobileView
             var centerY = location.Y + (currentForm.Height - this.Height) / 2;
             this.Location = new Point(centerX, centerY);
         }
-        private void NewWindow(string link)
+        private void OpenNewWindow(string link)
         {
             Form newWindow = new Form_Main(_url: link);
             newWindow.Show();
+        }
+        protected override void WndProc(ref Message m)
+        {
+            const int WM_NCHITTEST = 0x84;
+
+            base.WndProc(ref m);
+
+            if (m.Msg == WM_NCHITTEST)
+            {
+                resizer.HandleWndProc(ref m);
+            }
         }
         private void OnNewWindowRequested(object? sender, CoreWebView2NewWindowRequestedEventArgs e)
         {
@@ -104,8 +129,8 @@ namespace MobileView
 
             if (result == DialogResult.Yes)
             {
-                NewWindow(e.Uri);
-                e.Handled = false;
+                e.Handled = true;
+                OpenNewWindow(e.Uri);
                 return;
             }
             e.Handled = true;
@@ -114,31 +139,20 @@ namespace MobileView
         {
             if (e.PropertyName == nameof(Browser.URL)) { URLTextBox.Text = Browser.URL; } //add a oneway binding to URL
         }
-        private async void Form_Main_Shown(object sender, EventArgs e)
+        private async void Form_Main_Load(object sender, EventArgs e)
         {
             if (incognito) { await Task.Delay(1000); }
             if (!string.IsNullOrWhiteSpace(url)) { Browser.Navigation.NewTabGoTo(url); return; }
             Browser.Navigation.GoTo("google.com");
-        }
-        private void Form_Main_Resize(object sender, EventArgs e)
-        {
-            if (this.WindowState != FormWindowState.Normal)
-            { return; }
-
-            const double aspectRatio = 9.0 / 16.0;
-            int newWidth = this.Width;
-            int newHeight = (int)(newWidth / aspectRatio);
-
-            if (this.Height != newHeight)
-            {
-                this.Height = newHeight;
-            }
         }
         private void Form_Main_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (incognito)
             {
                 Browser.Navigation.Incognito_DisposeSession();
+            }
+            if (incognito || newWindow)
+            {
                 this.Hide();
                 this.Dispose();
                 return;

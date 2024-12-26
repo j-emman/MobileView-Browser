@@ -339,8 +339,7 @@
             Name = "Form_Main";
             StartPosition = FormStartPosition.CenterScreen;
             FormClosing += Form_Main_FormClosing;
-            Shown += Form_Main_Shown;
-            Resize += Form_Main_Resize;
+            Load += Form_Main_Load;
             ((System.ComponentModel.ISupportInitialize)WebView21).EndInit();
             TopBarPanel.ResumeLayout(false);
             TopBarPanel.PerformLayout();

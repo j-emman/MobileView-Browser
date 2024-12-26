@@ -31,7 +31,7 @@ namespace MobileView.Classes
         }
         private void CloseButton_Click(object? sender, EventArgs e)
         {
-            Application.Exit();
+            _ParentForm.Close();
         }
         private void MinimizeButton_Click(object? sender, EventArgs e)
         {

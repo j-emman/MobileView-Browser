@@ -19,7 +19,10 @@ namespace WV2Service
         public void InitializeWebViewNewTab()
         {
             InitializeSharedEnviroment();
-            InitializeBrowser();
+            InitializeProfile();
+            EnableMobileView();
+            EnableNewWindowRequest();
+            EnableNavigationMonitoring();
         }
         public void InitializeSharedWebView()
         {
