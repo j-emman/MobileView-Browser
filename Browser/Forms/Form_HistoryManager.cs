@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MobileView.Classes;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -14,27 +15,14 @@ namespace MobileView
     public partial class Form_HistoryManager : Form
     {
         private readonly WebViewService Browser;
+        private readonly FormManager formManager;
         private DataTable HistoryTable;
         public Form_HistoryManager(WebViewService _webViewService, Form? currentform = null)
         {
             InitializeComponent();
+            formManager = new FormManager(this);
             Browser = _webViewService;
-            if (currentform != null)
-            {
-                PreserveCurrentFormLocation(currentform);
-            }
-        }
-        private void PreserveCurrentFormLocation(Form currentForm)
-        {
-            var state = currentForm.WindowState;
-            var location = currentForm.Location;
-
-            this.WindowState = state;
-            this.StartPosition = FormStartPosition.Manual;
-
-            var centerX = location.X + (currentForm.Width - this.Width) / 2;
-            var centerY = location.Y + (currentForm.Height - this.Height) / 2;
-            this.Location = new Point(centerX, centerY);
+            formManager.PreserveCurrentFormLocationAndSize(currentform);
         }
         private async void BindDataGridView(DataGridView datagridview)
         {

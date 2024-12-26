@@ -16,15 +16,13 @@ namespace WV2Service
             InitializeEnviroment();
             InitializeBrowser();
         }
-        public void InitializeWebViewNewTab()
+        public void InitializeWebViewNewTab(string ProfileFolder)
         {
-            InitializeSharedEnviroment();
-            InitializeBrowser();
-        }
-        public void InitializeSharedWebView()
-        {
-            InitializeSharedEnviroment();
-            InitializeBrowser();
+            InitializeSharedEnviroment(ProfileFolder);
+            InitializeProfile();
+            EnableMobileView();
+            EnableNewWindowRequest();
+            EnableNavigationMonitoring();
         }
         public void Incognito_InitializeWebView()
         {
@@ -35,9 +33,9 @@ namespace WV2Service
         {
             environment = await InitializeWebEnviromentAsync(WebViewControl, ProfileName);
         }
-        public async void InitializeSharedEnviroment()
+        public async void InitializeSharedEnviroment(string ProfileFolder)
         {
-            environment = await CoreWebView2Environment.CreateAsync();
+            environment = await InitializeSharedWebEnviromentAsync(WebViewControl, ProfileFolder);
         }
         public async void InitializeProfile()
         {
