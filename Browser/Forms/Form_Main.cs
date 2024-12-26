@@ -11,7 +11,7 @@ namespace MobileView
     {
         private WebViewService Browser;
         private TitleBar titleBar;
-        private FormResizer resizer;
+        private FormManager formManager;
         private bool incognito;
         private bool newWindow;
         private string url;
@@ -23,7 +23,7 @@ namespace MobileView
 
             incognito = _incognito;
             url = _url;
-            resizer = new FormResizer(this);
+            formManager = new FormManager(this);
             titleBar = new TitleBar
             (
                 parentForm: this,
@@ -33,7 +33,7 @@ namespace MobileView
                 minimizeButton: MinimizeButton
             );
 
-            PreserveCurrentFormLocation(currentForm);
+            formManager.PreserveCurrentFormLocationAndSize(currentForm);
             EnableBorderlessWindows();
 
             if (_incognito)
@@ -47,19 +47,6 @@ namespace MobileView
                 return;
             }
             InitializeBrowser();
-        }
-        private void PreserveCurrentFormLocation(Form? currentForm)
-        {
-            if (currentForm == null) { return; } 
-            var state = currentForm.WindowState;
-            var location = currentForm.Location;
-
-            this.WindowState = state;
-            this.StartPosition = FormStartPosition.Manual;
-
-            var centerX = location.X + (currentForm.Width - this.Width) / 2;
-            var centerY = location.Y + (currentForm.Height - this.Height) / 2;
-            this.Location = new Point(centerX, centerY);
         }
         private void EnableBorderlessWindows()
         {
@@ -109,7 +96,7 @@ namespace MobileView
         }
         private void OpenNewWindow(string link)
         {
-            Form newWindow = new Form_Main(currentForm: this,_url: link, profileFolder: Browser.ProfileFolder);
+            Form newWindow = new Form_Main(currentForm: this, _url: link, profileFolder: Browser.ProfileFolder);
             newWindow.Show();
         }
         protected override void WndProc(ref Message m)
@@ -120,7 +107,7 @@ namespace MobileView
 
             if (m.Msg == WM_NCHITTEST)
             {
-                resizer.HandleWndProc(ref m);
+                formManager.HandleWndProc(ref m);
             }
         }
         private void OnNewWindowRequested(object? sender, CoreWebView2NewWindowRequestedEventArgs e)
@@ -172,7 +159,7 @@ namespace MobileView
         {
             Browser.Clear.AllBrowserData();
         }
-        private void ClearAllBrowsingDataToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ClearAllBrowsingDataToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             Browser.Clear.AllBrowsingData();
         }
@@ -189,20 +176,18 @@ namespace MobileView
         {
             MenuPanel.Visible = !MenuPanel.Visible;
         }
-        private void URLTextBox_MouseDown(object sender, MouseEventArgs e)
+        private void URLTextBox_DoubleClick(object sender, EventArgs e)
         {
             TextBox textBox = sender as TextBox;
-            if (textBox != null)
-            {
-                textBox.Focus();
-                textBox.SelectAll();
-            }
+            textBox.Focus();
+            textBox.SelectAll();
         }
         private void IncognitoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Form incognito = new Form_Main(_incognito: true, currentForm: this);
             this.Hide();
             incognito.ShowDialog();
+            formManager.PreserveCurrentFormLocationAndSize(incognito);
             this.Show();
         }
         private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -229,11 +214,12 @@ namespace MobileView
             {
                 this.Hide();
                 historyManager.ShowDialog();
-                PreserveCurrentFormLocation(historyManager);
+                formManager.PreserveCurrentFormLocationAndSize(historyManager);
             }
             this.Show();
             MenuButton.PerformClick();
             Browser.WebViewControl.Focus();
         }
+
     }
 }

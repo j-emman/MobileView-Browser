@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace MobileView.Classes
 {
     // could've and should've just made a usercontrol but i dont really like the fact that the added usercontrols
-    // disappear when the project is cleaned and considering how often i cleaned before rebuilding this project.
+    // disappear when the project is cleaned especially considering how often i cleaned before rebuilding this project during testing.
     public class TitleBar
     {
         private Form _ParentForm;

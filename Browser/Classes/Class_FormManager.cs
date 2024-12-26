@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace MobileView.Classes
 {
-    public class FormResizer
+    public class FormManager
     {
         private readonly Form _form;
         public string BorderUsed { get; private set; }
 
-        public FormResizer(Form form)
+        public FormManager(Form form)
         {
             _form = form;
             _form.Resize += Form_Resize;
@@ -63,6 +63,20 @@ namespace MobileView.Classes
                     case 17: BorderUsed = "botright"; break;
                 }
             }
+        }
+        public void PreserveCurrentFormLocationAndSize(Form currentForm)
+        {
+            if (currentForm == null) { return; }
+            _form.Size = currentForm.Size;
+            var state = currentForm.WindowState;
+            var location = currentForm.Location;
+
+            _form.WindowState = state;
+            _form.StartPosition = FormStartPosition.Manual;
+
+            var centerX = location.X + (currentForm.Width - _form.Width) / 2;
+            var centerY = location.Y + (currentForm.Height - _form.Height) / 2;
+            _form.Location = new Point(centerX, centerY);
         }
     }
 }

@@ -44,7 +44,9 @@
             historyToolStripMenuItem = new ToolStripMenuItem();
             clearAllBrowsingDataToolStripMenuItem = new ToolStripMenuItem();
             bookmarksToolStripMenuItem = new ToolStripMenuItem();
-            settingsToolStripMenuItem = new ToolStripMenuItem();
+            BrowserToolStripMenuItem = new ToolStripMenuItem();
+            historyToolStripMenuItem1 = new ToolStripMenuItem();
+            clearAllBrowsingDataToolStripMenuItem1 = new ToolStripMenuItem();
             extensionsToolStripMenuItem1 = new ToolStripMenuItem();
             viewExtensionsToolStripMenuItem = new ToolStripMenuItem();
             addToolStripMenuItem = new ToolStripMenuItem();
@@ -139,8 +141,8 @@
             URLTextBox.Name = "URLTextBox";
             URLTextBox.Size = new Size(223, 23);
             URLTextBox.TabIndex = 0;
+            URLTextBox.DoubleClick += URLTextBox_DoubleClick;
             URLTextBox.KeyDown += URLTextBox_KeyDown;
-            URLTextBox.MouseDown += URLTextBox_MouseDown;
             // 
             // MenuPanel
             // 
@@ -157,7 +159,7 @@
             // MenuStrip
             // 
             MenuStrip.BackColor = Color.FromArgb(33, 33, 33);
-            MenuStrip.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, profileToolStripMenuItem, settingsToolStripMenuItem, IncognitoToolStripMenuItem1 });
+            MenuStrip.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, profileToolStripMenuItem, BrowserToolStripMenuItem, IncognitoToolStripMenuItem1 });
             MenuStrip.Location = new Point(0, 0);
             MenuStrip.Name = "MenuStrip";
             MenuStrip.Size = new Size(321, 24);
@@ -199,14 +201,12 @@
             historyToolStripMenuItem.Name = "historyToolStripMenuItem";
             historyToolStripMenuItem.Size = new Size(133, 22);
             historyToolStripMenuItem.Text = "&History";
-            historyToolStripMenuItem.Click += ViewHistoryToolStripMenuItem_Click;
             // 
             // clearAllBrowsingDataToolStripMenuItem
             // 
             clearAllBrowsingDataToolStripMenuItem.Name = "clearAllBrowsingDataToolStripMenuItem";
             clearAllBrowsingDataToolStripMenuItem.Size = new Size(197, 22);
             clearAllBrowsingDataToolStripMenuItem.Text = "Clear All &Browsing Data";
-            clearAllBrowsingDataToolStripMenuItem.Click += ClearAllBrowsingDataToolStripMenuItem_Click;
             // 
             // bookmarksToolStripMenuItem
             // 
@@ -214,13 +214,28 @@
             bookmarksToolStripMenuItem.Size = new Size(133, 22);
             bookmarksToolStripMenuItem.Text = "Bookmarks";
             // 
-            // settingsToolStripMenuItem
+            // BrowserToolStripMenuItem
             // 
-            settingsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { extensionsToolStripMenuItem1, clearAllBrowserDataToolStripMenuItem });
-            settingsToolStripMenuItem.ForeColor = SystemColors.HighlightText;
-            settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            settingsToolStripMenuItem.Size = new Size(61, 20);
-            settingsToolStripMenuItem.Text = "&Settings";
+            BrowserToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { historyToolStripMenuItem1, extensionsToolStripMenuItem1, clearAllBrowserDataToolStripMenuItem });
+            BrowserToolStripMenuItem.ForeColor = SystemColors.HighlightText;
+            BrowserToolStripMenuItem.Name = "BrowserToolStripMenuItem";
+            BrowserToolStripMenuItem.Size = new Size(61, 20);
+            BrowserToolStripMenuItem.Text = "&Browser";
+            // 
+            // historyToolStripMenuItem1
+            // 
+            historyToolStripMenuItem1.DropDownItems.AddRange(new ToolStripItem[] { clearAllBrowsingDataToolStripMenuItem1 });
+            historyToolStripMenuItem1.Name = "historyToolStripMenuItem1";
+            historyToolStripMenuItem1.Size = new Size(190, 22);
+            historyToolStripMenuItem1.Text = "&History";
+            historyToolStripMenuItem1.Click += ViewHistoryToolStripMenuItem_Click;
+            // 
+            // clearAllBrowsingDataToolStripMenuItem1
+            // 
+            clearAllBrowsingDataToolStripMenuItem1.Name = "clearAllBrowsingDataToolStripMenuItem1";
+            clearAllBrowsingDataToolStripMenuItem1.Size = new Size(197, 22);
+            clearAllBrowsingDataToolStripMenuItem1.Text = "&Clear All Browsing Data";
+            clearAllBrowsingDataToolStripMenuItem1.Click += ClearAllBrowsingDataToolStripMenuItem1_Click;
             // 
             // extensionsToolStripMenuItem1
             // 
@@ -365,7 +380,7 @@
         private MenuStrip MenuStrip;
         private Button MenuButton;
         private ToolStripMenuItem fileToolStripMenuItem;
-        private ToolStripMenuItem settingsToolStripMenuItem;
+        private ToolStripMenuItem BrowserToolStripMenuItem;
         private ToolStripMenuItem profileToolStripMenuItem;
         private ToolStripMenuItem incognitoToolStripMenuItem;
         private ToolStripMenuItem extensionsToolStripMenuItem1;
@@ -383,5 +398,7 @@
         private Button MinimizeButton;
         private Label FormTextLabel;
         private PictureBox pictureBox1;
+        private ToolStripMenuItem historyToolStripMenuItem1;
+        private ToolStripMenuItem clearAllBrowsingDataToolStripMenuItem1;
     }
 }
