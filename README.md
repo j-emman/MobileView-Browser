@@ -102,7 +102,7 @@ Contributions are welcome! Follow these steps to contribute:
 ---
 
 ## License
-This project is licensed under the MIT License. See the LICENSE file for details.
+This project is licensed under the MIT License. See the [LICENSE](https://github.com/j-emman/MobileView-Browser/blob/master/LICENSE) file for details.
 
 ---
 
