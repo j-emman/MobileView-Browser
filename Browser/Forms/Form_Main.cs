@@ -17,7 +17,7 @@ namespace MobileView
         private string url;
         private string borderUsed;
 
-        public Form_Main(bool _incognito = false, Form? currentForm = null, string? _url = null)
+        public Form_Main(bool _incognito = false, Form? currentForm = null, string? _url = null, string? profileFolder = null)
         {
             InitializeComponent();
 
@@ -43,10 +43,23 @@ namespace MobileView
             }
             if (!string.IsNullOrWhiteSpace(url))
             {
-                InitializeNewWindow();
+                InitializeNewWindow(profileFolder);
                 return;
             }
             InitializeBrowser();
+        }
+        private void PreserveCurrentFormLocation(Form? currentForm)
+        {
+            if (currentForm == null) { return; } 
+            var state = currentForm.WindowState;
+            var location = currentForm.Location;
+
+            this.WindowState = state;
+            this.StartPosition = FormStartPosition.Manual;
+
+            var centerX = location.X + (currentForm.Width - this.Width) / 2;
+            var centerY = location.Y + (currentForm.Height - this.Height) / 2;
+            this.Location = new Point(centerX, centerY);
         }
         private void EnableBorderlessWindows()
         {
@@ -84,31 +97,19 @@ namespace MobileView
             Browser.InitializeWebView();
             FormTextLabel.DataBindings.Add("Text", Browser, nameof(Browser.SiteTitle));
         }
-        private void InitializeNewWindow()
+        private void InitializeNewWindow(string profileFolder)
         {
+            if (profileFolder == null) { return; }
             newWindow = true;
             MenuButton.Enabled = false;
             Browser = new WebViewService();
             Browser.WebViewControl = WebView21;
-            Browser.InitializeWebViewNewTab();
+            Browser.InitializeWebViewNewTab(profileFolder);
             FormTextLabel.DataBindings.Add("Text", Browser, nameof(Browser.SiteTitle));
-        }
-        private void PreserveCurrentFormLocation(Form? currentForm)
-        {
-            if (currentForm == null) { return; } 
-            var state = currentForm.WindowState;
-            var location = currentForm.Location;
-
-            this.WindowState = state;
-            this.StartPosition = FormStartPosition.Manual;
-
-            var centerX = location.X + (currentForm.Width - this.Width) / 2;
-            var centerY = location.Y + (currentForm.Height - this.Height) / 2;
-            this.Location = new Point(centerX, centerY);
         }
         private void OpenNewWindow(string link)
         {
-            Form newWindow = new Form_Main(_url: link);
+            Form newWindow = new Form_Main(currentForm: this,_url: link, profileFolder: Browser.ProfileFolder);
             newWindow.Show();
         }
         protected override void WndProc(ref Message m)
