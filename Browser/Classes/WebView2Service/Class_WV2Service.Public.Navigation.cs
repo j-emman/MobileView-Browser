@@ -13,37 +13,11 @@ namespace WV2Service
             private readonly WebViewService wv2service = webviewService;
             public void GoTo(string address)
             {
-                if (wv2service.IsURLSuffixValid(address))
-                {
-                    wv2service.URL = wv2service.EnsureHttpsPrefix(address);
-                    wv2service.NavigateTo(wv2service.WebViewControl, wv2service.environment, wv2service.URL);
-                    return;
-                }
-
-                string searchQuery = Uri.EscapeDataString(address);
-                string searchUrl = "https://www.google.com/search?q=" + searchQuery;
-
-                wv2service.URL = (new Uri(searchUrl)).ToString();
-                wv2service.NavigateTo(wv2service.WebViewControl, wv2service.environment, wv2service.URL);
+                wv2service.NavigateTo(wv2service.WebViewControl, wv2service.environment, address);
             }
             public void NewTabGoTo(string address)
             {
-                if (wv2service.IsURLSuffixValid(address))
-                {
-                    //address = EnsureHttpsPrefix(address);
-                    //WebViewControl.EnsureCoreWebView2Async();
-                    //WebViewControl.Source = new Uri(address);
-
-                    wv2service.URL = wv2service.EnsureHttpsPrefix(address);
-                    wv2service.NavigateTo(wv2service.WebViewControl, wv2service.environment, wv2service.URL);
-                    return;
-                }
-
-                string searchQuery = Uri.EscapeDataString(address);
-                string searchUrl = "https://www.google.com/search?q=" + searchQuery;
-
-                wv2service.WebViewControl.EnsureCoreWebView2Async();
-                wv2service.WebViewControl.Source = new Uri(searchUrl);
+                wv2service.NavigateToNewTab(wv2service.WebViewControl, wv2service.environment, address);
             }
             public void Reload()
             {
@@ -59,6 +33,7 @@ namespace WV2Service
             }
             public async void Incognito_DisposeSession()
             {
+                string tempfolderpath = wv2service._TempFolder;
                 int maxRetries = 5;
                 int delayMilliseconds = 2000;
                 for (int attempt = 1; attempt <= maxRetries; attempt++)
@@ -68,9 +43,10 @@ namespace WV2Service
                         //ensure all processes are closed first
                         await Task.Run(() =>
                         {
-                            if (!Directory.Exists(wv2service._TempFolder)) { return; }
-                            Directory.Delete(wv2service._TempFolder, true);
+                            if (!Directory.Exists(tempfolderpath)) { return; }
+                            Directory.Delete(tempfolderpath, true);
                         });
+                        wv2service._TempFolder = string.Empty;
                     }
                     catch
                     {

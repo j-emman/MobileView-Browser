@@ -29,7 +29,7 @@ namespace MobileView
                 Browser.InitializeWebViewNewTab();
                 return;
             }
-            InitializeBrowser();
+            InitializeBrowser(currentForm);
         }
         private void InitializeIncognito(Form currentForm)
         {
@@ -43,11 +43,12 @@ namespace MobileView
                 ExtensionsPath = new List<string> { @"C:\Users\admin\Documents\Training\Misc\Browser_Extensions\uBlock0" }
             };
             Browser.PropertyChanged += WebView_PropertyChanged;
-            Browser.Incognito_InitializeMobileWebView();
+            Browser.Incognito_InitializeWebView();
 
         }
-        private void InitializeBrowser()
+        private void InitializeBrowser(Form? currentForm = null)
         {
+            if (currentForm != null) { PreserveCurrentFormLocation(currentForm); }
             Browser = new WebViewService
             {
                 ProfileName = "User1",
@@ -60,8 +61,25 @@ namespace MobileView
             };
             Browser.PropertyChanged += WebView_PropertyChanged;
             Browser.NewWindowRequested += OnNewWindowRequested;
-            Browser.InitializeMobileWebView();
+            Browser.InitializeWebView();
             this.DataBindings.Add("Text", Browser, nameof(Browser.SiteTitle));
+        }
+        private void PreserveCurrentFormLocation(Form currentForm)
+        {
+            var state = currentForm.WindowState;
+            var location = currentForm.Location;
+
+            this.WindowState = state;
+            this.StartPosition = FormStartPosition.Manual;
+
+            var centerX = location.X + (currentForm.Width - this.Width) / 2;
+            var centerY = location.Y + (currentForm.Height - this.Height) / 2;
+            this.Location = new Point(centerX, centerY);
+        }
+        private void NewWindow(string link)
+        {
+            Form newWindow = new Form_Main(_url: link);
+            newWindow.Show();
         }
         private void OnNewWindowRequested(object? sender, CoreWebView2NewWindowRequestedEventArgs e)
         {
@@ -75,11 +93,6 @@ namespace MobileView
                 return;
             }
             e.Handled = true;
-        }
-        private void NewWindow(string link)
-        {
-            Form newWindow = new Form_Main(_url: link);
-            newWindow.Show();
         }
         private void WebView_PropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
@@ -107,10 +120,13 @@ namespace MobileView
         }
         private void Form_Main_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Browser.Navigation.Incognito_DisposeSession();
-            this.Hide();
-            this.Dispose();
-            if (incognito) { return; }
+            if (incognito) 
+            { 
+                Browser.Navigation.Incognito_DisposeSession();
+                this.Hide();
+                this.Dispose();
+                return; 
+            }
             Application.Exit();
         }
         private void ReloadButton_Click(object sender, EventArgs e)
@@ -151,10 +167,6 @@ namespace MobileView
                 textBox.SelectAll();
             }
         }
-        private void URLTextBox_DoubleClick(object sender, EventArgs e)
-        {
-            //Browser.NavigateTo(URLTextBox.Text);
-        }
         private void IncognitoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Form incognito = new Form_Main(_incognito: true, currentForm: this);
@@ -162,7 +174,7 @@ namespace MobileView
             incognito.ShowDialog();
             this.Show();
         }
-        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Close();
         }
@@ -172,27 +184,25 @@ namespace MobileView
             string extensionstring = string.Join(",\n", extensions);
             MessageBox.Show(extensionstring);
         }
-        private void removeToolStripMenuItem_Click(object sender, EventArgs e)
+        private void RemoveExtensionToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
         }
-        private void PreserveCurrentFormLocation(Form currentForm)
+        private void AddExtensionToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var state = currentForm.WindowState;
-            var location = currentForm.Location;
 
-            this.WindowState = state;
-            this.StartPosition = FormStartPosition.Manual;
-
-            var centerX = location.X + (currentForm.Width - this.Width) / 2;
-            var centerY = location.Y + (currentForm.Height - this.Height) / 2;
-            this.Location = new Point(centerX, centerY);
         }
-
-        private void addToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ViewHistoryToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(Browser.WebViewControl.CoreWebView2.Profile.IsInPrivateModeEnabled.ToString());
+            using (Form_HistoryManager historyManager = new Form_HistoryManager(Browser, this))
+            {
+                this.Hide();
+                historyManager.ShowDialog();
+                PreserveCurrentFormLocation(historyManager);
+            }
+            this.Show();
+            MenuButton.PerformClick();
+            Browser.WebViewControl.Focus();
         }
-
     }
 }

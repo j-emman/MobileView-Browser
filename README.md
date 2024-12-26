@@ -18,7 +18,7 @@ Currently, this application supports **Windows** only.
 
 | Platform | Technologies          |
 |----------|-----------------------|
-| Windows  | .NET Framework/.NET Core, WebView2 |
+| Windows  | .NET Framework/.NET Core, WebView2, SQLite |
 
 ---
 
@@ -28,6 +28,9 @@ Currently, this application supports **Windows** only.
 - **Microsoft.Web.WebView2**
   - Used for embedding the Edge WebView2 control into the application.
   - Installable via [NuGet](https://www.nuget.org/packages/Microsoft.Web.WebView2).
+- **Microsoft.Data.Sqlite**
+  - Used for managing local databases such as but not limited to browsing history.
+  - Installable via [NuGet](https://www.nuget.org/packages/Microsoft.Data.Sqlite).
 
 ---
 

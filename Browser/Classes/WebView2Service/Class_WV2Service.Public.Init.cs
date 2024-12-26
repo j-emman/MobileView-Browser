@@ -11,38 +11,25 @@ namespace WV2Service
 {
     public partial class WebViewService
     {
-        public void InitializeMobileWebView()
+        public void InitializeWebView()
         {
             InitializeEnviroment();
-            InitializeProfile();
-            EnableMobileView();
-            InitializeExtensions();
-            EnableNewWindowRequest();
-            EnableNavigationMonitoring();
+            InitializeBrowser();
         }
         public void InitializeWebViewNewTab()
         {
             InitializeSharedEnviroment();
-            InitializeProfile();
-            EnableMobileView();
-            InitializeExtensions();
-            EnableNewWindowRequest();
+            InitializeBrowser();
         }
-        public void InitializeSharedMobileWebView()
+        public void InitializeSharedWebView()
         {
             InitializeSharedEnviroment();
-            InitializeProfile();
-            EnableMobileView();
-            InitializeExtensions();
-            EnableNewWindowRequest();
+            InitializeBrowser();
         }
-        public void Incognito_InitializeMobileWebView()
+        public void Incognito_InitializeWebView()
         {
             Incognito_InitializeEnviroment();
-            InitializeExtensions();
-            InitializeProfile();
-            EnableMobileView();
-            EnableNewWindowRequest();
+            InitializeBrowser();
         }
         public async void InitializeEnviroment()
         {
