@@ -103,7 +103,6 @@ namespace MobileView
             MenuButton.Visible = false;
             URLTextBox.Size = new Size(252, 23);
             Browser = new WebViewService();
-            Browser.ProfileFolder = profileFolder;
             Browser.WebViewControl = WebView21;
             Browser.PropertyChanged += WebView_PropertyChanged;
             Browser.NewWindowRequested += OnNewWindowRequested;
@@ -153,7 +152,7 @@ namespace MobileView
         {
             if (e.PropertyName == nameof(Browser.URL)) { URLTextBox.Text = Browser.URL; } //add a oneway binding to URL
         }
-        private async void Form_Main_Load(object sender, EventArgs e)
+        private void Form_Main_Load(object sender, EventArgs e)
         {
             OnFormLoad();
         }
