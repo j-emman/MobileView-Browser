@@ -67,18 +67,6 @@ namespace MobileView
             this.DoubleBuffered = true;
             this.ControlBox = false;
         }
-        private void InitializeIncognito()
-        {
-            FormTextLabel.Text = "Private";
-            Browser = new WebViewService
-            {
-                ProfileName = "User1",
-                WebViewControl = WebView21,
-                ExtensionsPath = new List<string> { Path.Combine(_extensionsDirectory, "uBlock0") }
-            };
-            Browser.PropertyChanged += WebView_PropertyChanged;
-            Browser.Incognito_InitializeWebView();
-        }
         private void InitializeBrowser()
         {
             Browser = new WebViewService
@@ -108,6 +96,18 @@ namespace MobileView
             Browser.NewWindowRequested += OnNewWindowRequested;
             Browser.InitializeWebViewNewTab(profileFolder);
             FormTextLabel.DataBindings.Add("Text", Browser, nameof(Browser.SiteTitle));
+        }
+        private void InitializeIncognito()
+        {
+            FormTextLabel.Text = "Private";
+            Browser = new WebViewService
+            {
+                ProfileName = "User1",
+                WebViewControl = WebView21,
+                ExtensionsPath = new List<string> { Path.Combine(_extensionsDirectory, "uBlock0") }
+            };
+            Browser.PropertyChanged += WebView_PropertyChanged;
+            Browser.Incognito_InitializeWebView();
         }
         private void OpenNewWindow(string link)
         {
