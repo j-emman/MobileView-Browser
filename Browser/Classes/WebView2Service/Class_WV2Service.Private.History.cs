@@ -249,6 +249,12 @@ namespace WV2Service
             }
             catch (SqliteException ex)
             {
+                if (ex.Message.Contains("no such table")) // to ignore initial start-up error when url table has not been created yet
+                {
+                    Console.WriteLine($"Warning: {ex.Message}");
+                    return null; // Return an empty DataTable
+                }
+
                 throw new SqliteException(ex.Message, ex.SqliteErrorCode);
             }
         }
@@ -275,6 +281,8 @@ namespace WV2Service
                 Path.Combine(ProfileFolder, "EBWebView", "Default", "History");
 
             DataTable data = await GetFavorites(favoritesFilePath);
+
+            if (data == null ) { return null; }
 
             Dictionary<string, string> favoritesDict = new Dictionary<string, string>();
             foreach (DataRow row in data.Rows)

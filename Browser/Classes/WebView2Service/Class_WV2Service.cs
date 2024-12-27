@@ -9,6 +9,7 @@ namespace WV2Service
     {
         private WV2ServiceModel _WebViewModel;
         private string _TempFolder { get; set; }
+        private string _addExtensionsDirectory { get; set; }
         public ClearManager Clear { get; }
         public NavigationManager Navigation { get; }
         public event PropertyChangedEventHandler? PropertyChanged;

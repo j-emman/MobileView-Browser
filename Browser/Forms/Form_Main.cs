@@ -12,10 +12,10 @@ namespace MobileView
         private readonly TitleBar titleBar;
         private readonly FormManager formManager;
         private WebViewService Browser;
+        private List<string> _extensionsPaths;
         private bool _incognito;
         private bool _newWindow;
         private string _url;
-        private string _extensionsDirectory;
 
         public Form_Main(bool incognito = false, Form? currentForm = null, string? url = null, string? profileFolder = null)
         {
@@ -23,6 +23,7 @@ namespace MobileView
 
             _incognito = incognito;
             _url = url;
+            Browser = new WebViewService();
             formManager = new FormManager(this);
             titleBar = new TitleBar
             (
@@ -35,7 +36,8 @@ namespace MobileView
 
             formManager.PreserveCurrentFormLocationAndSize(currentForm);
             EnableBorderlessWindows();
-            EnsureExtensionsDirectory();
+            Browser.EnsureExtensionsDirectory();
+            _extensionsPaths = Browser.GetExtensionsPath();
 
             if (incognito)
             {
@@ -50,34 +52,15 @@ namespace MobileView
                 InitializeBrowser();
             }
         }
-        private void EnsureExtensionsDirectory() // added to allow easy installation of extensions for now
-        {
-            string appBaseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            _extensionsDirectory = Path.Combine(appBaseDirectory, "Extensions_Local");
-            
-            if (!Directory.Exists(_extensionsDirectory))
-            {
-                Directory.CreateDirectory(_extensionsDirectory);
-            }
-        }
-        private void EnableBorderlessWindows()
-        {
-            this.MaximizedBounds = Screen.FromHandle(this.Handle).WorkingArea;
-            this.SetStyle(ControlStyles.ResizeRedraw, true);
-            this.DoubleBuffered = true;
-            this.ControlBox = false;
-        }
+
+        // Methods
         private void InitializeBrowser()
         {
             Browser = new WebViewService
             {
                 ProfileName = "User1",
                 WebViewControl = WebView21,
-                ExtensionsPath = new List<string>
-                {
-                    Path.Combine(_extensionsDirectory, "uBlock0"),
-                    Path.Combine(_extensionsDirectory, "privacy_badger"),
-                }
+                ExtensionsPath = _extensionsPaths
             };
             Browser.PropertyChanged += WebView_PropertyChanged;
             Browser.NewWindowRequested += OnNewWindowRequested;
@@ -100,29 +83,39 @@ namespace MobileView
         private void InitializeIncognito()
         {
             FormTextLabel.Text = "Private";
+            List<string> ublock = _extensionsPaths.Where(dir => dir.Contains("uBlock0")).ToList();
+
             Browser = new WebViewService
             {
                 ProfileName = "User1",
                 WebViewControl = WebView21,
-                ExtensionsPath = new List<string> { Path.Combine(_extensionsDirectory, "uBlock0") }
+                ExtensionsPath = ublock
             };
             Browser.PropertyChanged += WebView_PropertyChanged;
             Browser.Incognito_InitializeWebView();
+        }
+        private void EnableBorderlessWindows()
+        {
+            this.MaximizedBounds = Screen.FromHandle(this.Handle).WorkingArea;
+            this.SetStyle(ControlStyles.ResizeRedraw, true);
+            this.DoubleBuffered = true;
+            this.ControlBox = false;
         }
         private void OpenNewWindow(string link)
         {
             Form newWindow = new Form_Main(currentForm: this, url: link, profileFolder: Browser.ProfileFolder);
             newWindow.Show();
         }
-        private async void GetExtensions()
+        private async void ViewExtensions()
         {
-            List<string> extensions = await Browser.GetExtensions();
+            List<string> extensions = await Browser.GetExtensionsList();
             string extensionstring = string.Join(",\n", extensions);
             MessageBox.Show(extensionstring);
         }
         private async void GetFavorites()
         {
             Dictionary<string, string> favorites = await Browser.GetFavoritesDict();
+            if (favorites == null) { return; }
             foreach (var kvp in favorites)
             {
                 ToolStripMenuItem favoritesMenuItem = new ToolStripMenuItem(kvp.Key);
@@ -133,7 +126,7 @@ namespace MobileView
         private async void OnFormLoad()
         {
             if (_incognito) { await Task.Delay(1000); }
-            if (!string.IsNullOrWhiteSpace(_url)) { Browser.Navigation.GoTo(_url); return; }
+            if (!string.IsNullOrWhiteSpace(_url)) { Browser.Navigation.NewTabGoTo(_url); return; }
             GetFavorites();
             Browser.Navigation.GoTo("www.google.com");
         }
@@ -232,7 +225,7 @@ namespace MobileView
         }
         private void ViewExtensionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            GetExtensions();
+            ViewExtensions();
         }
         private void RemoveExtensionToolStripMenuItem_Click(object sender, EventArgs e)
         {
