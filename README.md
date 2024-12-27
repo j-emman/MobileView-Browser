@@ -88,8 +88,9 @@ At this time, an installer is not provided as the application functions effectiv
 ---
 ## Extension Support
 Extensions currently only support unpacked extensions from the local device. 
-Download your desired extensions and add the path to the Extensions path list.
-WebView2 is based on Microsoft Edge (Chromium) and does only support extensions available on said platforms.
+- Download your desired extensions and add the path to the Extensions path list.
+   - [uBlock Origin](https://github.com/gorhill/uBlock) **1.61.3b9** and [Privacy Badger](https://github.com/EFForg/privacybadger) **2024.5.17** is currently packaged with the app.
+- WebView2 is based on Microsoft Edge (Chromium) and does only support extensions available on said platforms.
 
 ---
 
