@@ -120,11 +120,22 @@ namespace MobileView
             string extensionstring = string.Join(",\n", extensions);
             MessageBox.Show(extensionstring);
         }
+        private async void GetFavorites()
+        {
+            Dictionary<string, string> favorites = await Browser.GetFavoritesDict();
+            foreach (var kvp in favorites)
+            {
+                ToolStripMenuItem favoritesMenuItem = new ToolStripMenuItem(kvp.Key);
+                favoritesMenuItem.Click += (sender, e) => Browser.Navigation.GoTo(kvp.Value);
+                favoritesToolStripMenuItem.DropDownItems.Add(favoritesMenuItem);
+            }
+        }
         private async void OnFormLoad()
         {
             if (_incognito) { await Task.Delay(1000); }
             if (!string.IsNullOrWhiteSpace(_url)) { Browser.Navigation.GoTo(_url); return; }
-            Browser.Navigation.GoTo("google.com");
+            GetFavorites();
+            Browser.Navigation.GoTo("www.google.com");
         }
 
         // This method overrides WndProc to pass specific window messages (e.g., WM_NCHITTEST)
