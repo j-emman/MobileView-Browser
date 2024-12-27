@@ -265,7 +265,8 @@
             // FormTextLabel
             // 
             FormTextLabel.AutoSize = true;
-            FormTextLabel.Location = new Point(26, 7);
+            FormTextLabel.Location = new Point(26, 6);
+            FormTextLabel.MaximumSize = new Size(240, 15);
             FormTextLabel.Name = "FormTextLabel";
             FormTextLabel.Size = new Size(58, 15);
             FormTextLabel.TabIndex = 7;
