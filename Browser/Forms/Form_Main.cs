@@ -9,21 +9,20 @@ namespace MobileView
 {
     public partial class Form_Main : Form
     {
+        private readonly TitleBar titleBar;
+        private readonly FormManager formManager;
         private WebViewService Browser;
-        private TitleBar titleBar;
-        private FormManager formManager;
-        private bool incognito;
-        private bool newWindow;
-        private string url;
-        private string borderUsed;
-        private string extensionsDirectory;
+        private bool _incognito;
+        private bool _newWindow;
+        private string _url;
+        private string _extensionsDirectory;
 
-        public Form_Main(bool _incognito = false, Form? currentForm = null, string? _url = null, string? profileFolder = null)
+        public Form_Main(bool incognito = false, Form? currentForm = null, string? url = null, string? profileFolder = null)
         {
             InitializeComponent();
 
-            incognito = _incognito;
-            url = _url;
+            _incognito = incognito;
+            _url = url;
             formManager = new FormManager(this);
             titleBar = new TitleBar
             (
@@ -37,26 +36,28 @@ namespace MobileView
             formManager.PreserveCurrentFormLocationAndSize(currentForm);
             EnableBorderlessWindows();
             EnsureExtensionsDirectory();
-            if (_incognito)
+
+            if (incognito)
             {
                 InitializeIncognito();
-                return;
             }
-            if (!string.IsNullOrWhiteSpace(url))
+            else if (!string.IsNullOrWhiteSpace(_url))
             {
                 InitializeNewWindow(profileFolder);
-                return;
             }
-            InitializeBrowser();
+            else
+            {
+                InitializeBrowser();
+            }
         }
         private void EnsureExtensionsDirectory() // added to allow easy installation of extensions for now
         {
             string appBaseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            extensionsDirectory = Path.Combine(appBaseDirectory, "Extensions_Local");
+            _extensionsDirectory = Path.Combine(appBaseDirectory, "Extensions_Local");
             
-            if (!Directory.Exists(extensionsDirectory))
+            if (!Directory.Exists(_extensionsDirectory))
             {
-                Directory.CreateDirectory(extensionsDirectory);
+                Directory.CreateDirectory(_extensionsDirectory);
             }
         }
         private void EnableBorderlessWindows()
@@ -73,7 +74,7 @@ namespace MobileView
             {
                 ProfileName = "User1",
                 WebViewControl = WebView21,
-                ExtensionsPath = new List<string> { Path.Combine(extensionsDirectory, "uBlock0") }
+                ExtensionsPath = new List<string> { Path.Combine(_extensionsDirectory, "uBlock0") }
             };
             Browser.PropertyChanged += WebView_PropertyChanged;
             Browser.Incognito_InitializeWebView();
@@ -86,8 +87,8 @@ namespace MobileView
                 WebViewControl = WebView21,
                 ExtensionsPath = new List<string>
                 {
-                    Path.Combine(extensionsDirectory, "uBlock0"),
-                    Path.Combine(extensionsDirectory, "privacy_badger"),
+                    Path.Combine(_extensionsDirectory, "uBlock0"),
+                    Path.Combine(_extensionsDirectory, "privacy_badger"),
                 }
             };
             Browser.PropertyChanged += WebView_PropertyChanged;
@@ -98,18 +99,37 @@ namespace MobileView
         private void InitializeNewWindow(string profileFolder)
         {
             if (profileFolder == null) { return; }
-            newWindow = true;
-            MenuButton.Enabled = false;
+            _newWindow = true;
+            MenuButton.Visible = false;
+            URLTextBox.Size = new Size(252, 23);
             Browser = new WebViewService();
+            Browser.ProfileFolder = profileFolder;
             Browser.WebViewControl = WebView21;
+            Browser.PropertyChanged += WebView_PropertyChanged;
+            Browser.NewWindowRequested += OnNewWindowRequested;
             Browser.InitializeWebViewNewTab(profileFolder);
             FormTextLabel.DataBindings.Add("Text", Browser, nameof(Browser.SiteTitle));
         }
         private void OpenNewWindow(string link)
         {
-            Form newWindow = new Form_Main(currentForm: this, _url: link, profileFolder: Browser.ProfileFolder);
+            Form newWindow = new Form_Main(currentForm: this, url: link, profileFolder: Browser.ProfileFolder);
             newWindow.Show();
         }
+        private async void GetExtensions()
+        {
+            List<string> extensions = await Browser.GetExtensions();
+            string extensionstring = string.Join(",\n", extensions);
+            MessageBox.Show(extensionstring);
+        }
+        private async void OnFormLoad()
+        {
+            if (_incognito) { await Task.Delay(1000); }
+            if (!string.IsNullOrWhiteSpace(_url)) { Browser.Navigation.GoTo(_url); return; }
+            Browser.Navigation.GoTo("google.com");
+        }
+
+        // This method overrides WndProc to pass specific window messages (e.g., WM_NCHITTEST)
+        // to the FormManager for handling.
         protected override void WndProc(ref Message m)
         {
             const int WM_NCHITTEST = 0x84;
@@ -121,18 +141,13 @@ namespace MobileView
                 formManager.HandleWndProc(ref m);
             }
         }
-        private void OnNewWindowRequested(object? sender, CoreWebView2NewWindowRequestedEventArgs e)
-        {
-            var newWebView = e.NewWindow;
-            DialogResult result = MessageBox.Show($"A website wants to open a new window:\n{e.Uri}\n\nAllow this popup?", "Confirm Popup", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-            if (result == DialogResult.Yes)
-            {
-                e.Handled = true;
-                OpenNewWindow(e.Uri);
-                return;
-            }
+        // Form Events / Controls
+        private void OnNewWindowRequested(object? sender, CoreWebView2NewWindowRequestedEventArgs e) // custom event when a link new tab/window is requested
+        {
             e.Handled = true;
+            OpenNewWindow(e.Uri);
+            return;
         }
         private void WebView_PropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
@@ -140,23 +155,25 @@ namespace MobileView
         }
         private async void Form_Main_Load(object sender, EventArgs e)
         {
-            if (incognito) { await Task.Delay(1000); }
-            if (!string.IsNullOrWhiteSpace(url)) { Browser.Navigation.NewTabGoTo(url); return; }
-            Browser.Navigation.GoTo("google.com");
+            OnFormLoad();
         }
         private void Form_Main_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (incognito)
+            if (_incognito)
             {
                 Browser.Navigation.Incognito_DisposeSession();
             }
-            if (incognito || newWindow)
+            if (_incognito || _newWindow)
             {
                 this.Hide();
                 this.Dispose();
                 return;
             }
             Application.Exit();
+        }
+        private void MenuButton_Click(object sender, EventArgs e)
+        {
+            MenuPanel.Visible = !MenuPanel.Visible;
         }
         private void ReloadButton_Click(object sender, EventArgs e)
         {
@@ -165,14 +182,6 @@ namespace MobileView
         private void BackButton_Click(object sender, EventArgs e)
         {
             Browser.Navigation.GoBack();
-        }
-        private void ClearAllBrowserDataToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Browser.Clear.AllBrowserData();
-        }
-        private void ClearAllBrowsingDataToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            Browser.Clear.AllBrowsingData();
         }
         private void URLTextBox_KeyDown(object sender, KeyEventArgs e)
         {
@@ -183,19 +192,25 @@ namespace MobileView
                 Browser.Navigation.GoTo(URLTextBox.Text);
             }
         }
-        private void MenuButton_Click(object sender, EventArgs e)
-        {
-            MenuPanel.Visible = !MenuPanel.Visible;
-        }
         private void URLTextBox_DoubleClick(object sender, EventArgs e)
         {
             TextBox textBox = sender as TextBox;
             textBox.Focus();
             textBox.SelectAll();
         }
+
+        // Menu Strip
+        private void ClearAllBrowserDataToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Browser.Clear.AllBrowserData();
+        }
+        private void ClearAllBrowsingDataToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            Browser.Clear.AllBrowsingData();
+        }
         private void IncognitoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Form incognito = new Form_Main(_incognito: true, currentForm: this);
+            Form incognito = new Form_Main(incognito: true, currentForm: this);
             this.Hide();
             incognito.ShowDialog();
             formManager.PreserveCurrentFormLocationAndSize(incognito);
@@ -205,11 +220,9 @@ namespace MobileView
         {
             this.Close();
         }
-        private async void ViewExtensionsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ViewExtensionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            List<string> extensions = await Browser.GetExtensions();
-            string extensionstring = string.Join(",\n", extensions);
-            MessageBox.Show(extensionstring);
+            GetExtensions();
         }
         private void RemoveExtensionToolStripMenuItem_Click(object sender, EventArgs e)
         {
