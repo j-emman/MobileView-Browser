@@ -33,9 +33,10 @@ namespace WV2Service
         {
             environment = await InitializeWebEnviromentAsync(WebViewControl, ProfileName);
         }
-        public async void InitializeSharedEnviroment(string ProfileFolder)
+        public async void InitializeSharedEnviroment(string profileFolder)
         {
-            environment = await InitializeSharedWebEnviromentAsync(WebViewControl, ProfileFolder);
+            ProfileFolder = profileFolder;
+            environment = await InitializeSharedWebEnviromentAsync(WebViewControl, profileFolder);
         }
         public async void InitializeProfile()
         {
