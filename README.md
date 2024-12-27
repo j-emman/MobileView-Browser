@@ -81,7 +81,7 @@ $ nuget install Microsoft.Web.WebView2
 
 ### 4. Run the Application
 - Press `F5` in Visual Studio to debug and run the app.
-- Alternatively, navigate to `your project directory\bin\Debug\net8.0-windows` and execute the compiled `.exe` file.
+- Alternatively, navigate to `your_project_directory\bin\Debug\net8.0-windows` and execute the compiled `.exe` file.
 
 At this time, an installer is not provided as the application functions effectively as a standalone portable executable. Future updates may include a portable single-file packaged version.
 
