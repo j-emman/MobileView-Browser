@@ -94,7 +94,7 @@ namespace WV2Service
                 throw new Exception($"Failed to load extensions:\n{ex.Message}");
             }
         }
-        private async Task<IReadOnlyList<CoreWebView2BrowserExtension>> GetBrowserExtensionsAsync(WebView2 webView, CoreWebView2Environment environment, CoreWebView2Profile profile)
+        private async Task<IReadOnlyList<CoreWebView2BrowserExtension>> GetBrowserExtensionsListAsync(WebView2 webView, CoreWebView2Environment environment, CoreWebView2Profile profile)
         {
             try
             {

@@ -62,19 +62,5 @@ namespace WV2Service
         {
             EnableNavigationMonitoring(WebViewControl, environment);
         }
-        public async Task<List<string>> GetExtensions()
-        {
-            List<string> extensions = new List<string>();
-
-            IReadOnlyList<CoreWebView2BrowserExtension> extensionsList =  await GetBrowserExtensionsAsync(WebViewControl, environment, Profile);
-
-            foreach (var extension in extensionsList)
-            {
-                extensions.Add(extension.Name);
-                Console.WriteLine($"- {extension.Name}, ID: {extension.Id}");
-            }
-
-            return extensions;
-        }
     }
 }
