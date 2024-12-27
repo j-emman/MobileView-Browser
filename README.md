@@ -86,11 +86,48 @@ $ nuget install Microsoft.Web.WebView2
 At this time, an installer is not provided as the application functions effectively as a standalone portable executable. Future updates may include a portable single-file packaged version.
 
 ---
-## Extension Support
-Extensions currently only support unpacked extensions from the local device. 
-- Download your desired extensions and add the path to the Extensions path list.
-   - [uBlock Origin](https://github.com/gorhill/uBlock) **1.61.3b9** and [Privacy Badger](https://github.com/EFForg/privacybadger) **2024.5.17** is currently packaged with the app.
-- WebView2 is based on Microsoft Edge (Chromium) and does only support extensions available on said platforms.
+## Extension Support  
+
+The **MobileView Browser** supports unpacked extensions from your local device. Extensions must be compatible with WebView2, which is based on Microsoft Edge (Chromium).  
+
+### Adding Extensions  
+1. **Download the Extension**  
+   - Obtain your desired unpacked extension files.  
+   - Popular extensions like [uBlock Origin](https://github.com/gorhill/uBlock) **1.61.3b9** and [Privacy Badger](https://github.com/EFForg/privacybadger) **2024.5.17** are already packaged with the app.  
+
+2. **Place the Extension Files**  
+   - Copy the unpacked extension files to the following directory:  
+     ```
+     \winx86\Extensions_Local
+     ```  
+
+3. **Install the Extensions**  
+   - Upon launching the browser, the extensions in the specified directory will be installed automatically.  
+
+4. **Post-Installation Cleanup**  
+   - Once the extensions are installed, you can safely remove the files from the `Extensions_Local` directory.  
+
+### Removing Extensions  
+1. **Delete the Extension Files**  
+   - Remove the extension from the main directory, if present:  
+     ```
+     \winx86\Extensions_Local
+     ```  
+
+   - Navigate to the profile directory and delete the corresponding extension folder:  
+     ```
+     \winx86\WebControl\profiles\User1\EBWebView\Default\Extensions
+     ```  
+
+2. **Restart the Browser**  
+   - Relaunch the browser to apply the changes.  
+
+---
+
+### Notes:  
+- Only unpacked extensions are supported. Packaged extensions or extensions from the Chrome Web Store are not directly compatible.  
+- WebView2 supports extensions that work on Microsoft Edge (Chromium).  
+- Ensure that the extension files are correctly structured and contain a valid `manifest.json` file.
 
 ---
 
