@@ -194,7 +194,13 @@ namespace WV2Service
                 throw new SqliteException(ex.Message, ex.SqliteErrorCode);
             }
         }
-
+        private void EnsureTempPath()
+        {
+            string tempPath = Path.Combine(Path.GetTempPath(), "EBWebView");
+            if (!Directory.Exists(tempPath))
+            {
+                Directory.CreateDirectory(tempPath);            }
+        }
         // 
         private async Task<DataTable> GetHistory(string profileDirectory)
         {
@@ -205,6 +211,7 @@ namespace WV2Service
                 Console.WriteLine("History file does not exist.");
                 return null;
             }
+            EnsureTempPath();   
             string tempFilePath = Path.Combine(Path.GetTempPath(), "EBWebView", "database_temp.db");   // dir to move the locked database to, as a temporary file
             try
             {
